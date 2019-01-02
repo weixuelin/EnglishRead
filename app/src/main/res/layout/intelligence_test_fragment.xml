@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/margin4"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="一测到底" />
+
+    <LinearLayout
+        style="@style/margin10"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/dp_8"
+        android:layout_weight="1"
+        android:background="@drawable/write_kuang_line"
+        android:orientation="vertical">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/testViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_24"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginRight="@dimen/dp_24"
+            android:layout_marginBottom="@dimen/dp_10">
+
+            <Button
+                android:id="@+id/btIntelUp"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@drawable/blue_kuang"
+                android:text="上一题"
+                android:textColor="@color/write" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_1"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btIntelPost"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@drawable/green_kuang"
+                android:text="交卷"
+                android:textColor="@color/write" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_1"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btIntelNext"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:background="@drawable/blue_kuang"
+                android:text="下一题"
+                android:textColor="@color/write" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

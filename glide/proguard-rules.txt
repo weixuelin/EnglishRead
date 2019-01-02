@@ -1,0 +1,4 @@
+-dontwarn jp.co.cyberagent.android.gpuimage.**
+
+#-keep class com.mob.**{*;}
+#-keep class cn.smssdk.**{*;}

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="black">#000000</color>
+    <color name="write">#FFFFFF</color>
+    <color name="write_bg">#FCFBFF</color>
+    <color name="blue">#354485</color>
+    <color name="pay_color">#FFF8D1</color>
+    <color name="red">#F65D21</color>
+    <color name="FEEA99">#FEEA99</color>
+    <color name="main_blue">#076BCE</color>
+    <color name="gray">#ADBCC6</color>
+    <color name="gray1">#DDDDDD</color>
+    <color name="bg">#f2f1f6</color>
+    <color name="user_color">#92d9eb</color>
+    <color name="text_color">#333333</color>
+    <color name="green">#3DC3C6</color>
+    <color name="orange">#AEFA9217</color>
+    <color name="zi">#6055DF</color>
+    <color name="analysis_color">#E7E9F2</color>
+    <color name="text_586499">#586499</color>
+    <color name="black1">#757F8E</color>
+    <color name="blue1">#485590</color>
+    <color name="write2">#D1DFF7</color>
+    <color name="write1">#F6F6FA</color>
+    <color name="bg_959DBF">#959DBF</color>
+    <color name="gray_tou">#6AB6B7B9</color>
+
+    <color name="holo_green_light">#ff99cc00</color>
+    <color name="holo_red_light">#ffff4444</color>
+    <color name="holo_orange_dark">#ffff8800</color>
+    <color name="holo_purple">#ffaa66cc</color>
+    <color name="blue_login">#1CAAF3</color>
+    <color name="main_top">#2D3E50</color>
+    <color name="main_recycler">#2B2F4A</color>
+
+
+    <color name="a353535">#353535</color>
+    <color name="a767676">#767676</color>
+    <color name="ac7d7e8">#c7d7e8</color>
+    <color name="a1a2128">#1a2128</color>
+    <color name="ab8c6d6">#b8c6d6</color>
+    <color name="a9899a3">#9899a3</color>
+    <color name="a333333">#333333</color>
+    <color name="a9f9fa0">#9f9fa0</color>
+    <color name="affa20c">#ffa20c</color>
+    <color name="a3aa1cd">#3aa1cd</color>
+    <color name="a00fff0">#00fff0</color>
+    <color name="aff6600">#ff6600</color>
+    <color name="ac37a43">#a37c43</color>
+    <color name="a686868">#686868</color>
+    <color name="a8f919b">#8f919b</color>
+    <color name="aa5a5a5">#a5a5a5</color>
+    <color name="aF0AD4E">#F0AD4E</color>
+    <color name="a4EBBF3">#4EBBF3</color>
+    <color name="a00C9B0">#00C9B0</color>
+    <color name="aF46A80">#F46A80</color>
+    <color name="aEFAC50">#EFAC50</color>
+    <color name="a2ec7c9">#2ec7c9</color>
+    <color name="aB6A2DE">#B6A2DE</color>
+
+</resources>

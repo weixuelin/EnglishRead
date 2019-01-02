@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/dp_8">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:src="@drawable/pic1" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="恋上单次名师指导"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/dp_8"
+        android:textSize="@dimen/sp_12" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/a585858"
+        android:text="恋上单次名师指导"
+        android:layout_marginTop="@dimen/dp_4"
+        android:textSize="@dimen/sp_10" />
+
+
+</LinearLayout>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_48"
+        android:background="@color/rc_picsel_toolbar">
+
+        <ImageButton
+            android:id="@+id/back"
+            android:layout_width="@dimen/dp_48"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/rc_sel_picsel_toolbar_back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dp_1"
+            android:layout_marginLeft="@dimen/dp_12"
+            android:layout_toRightOf="@id/back"
+            android:gravity="center_vertical"
+            android:text="图片"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/sp_18" />
+
+        <Button
+            android:id="@+id/send"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_32"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_8"
+            android:background="@drawable/rc_sel_picsel_toolbar_send"
+            android:enabled="false"
+            android:minWidth="0dp"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:text="确认"
+            android:textColor="@color/rc_picsel_toolbar_send_text_disable"
+            android:textSize="@dimen/sp_14" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp_1">
+
+        <GridView
+            android:id="@+id/gridlist"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/black"
+            android:gravity="center"
+            android:horizontalSpacing="@dimen/dp_2"
+            android:numColumns="3"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="@dimen/dp_2" />
+
+        <RelativeLayout
+            android:id="@+id/catalog_window"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dp_48"
+            android:background="@color/rc_picsel_catalog_shadow"
+            android:visibility="invisible">
+
+            <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/catalog_listview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="@dimen/dp_48"
+                android:background="@android:color/white"
+                android:paddingBottom="@dimen/dp_6"
+                android:paddingLeft="@dimen/dp_12"
+                android:paddingRight="@dimen/dp_12"
+                android:paddingTop="@dimen/dp_6" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_48"
+            android:layout_gravity="bottom"
+            android:background="@color/rc_picsel_toolbar_transparent"
+            android:clickable="true">
+
+            <view
+                android:id="@+id/pic_type"
+                class="com.xin.lv.yang.utils.activity.PictureSelectorActivity$PicTypeBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp_16">
+
+                <TextView
+                    android:id="@+id/type_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="所有图片"
+                    android:textColor="@color/rc_picsel_toolbar_send_text_disable"
+                    android:textSize="@dimen/sp_16" />
+
+                <ImageView
+                    android:id="@+id/type_image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="@dimen/dp_4"
+                    android:paddingTop="@dimen/dp_8"
+                    android:src="@drawable/rc_picsel_pictype_normal" />
+            </view>
+
+            <view
+                android:id="@+id/preview"
+                class="com.xin.lv.yang.utils.activity.PictureSelectorActivity$PreviewBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true">
+
+                <ImageView
+                    android:layout_width="1dp"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_gravity="center_vertical"
+                    android:background="#2A2A2A" />
+
+                <TextView
+                    android:id="@+id/preview_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/dp_16"
+                    android:paddingRight="@dimen/dp_16"
+                    android:text="预览"
+                    android:textColor="@color/rc_picsel_toolbar_send_text_disable"
+                    android:textSize="@dimen/sp_16" />
+            </view>
+        </RelativeLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

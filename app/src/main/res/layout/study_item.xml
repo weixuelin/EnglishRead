@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/margin4"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/write_line_top6"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/linearBg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="@dimen/dp_6">
+
+        <ImageView
+            android:id="@+id/imageLock"
+            android:layout_width="@dimen/dp_12"
+            android:layout_height="@dimen/dp_12"
+            android:src="@drawable/choose_y" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_4"
+            android:text="第一单元"
+            android:textColor="@color/write"
+            android:textSize="@dimen/sp_10" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_4"
+            android:text="2018-10"
+            android:textColor="@color/ab8c6d6"
+            android:textSize="@dimen/sp_10" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_8">
+
+        <TextView
+            android:id="@+id/tvStudy1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableRight="@drawable/next_gray"
+            android:drawablePadding="@dimen/dp_4"
+            android:text="复习"
+            android:textColor="@color/green"
+            android:textSize="@dimen/sp_10" />
+
+        <TextView
+            android:id="@+id/tvStudy2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:drawableRight="@drawable/next_gray"
+            android:drawablePadding="@dimen/dp_4"
+            android:text="单元测试"
+            android:textColor="@color/green"
+            android:textSize="@dimen/sp_10" />
+
+        <TextView
+            android:id="@+id/tvStudy3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvStudy1"
+            android:layout_marginTop="@dimen/dp_8"
+            android:drawableRight="@drawable/next_gray"
+            android:drawablePadding="@dimen/dp_4"
+            android:text="听写"
+            android:textColor="@color/green"
+            android:textSize="@dimen/sp_10" />
+
+        <TextView
+            android:id="@+id/tvStudy4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvStudy1"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/dp_8"
+            android:drawableRight="@drawable/next_gray"
+            android:drawablePadding="@dimen/dp_4"
+            android:text="听读训练"
+            android:textColor="@color/green"
+            android:textSize="@dimen/sp_10" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

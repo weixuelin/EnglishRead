@@ -1,0 +1,717 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/line">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/dp_4"
+            android:paddingRight="@dimen/dp_4">
+
+            <TextView
+                android:id="@+id/tvIndexInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/blue_kuang"
+                android:clickable="true"
+                android:paddingLeft="@dimen/dp_8"
+                android:paddingTop="@dimen/dp_2"
+                android:paddingRight="@dimen/dp_8"
+                android:paddingBottom="@dimen/dp_2"
+                android:text="本赛季信息"
+                android:textColor="@color/write"
+                android:textSize="@dimen/sp_10" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_1"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/imagePaiMing"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
+                android:src="@drawable/zs_pic" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_4"
+                android:text="璀璨砖石"
+                android:textColor="@color/blue_login"
+                android:textSize="@dimen/sp_10" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:text="[3]"
+                android:textColor="@color/orange"
+                android:textSize="@dimen/sp_14" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            style="@style/margin4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- 单次基础-->
+            <LinearLayout
+                android:id="@+id/linear1"
+                style="@style/margin4"
+                android:layout_width="@dimen/dp_180"
+                android:layout_height="@dimen/dp_160"
+                android:background="@drawable/write_kuang"
+                android:orientation="vertical"
+                android:padding="@dimen/dp_8">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/dp_14"
+                        android:layout_height="@dimen/dp_14"
+                        android:src="@drawable/dcjc_pic" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_4"
+                        android:text="单词基础"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_12" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="当前课程:"
+                        android:textSize="@dimen/sp_10" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:text="恋上单次入门课"
+                        android:textColor="@color/green"
+                        android:textSize="@dimen/sp_10" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="正在学习单元:unit1"
+                        android:textSize="@dimen/sp_10" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:text="[正在学习]"
+                        android:textColor="@color/black1"
+                        android:textSize="@dimen/sp_10" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="上次学习单次:man"
+                        android:textSize="@dimen/sp_10" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:text="[完成记忆]"
+                        android:textColor="@color/orange"
+                        android:textSize="@dimen/sp_10" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/buttonContinue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_24"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:background="@drawable/blue_kuang_yuan"
+                    android:paddingLeft="@dimen/dp_4"
+                    android:paddingRight="@dimen/dp_4"
+                    android:text="继续学习"
+                    android:textColor="@color/write"
+                    android:textSize="@dimen/sp_10" />
+
+            </LinearLayout>
+            <!-- 词性分布图-->
+            <RelativeLayout
+                android:id="@+id/linear2"
+                style="@style/margin4"
+                android:layout_width="@dimen/dp_180"
+                android:layout_height="@dimen/dp_160"
+                android:layout_toRightOf="@id/linear1"
+                android:background="@drawable/write_kuang"
+                android:orientation="vertical"
+                android:padding="@dimen/dp_8">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/dp_14"
+                        android:layout_height="@dimen/dp_14"
+                        android:src="@drawable/cxfb_pic" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_8"
+                        android:text="词性分布图"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_12" />
+
+                </LinearLayout>
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/cxPieChart"
+                    android:layout_width="@dimen/dp_100"
+                    android:layout_height="@dimen/dp_100"
+                    android:layout_centerInParent="true"
+                    android:padding="@dimen/dp_20" />
+
+            </RelativeLayout>
+
+            <!-- 解锁挑战-->
+            <LinearLayout
+                android:id="@+id/linear3"
+                style="@style/margin4"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_160"
+                android:layout_toRightOf="@id/linear2"
+                android:background="@drawable/red_kuang"
+                android:orientation="vertical"
+                android:padding="@dimen/dp_8">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="单词基础"
+                        android:textColor="@color/write"
+                        android:textSize="@dimen/sp_12" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_12"
+                        android:background="@drawable/text_kuang1"
+                        android:paddingLeft="@dimen/dp_8"
+                        android:paddingTop="@dimen/dp_2"
+                        android:paddingRight="@dimen/dp_8"
+                        android:paddingBottom="@dimen/dp_2"
+                        android:text="挑战"
+                        android:textColor="@color/write1"
+                        android:textSize="@dimen/sp_12" />
+
+                </LinearLayout>
+
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal">
+
+                    <com.github.mikephil.charting.charts.LineChart
+                        android:layout_width="@dimen/dp_90"
+                        android:layout_height="@dimen/dp_90"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/dp_4" />
+
+                    <ImageView
+                        android:layout_width="@dimen/dp_40"
+                        android:layout_height="@dimen/dp_40"
+                        android:layout_gravity="center"
+                        android:src="@drawable/lock_pic" />
+
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="欢迎来到专题魔方"
+                    android:textColor="@color/write"
+                    android:textSize="@dimen/sp_10" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="解锁更多专题搜集更多徽章"
+                    android:textColor="@color/write"
+                    android:textSize="@dimen/sp_10" />
+
+
+            </LinearLayout>
+            <!-- 学习-->
+            <LinearLayout
+                android:id="@+id/linear4"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_120"
+                android:layout_below="@id/linear1"
+                android:layout_alignLeft="@id/linear1"
+                android:layout_alignRight="@id/linear2"
+                android:layout_marginTop="@dimen/dp_6"
+                android:background="@drawable/write_kuang"
+                android:orientation="vertical"
+                android:padding="@dimen/dp_4">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dp_4">
+
+                    <ImageView
+                        android:layout_width="@dimen/dp_14"
+                        android:layout_height="@dimen/dp_14"
+                        android:src="@drawable/study_pic" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_4"
+                        android:layout_weight="1"
+                        android:text="学习"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_12" />
+
+                    <ImageView
+                        android:layout_width="@dimen/dp_10"
+                        android:layout_height="@dimen/dp_10"
+                        android:src="@drawable/right" />
+
+                </LinearLayout>
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/studyLineChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dp_4">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/fuxi_pic"
+                        android:drawablePadding="@dimen/dp_4"
+                        android:text="复习"
+                        android:textSize="@dimen/sp_9" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/ting_pic"
+                        android:drawablePadding="@dimen/dp_4"
+                        android:text="听写"
+                        android:textSize="@dimen/sp_9" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/test_pic"
+                        android:drawablePadding="@dimen/dp_4"
+                        android:text="单元测试"
+                        android:textSize="@dimen/sp_9" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/tx_pic"
+                        android:drawablePadding="@dimen/dp_4"
+                        android:text="听写训练"
+                        android:textSize="@dimen/sp_9" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:drawableLeft="@drawable/study1"
+                        android:drawablePadding="@dimen/dp_4"
+                        android:text="单次学习"
+                        android:textSize="@dimen/sp_9" />
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+            <!-- 时间，进度-->
+            <LinearLayout
+                android:id="@+id/linear5"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_120"
+                android:layout_below="@id/linear1"
+                android:layout_alignLeft="@id/linear3"
+                android:layout_alignRight="@id/linear3"
+                android:layout_alignBottom="@id/linear4"
+                android:layout_marginTop="@dimen/dp_6"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_50"
+                    android:background="@drawable/write_kuang"
+                    android:padding="@dimen/dp_4">
+
+                    <TextView
+                        android:id="@+id/tvIndexTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2018-10-12"
+                        android:textColor="@color/black" />
+
+                    <TextView
+                        android:id="@+id/tvIndexWeek"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:text="星期五"
+                        android:textColor="@color/black1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:text="欢迎来到恋词英语学习平台"
+                        android:textColor="@color/black1"
+                        android:textSize="12sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:background="@drawable/write_kuang"
+                    android:padding="@dimen/dp_4">
+
+                    <TextView
+                        android:id="@+id/tvTi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="我的课本完成情况"
+                        android:textColor="@color/text_color" />
+
+                    <FrameLayout
+                        android:id="@+id/picFrameLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvTi">
+
+                        <ProgressBar
+                            android:id="@+id/progressBar"
+                            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10"
+                            android:max="100" />
+
+                        <ImageView
+                            android:id="@+id/imagePic"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/location_icon" />
+
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:text="恋上单次入门课，共220个单词"
+                        android:textSize="12sp" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+            <!-- 转换量趋势-->
+            <LinearLayout
+                android:id="@+id/linear6"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_140"
+                android:layout_below="@id/linear4"
+                android:layout_alignLeft="@id/linear4"
+                android:layout_alignRight="@id/linear4"
+                android:layout_marginTop="@dimen/dp_6"
+                android:background="@drawable/write_kuang"
+                android:orientation="vertical"
+                android:padding="@dimen/dp_4">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dp_4">
+
+                    <ImageView
+                        android:layout_width="@dimen/dp_14"
+                        android:layout_height="@dimen/dp_14"
+                        android:src="@drawable/zhl_pic" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_4"
+                        android:layout_weight="1"
+                        android:text="转换量趋势"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_12" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_32"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="128"
+                        android:textColor="@color/red"
+                        android:textSize="@dimen/sp_18" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_4"
+                        android:text="学习量"
+                        android:textSize="@dimen/sp_10" />
+
+                    <View
+                        android:layout_width="@dimen/dp_1"
+                        android:layout_height="@dimen/dp_16"
+                        android:layout_marginLeft="@dimen/dp_24"
+                        android:background="@color/line" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_24"
+                        android:text="128"
+                        android:textColor="@color/blue_login"
+                        android:textSize="@dimen/sp_18" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_4"
+                        android:text="需要复习"
+                        android:textSize="@dimen/sp_10" />
+
+                    <View
+                        android:layout_width="@dimen/dp_1"
+                        android:layout_height="@dimen/dp_16"
+                        android:layout_marginLeft="@dimen/dp_24"
+                        android:background="@color/line" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_24"
+                        android:text="128"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="@dimen/sp_18" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_4"
+                        android:text="熟悉量"
+                        android:textSize="@dimen/sp_10" />
+
+                </LinearLayout>
+
+                <com.github.mikephil.charting.charts.LineChart
+                    android:id="@+id/zhlLineChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+            <!-- 攻防战-->
+            <LinearLayout
+                android:id="@+id/linear7"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_140"
+                android:layout_below="@id/linear4"
+                android:layout_alignLeft="@id/linear5"
+                android:layout_alignRight="@id/linear5"
+                android:layout_marginTop="@dimen/dp_6"
+                android:background="@drawable/write_kuang"
+                android:orientation="vertical"
+                android:padding="@dimen/dp_4">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dp_4">
+
+                    <ImageView
+                        android:layout_width="@dimen/dp_14"
+                        android:layout_height="@dimen/dp_14"
+                        android:src="@drawable/gfz_pic" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_4"
+                        android:layout_weight="1"
+                        android:text="攻防战"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_10" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/orange_kuang"
+                        android:paddingLeft="@dimen/dp_8"
+                        android:paddingTop="@dimen/dp_2"
+                        android:paddingRight="@dimen/dp_8"
+                        android:paddingBottom="@dimen/dp_2"
+                        android:text="规则"
+                        android:textColor="@color/write1"
+                        android:textSize="@dimen/sp_8" />
+
+                </LinearLayout>
+
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/gfzBarChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:ignore="TooManyViews" />
+
+
+            </LinearLayout>
+            <!--智能测试-->
+            <LinearLayout
+                android:id="@+id/linear8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linear6"
+                android:layout_alignLeft="@id/linear6"
+                android:layout_alignRight="@id/linear6"
+                android:layout_marginTop="@dimen/dp_6"
+                android:background="@drawable/write_kuang"
+                android:orientation="vertical"
+                android:padding="@dimen/dp_4">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dp_4">
+
+                    <ImageView
+                        android:layout_width="@dimen/dp_14"
+                        android:layout_height="@dimen/dp_14"
+                        android:src="@drawable/study_pic" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_4"
+                        android:layout_weight="1"
+                        android:text="智能测试"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_12" />
+
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/testRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+
+            </LinearLayout>
+            <!--成长经历-->
+            <LinearLayout
+                android:id="@+id/linear9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linear6"
+                android:layout_alignLeft="@id/linear7"
+                android:layout_alignRight="@id/linear7"
+                android:layout_marginTop="@dimen/dp_6"
+                android:background="@drawable/write_kuang"
+                android:orientation="vertical"
+                android:padding="@dimen/dp_4">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/czRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

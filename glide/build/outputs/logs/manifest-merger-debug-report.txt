@@ -1,0 +1,9 @@
+-- Merging decision tree log ---
+manifest
+ADDED from F:\program\app\AndroidStudioPro\english\EnglishRead\glide\src\main\AndroidManifest.xml:1:1-66
+INJECTED from F:\program\app\AndroidStudioPro\english\EnglishRead\glide\src\main\AndroidManifest.xml:1:1-66
+INJECTED from F:\program\app\AndroidStudioPro\english\EnglishRead\glide\src\main\AndroidManifest.xml:1:1-66
+	package
+		ADDED from F:\program\app\AndroidStudioPro\english\EnglishRead\glide\src\main\AndroidManifest.xml:1:11-54
+		INJECTED from F:\program\app\AndroidStudioPro\english\EnglishRead\glide\src\main\AndroidManifest.xml
+		INJECTED from F:\program\app\AndroidStudioPro\english\EnglishRead\glide\src\main\AndroidManifest.xml
