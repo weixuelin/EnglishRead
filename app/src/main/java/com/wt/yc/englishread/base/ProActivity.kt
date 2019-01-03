@@ -12,15 +12,13 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.BitmapFactory
 import android.net.ConnectivityManager
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
+import android.os.*
 import android.support.design.internal.BottomNavigationItemView
 import android.support.design.internal.BottomNavigationMenuView
 import android.support.design.widget.BottomNavigationView
 import android.support.design.widget.TabLayout
 import android.support.v4.app.ActivityCompat
+import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import android.telephony.TelephonyManager
@@ -40,6 +38,7 @@ import com.wt.yc.englishread.App
 import com.wt.yc.englishread.R
 import com.wt.yc.englishread.view.CustomPop
 import com.xin.lv.yang.utils.utils.ImageUtil
+import com.xin.lv.yang.utils.utils.StatusBarUtil
 import com.xin.lv.yang.utils.view.CustomProgressDialog
 import org.json.JSONObject
 import java.lang.ref.WeakReference
@@ -67,9 +66,16 @@ abstract class ProActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (Build.VERSION.SDK_INT >= 21) {
+            StatusBarUtil.transparencyBar(this)
+        }
+
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
         gson = Gson()
+
+        token = Share.getToken(this)
+        uid = Share.getUid(this)
 
         inPutManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
@@ -529,4 +535,31 @@ abstract class ProActivity : AppCompatActivity() {
             }
         }
     }
+
+
+    fun switchContent(
+            indexFragment: ProV4Fragment,
+            to: ProV4Fragment,
+            resId: Int,
+            transaction: FragmentTransaction): ProV4Fragment {
+
+        // 当前显示的不是待显示的fragment
+        if (indexFragment !== to) {
+
+            if (!to.isAdded) {      // 先判断是否被add过
+                // 没有add 影藏当前正在显示的，加载并提交
+                transaction.hide(indexFragment).add(resId, to, to.javaClass.name).commit()   // 隐藏当前的fragment，add下一个到Activity中
+
+            } else {
+                // 影藏当前正在显示的，显示需要显示的
+                transaction.hide(indexFragment).show(to).commit()     // 隐藏当前的fragment，显示下一个
+            }
+        } else {
+            transaction.add(resId, to, to.javaClass.name).commit()
+        }
+
+        return to
+
+    }
+
 }

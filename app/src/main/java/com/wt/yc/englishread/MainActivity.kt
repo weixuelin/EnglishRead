@@ -6,6 +6,8 @@ import android.os.Message
 import android.support.design.widget.TabLayout
 import android.support.v4.app.FragmentManager
 import com.wt.yc.englishread.base.ProActivity
+import com.wt.yc.englishread.base.ProV4Fragment
+import com.wt.yc.englishread.base.Share
 import com.wt.yc.englishread.main.fragment.main.AboutFragment
 import com.wt.yc.englishread.main.fragment.main.MainFragment
 import com.wt.yc.englishread.main.fragment.main.MapFragment
@@ -28,20 +30,31 @@ class MainActivity : ProActivity() {
         setContentView(R.layout.activity_main)
         manager = supportFragmentManager
 
-        val tt = manager!!.beginTransaction()
-        tt.add(R.id.linearLayout, MainFragment())
-        tt.commit()
+        if (Share.getUid(this) != 0) {
+            tvLogin.text = "已登录"
+        } else {
+            tvLogin.text = "登录"
+        }
 
         initClick()
     }
 
+    val fragmentList = arrayListOf<ProV4Fragment>(MainFragment(), AboutFragment(), MapFragment())
+
+    var indexFragment: ProV4Fragment? = null
+
     private fun initClick() {
+
         tvLogin.setOnClickListener {
             startActivityForResult(Intent(this, LoginActivity::class.java), 1234)
         }
 
+        indexFragment = fragmentList[0]
+
+        indexFragment = switchContent(indexFragment!!, indexFragment!!, R.id.linearLayout, manager!!.beginTransaction())
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+
             override fun onTabReselected(tab: TabLayout.Tab?) {
 
             }
@@ -51,15 +64,14 @@ class MainActivity : ProActivity() {
             }
 
             override fun onTabSelected(tab: TabLayout.Tab?) {
+
                 val tt = manager!!.beginTransaction()
 
                 when (tab!!.position) {
-                    0 -> tt.replace(R.id.linearLayout, MainFragment())
-                    1 -> tt.replace(R.id.linearLayout, AboutFragment())
-                    2 -> tt.replace(R.id.linearLayout, MapFragment())
+                    0 -> indexFragment = switchContent(indexFragment!!, fragmentList[0], R.id.linearLayout, tt)
+                    1 -> indexFragment = switchContent(indexFragment!!, fragmentList[1], R.id.linearLayout, tt)
+                    2 -> indexFragment = switchContent(indexFragment!!, fragmentList[2], R.id.linearLayout, tt)
                 }
-
-                tt.commit()
             }
 
         })

@@ -20,6 +20,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import butterknife.Unbinder
 import com.google.gson.Gson
@@ -54,6 +55,9 @@ abstract class ProV4Fragment : Fragment() {
         activity = getActivity()
         handler = ProHandler(this)
         gson = Gson()
+
+        uid = Share.getUid(activity!!)
+        token = Share.getToken(activity!!)
 
         ttsApi = TTSForApi(activity!!)
 
@@ -213,6 +217,17 @@ abstract class ProV4Fragment : Fragment() {
         Toast.makeText(activity, str, time).show()
     }
 
+
+    /**
+     * 设置间距
+     */
+    fun setMargen(ceshiTv: LinearLayout, margen: Int) {
+        val lp: LinearLayout.LayoutParams = ceshiTv.layoutParams as LinearLayout.LayoutParams
+
+        lp.setMargins(margen, 0, 0, 0)
+
+        ceshiTv.layoutParams = lp
+    }
 
     fun setAlpha(activity: Activity, f: Float) {
         val manager = activity.window.attributes

@@ -29,7 +29,7 @@
                 android:gravity="center_horizontal"
                 android:text="恋词特点优势"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/sp_12" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -38,15 +38,15 @@
                 android:gravity="center_horizontal"
                 android:text="量身定制互联网英语教育改造学习项目，打造国内最适合学习英语的品牌之一"
                 android:textColor="@color/aa5a5a5"
-                android:textSize="@dimen/sp_12" />
+                android:textSize="@dimen/sp_10" />
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_32"
+                android:layout_marginLeft="@dimen/dp_24"
                 android:layout_marginTop="@dimen/dp_20"
-                android:layout_marginRight="@dimen/dp_32"
+                android:layout_marginRight="@dimen/dp_24"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -67,8 +67,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_4"
                         android:text="超过300000学生使用"
+                        android:gravity="center_horizontal"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/sp_12" />
+                        android:textSize="@dimen/sp_10" />
 
                 </LinearLayout>
 
@@ -89,8 +90,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_4"
                         android:text="超过600本教材"
+                        android:gravity="center_horizontal"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/sp_12" />
+                        android:textSize="@dimen/sp_10" />
 
                 </LinearLayout>
 
@@ -111,8 +113,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_4"
                         android:text="任意时间免费答疑"
+                        android:gravity="center_horizontal"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/sp_12" />
+                        android:textSize="@dimen/sp_10" />
 
                 </LinearLayout>
 
@@ -133,8 +136,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_4"
                         android:text="任意终端随时学习"
+                        android:gravity="center_horizontal"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/sp_12" />
+                        android:textSize="@dimen/sp_10" />
                 </LinearLayout>
 
 
@@ -176,7 +180,7 @@
                 android:gravity="center_horizontal"
                 android:text="量身定制互联网英语教育改造学习项目，打造国内最适合学习英语的品牌之一"
                 android:textColor="@color/a585858"
-                android:textSize="@dimen/sp_12" />
+                android:textSize="@dimen/sp_10" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -216,7 +220,7 @@
                         android:layout_marginTop="@dimen/dp_8"
                         android:text="小学:20个小时"
                         android:textColor="@color/a585858"
-                        android:textSize="@dimen/sp_12" />
+                        android:textSize="@dimen/sp_10" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -224,7 +228,7 @@
                         android:layout_marginTop="@dimen/dp_8"
                         android:text="初中:20个小时"
                         android:textColor="@color/a585858"
-                        android:textSize="@dimen/sp_12" />
+                        android:textSize="@dimen/sp_10" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -232,11 +236,11 @@
                         android:layout_marginTop="@dimen/dp_8"
                         android:text="高中:20个小时"
                         android:textColor="@color/a585858"
-                        android:textSize="@dimen/sp_12" />
+                        android:textSize="@dimen/sp_10" />
 
                     <Button
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/dp_30"
+                        android:layout_height="@dimen/dp_20"
                         android:layout_marginTop="@dimen/dp_8"
                         android:background="@color/green"
                         android:paddingLeft="@dimen/dp_10"
@@ -278,7 +282,7 @@
                         android:layout_marginTop="@dimen/dp_8"
                         android:text="小学:20个小时"
                         android:textColor="@color/a585858"
-                        android:textSize="@dimen/sp_12" />
+                        android:textSize="@dimen/sp_10" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -286,18 +290,18 @@
                         android:layout_marginTop="@dimen/dp_8"
                         android:text="初中:20个小时"
                         android:textColor="@color/a585858"
-                        android:textSize="@dimen/sp_12" />
+                        android:textSize="@dimen/sp_10" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_8"
                         android:textColor="@color/a585858"
-                        android:textSize="@dimen/sp_12" />
+                        android:textSize="@dimen/sp_10" />
 
                     <Button
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/dp_30"
+                        android:layout_height="@dimen/dp_20"
                         android:layout_marginTop="@dimen/dp_8"
                         android:background="@color/blue_login"
                         android:paddingLeft="@dimen/dp_10"
@@ -339,7 +343,7 @@
                         android:layout_marginTop="@dimen/dp_8"
                         android:text="小学:20个小时"
                         android:textColor="@color/a585858"
-                        android:textSize="@dimen/sp_12" />
+                        android:textSize="@dimen/sp_10" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -347,18 +351,18 @@
                         android:layout_marginTop="@dimen/dp_8"
                         android:text="初中:20个小时"
                         android:textColor="@color/a585858"
-                        android:textSize="@dimen/sp_12" />
+                        android:textSize="@dimen/sp_10" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_8"
                         android:textColor="@color/a585858"
-                        android:textSize="@dimen/sp_12" />
+                        android:textSize="@dimen/sp_10" />
 
                     <Button
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/dp_30"
+                        android:layout_height="@dimen/dp_20"
                         android:layout_marginTop="@dimen/dp_8"
                         android:background="@color/zi"
                         android:paddingLeft="@dimen/dp_10"

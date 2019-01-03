@@ -6,10 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import com.wt.yc.englishread.R
 import com.wt.yc.englishread.base.ProBaseAdapter
+import com.wt.yc.englishread.info.BookInfo
 import kotlinx.android.synthetic.main.test_item.view.*
 
-class TestListAdapter(context: Context, list: ArrayList<String>) : ProBaseAdapter<String>(context, list) {
+class TestListAdapter(context: Context, list: ArrayList<BookInfo>) : ProBaseAdapter<BookInfo>(context, list) {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val vh = holder as VH
+        val info = list[position]
+        vh.tvTestTime.text = info.time
+        vh.tvTestName.text = info.type
+        vh.tvTestDate.text = info.test_time
+        vh.tvTestScore.text = ""
+        vh.tvTestFen.text = info.test_cj
+
 
     }
 

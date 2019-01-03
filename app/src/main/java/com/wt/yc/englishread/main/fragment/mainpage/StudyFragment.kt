@@ -44,6 +44,12 @@ class StudyFragment : ProV4Fragment() {
         initStudyChart(studyChart)
 
         initClick()
+
+        get()
+    }
+
+    fun get(){
+
     }
 
     private fun initClick() {

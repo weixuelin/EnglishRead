@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="2018-10-12"
+        android:textSize="@dimen/sp_8"
         android:textColor="@color/black" />
 
     <TextView
@@ -20,7 +21,7 @@
         android:layout_marginLeft="@dimen/dp_8"
         android:text="单词测试"
         android:textColor="@color/black"
-        android:textSize="@dimen/sp_10" />
+        android:textSize="@dimen/sp_8" />
 
     <TextView
         android:id="@+id/tvTestDate"
@@ -29,14 +30,13 @@
         android:layout_marginLeft="@dimen/dp_8"
         android:text="5:30"
         android:textColor="@color/black"
-        android:textSize="@dimen/sp_10" />
+        android:textSize="@dimen/sp_8" />
 
     <ImageView
         android:id="@+id/tvTextPic"
-        android:layout_width="@dimen/dp_60"
-        android:layout_height="@dimen/dp_24"
-        android:layout_marginLeft="@dimen/dp_8"
-        android:src="@drawable/set" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_8" />
 
     <TextView
         android:id="@+id/tvTestScore"
@@ -45,7 +45,7 @@
         android:layout_marginLeft="@dimen/dp_8"
         android:text="+20"
         android:textColor="@color/colorAccent"
-        android:textSize="@dimen/sp_12" />
+        android:textSize="@dimen/sp_10" />
 
     <TextView
         android:id="@+id/tvTestFen"
@@ -55,12 +55,12 @@
         android:layout_weight="1"
         android:text="99分"
         android:textColor="@color/black"
-        android:textSize="@dimen/sp_12" />
+        android:textSize="@dimen/sp_8" />
 
     <ImageView
         android:id="@+id/ivRight"
-        android:layout_width="@dimen/dp_14"
-        android:layout_height="@dimen/dp_14"
+        android:layout_width="@dimen/dp_12"
+        android:layout_height="@dimen/dp_12"
         android:layout_marginLeft="@dimen/dp_8"
         android:src="@drawable/right" />
 

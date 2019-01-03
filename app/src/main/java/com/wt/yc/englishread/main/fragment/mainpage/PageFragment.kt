@@ -1,6 +1,7 @@
 package com.wt.yc.englishread.main.fragment.mainpage
 
 import android.app.Dialog
+import android.app.ProgressDialog.show
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -25,18 +26,24 @@ import com.wt.yc.englishread.main.adapter.TestListAdapter
 import kotlinx.android.synthetic.main.page_fragment.*
 import android.text.SpannableString
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import android.widget.LinearLayout
 import android.widget.TextView
+import com.google.gson.reflect.TypeToken
+import com.wt.yc.englishread.base.Config
 import com.wt.yc.englishread.base.Constant
 import com.wt.yc.englishread.base.ItemClickListener
+import com.wt.yc.englishread.info.BookInfo
 import com.wt.yc.englishread.info.Info
 import com.wt.yc.englishread.main.activity.MainPageActivity
 import com.xin.lv.yang.utils.utils.BitmapUtil
 import com.xin.lv.yang.utils.utils.DataUtil
+import com.xin.lv.yang.utils.utils.HttpUtils
 import com.xin.lv.yang.utils.utils.TextUtils
 import kotlinx.android.synthetic.main.finish_dialog.view.*
 import kotlinx.android.synthetic.main.pai_number_dialog.view.*
 import kotlinx.android.synthetic.main.set_num_doalog.view.*
-import java.util.*
+import org.json.JSONObject
+import kotlin.collections.ArrayList
 
 /**
  * 学习首页fragment
@@ -47,7 +54,101 @@ class PageFragment : ProV4Fragment() {
         val str = msg.obj as String
         when (msg.what) {
 
+            Config.MAIN_PAGE_CODE -> {
+
+                val json = JSONObject(str)
+                val status = json.optBoolean(Config.STATUS)
+                if (status) {
+                    val jsonObject = json.optJSONObject(Config.DATA)
+
+                    val bookResult = jsonObject.optString("book")
+                    val bookResultUnit = jsonObject.optString("unit")
+                    val bookResultWord = jsonObject.optString("word")
+
+                    val book1 = gson!!.fromJson<BookInfo>(bookResult, BookInfo::class.java)
+                    val book2 = gson!!.fromJson<BookInfo>(bookResultUnit, BookInfo::class.java)
+                    val book3 = gson!!.fromJson<BookInfo>(bookResultWord, BookInfo::class.java)
+
+                    showBook1(book1, book2, book3)
+
+                    val countBookArr = gson!!.fromJson<ArrayList<BookInfo>>(jsonObject.optString("word_tj"), object : TypeToken<ArrayList<BookInfo>>() {}.type)
+
+                    showCountArr(countBookArr)
+
+                    val weekStr = jsonObject.optString("weak")
+                    val weekInfo = gson!!.fromJson<BookInfo>(weekStr, BookInfo::class.java)
+                    showWeekStr(weekInfo)
+
+                    val testResult = jsonObject.optString("test")
+                    val arr: ArrayList<BookInfo> = gson!!.fromJson(testResult, object : TypeToken<ArrayList<BookInfo>>() {}.type)
+                    if (arr != null && arr.size != 0) {
+                        textAdapter!!.updateData(arr)
+                    }
+
+                    /**
+                     * 学习转化量
+                     */
+                    val study = jsonObject.optString("xfl")
+                    val studyBook = gson!!.fromJson<BookInfo>(study, BookInfo::class.java)
+                    showBook(studyBook)
+
+                    val level = jsonObject.optString("level")
+                    val target = jsonObject.optString("target")
+                    tvUserLevel.text = level
+                    tvLevelFen.text = "[$target]"
+
+
+                }
+            }
         }
+
+    }
+
+
+    /**
+     * 学习转化量
+     */
+    fun showBook(info: BookInfo) {
+        tvStudyNum.text = info.xx
+        tvFuXiStudyNum.text = info.fx
+
+//        setTextData(zhlLineChart, 1, 2)
+
+    }
+
+    var studyArr1: Array<String>? = null
+    var studyArr2: Array<String>? = null
+
+    /**
+     * 显示一周学习量
+     */
+    private fun showWeekStr(book: BookInfo?) {
+        val wordXs = book!!.xs
+        val wordShuXi = book.sx
+
+        studyArr1 = gson!!.fromJson<Array<String>>(wordXs, object : TypeToken<Array<String>>() {}.type)
+
+        studyArr2 = gson!!.fromJson<Array<String>>(wordShuXi, object : TypeToken<Array<String>>() {}.type)
+
+        setTextData(studyLineChart, 2, 2)
+
+    }
+
+    /**
+     * 显示单词统计
+     */
+    private fun showCountArr(countBookArr: ArrayList<BookInfo>?) {
+        bindData(countBookArr!!)
+    }
+
+
+    /**
+     * 显示学习的单词信息
+     */
+    private fun showBook1(book1: BookInfo?, book2: BookInfo?, book3: BookInfo?) {
+        tvBookName.text = book1!!.book_name
+        tvUnitName.text = "正在学习单元: ${book2!!.unit_name}"
+        tvUnitWord.text = "上次学习单词: ${book3!!.english}"
 
     }
 
@@ -57,6 +158,9 @@ class PageFragment : ProV4Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        initWOrH()
+
         initCXpieChart()
         initGfzChart()
         initZhLChart()
@@ -67,6 +171,55 @@ class PageFragment : ProV4Fragment() {
 
         initClick()
 
+        get()
+
+        setIndexTime()
+
+
+    }
+
+    private fun setIndexTime() {
+        val indexTime = System.currentTimeMillis()
+        val timeStr = DataUtil.longToTime(indexTime / 1000, "yyyy-MM-dd")
+        tvIndexTime.text = timeStr
+        tvIndexWeek.text = DataUtil().getWeekByDateStr(timeStr, "-")
+
+    }
+
+    fun get() {
+        val json = JSONObject()
+        json.put("uid", uid)
+        json.put("token", token)
+        HttpUtils.getInstance().postJson(Config.GET_MAIN_PAGE_URL, json.toString(), Config.MAIN_PAGE_CODE, handler)
+
+    }
+
+    /**
+     * 动态设置宽高
+     */
+    private fun initWOrH() {
+
+        val w = getW(activity!!) - BitmapUtil.dip2px(activity!!, 170f)
+
+        linear1.layoutParams = LinearLayout.LayoutParams(w / 3, w / 3)
+
+        linear2.layoutParams = LinearLayout.LayoutParams(w / 3, w / 3)
+        setMargen(linear2, 8)
+
+        linear3.layoutParams = LinearLayout.LayoutParams(w / 3, w / 3)
+        setMargen(linear3, 8)
+
+        linear4.layoutParams = LinearLayout.LayoutParams(w * 2 / 3, w / 3)
+        linear5.layoutParams = LinearLayout.LayoutParams(w / 3, w / 3)
+        linear6.layoutParams = LinearLayout.LayoutParams(w * 2 / 3, w / 3)
+
+        linear7.layoutParams = LinearLayout.LayoutParams(w / 3, w / 3)
+        setMargen(linear7, 8)
+
+        linear8.layoutParams = LinearLayout.LayoutParams(w * 2 / 3, w / 3)
+
+        linear9.layoutParams = LinearLayout.LayoutParams(w / 3, w / 3)
+        setMargen(linear9, 8)
 
     }
 
@@ -215,6 +368,7 @@ class PageFragment : ProV4Fragment() {
     val czTextArr = arrayListOf<String>("我的成长经历", "一周学习趋势", "所有测试成绩", "学习时间统计")
     val czList = arrayListOf<Info>()
 
+
     private fun initCzAdapter() {
 
         for (i in czPicList.indices) {
@@ -243,13 +397,16 @@ class PageFragment : ProV4Fragment() {
         }
     }
 
+    var textAdapter: TestListAdapter? = null
+    val testList = arrayListOf<BookInfo>()
     private fun initAdapter() {
         testRecyclerView.isNestedScrollingEnabled = false
         testRecyclerView.layoutManager = LinearLayoutManager(activity!!)
         testRecyclerView.addItemDecoration(DividerItemDecoration(activity!!, DividerItemDecoration.VERTICAL))
-        val adapter = TestListAdapter(activity!!, arrayListOf("", "", ""))
-        testRecyclerView.adapter = adapter
+        textAdapter = TestListAdapter(activity!!, testList)
+        testRecyclerView.adapter = textAdapter
     }
+
 
     /**
      * 初始化学习图标信息
@@ -317,7 +474,6 @@ class PageFragment : ProV4Fragment() {
         // 执行的动画,x轴（动画持续时间）
         studyLineChart.animateX(2500)
 
-        setTextData(studyLineChart, 2)
 
     }
 
@@ -384,43 +540,64 @@ class PageFragment : ProV4Fragment() {
         // 执行的动画,x轴（动画持续时间）
         zhlLineChart.animateX(2500)
 
-        setTextData(zhlLineChart, 1)
 
     }
 
+    /**
+     * 一周学习量
+     */
     val lineStr = arrayListOf<String>("", "一", "二", "三", "四", "五", "六")
 
     /**
      * 显示线性数据
      */
-    private fun setTextData(chart: LineChart, code: Int) {
+    private fun setTextData(chart: LineChart, code: Int, countLen: Int) {
         val y = arrayListOf<Entry>()
         val y2 = arrayListOf<Entry>()
+
         val y3 = arrayListOf<Entry>()
 
         for (i in 0 until lineStr.size) {
             when (i) {
                 0 -> {
-                    y.add(Entry(i.toFloat(), 0f, "测试"))
-                    y2.add(Entry(i.toFloat(), 0f, "测试"))
-                    y3.add(Entry(i.toFloat(), 0f, "测试"))
+                    when (countLen) {
+                        2 -> {
+                            y.add(Entry(i.toFloat(), 0f, ""))
+                            y2.add(Entry(i.toFloat(), 0f, "熟悉的单词"))
+                        }
+                        3 -> {
+                            y.add(Entry(i.toFloat(), 0f, ""))
+                            y2.add(Entry(i.toFloat(), 0f, ""))
+                            y3.add(Entry(i.toFloat(), 0f, ""))
+                        }
+                    }
+
                 }
 
                 else -> {
-                    val num1 = Math.random() * 50
-                    val num2 = Math.random() * 50
-                    val num3 = Math.random() * 50
 
-                    y.add(Entry(i.toFloat(), num1.toFloat(), "测试"))
-                    y2.add(Entry(i.toFloat(), num2.toFloat(), "测试"))
-                    y3.add(Entry(i.toFloat(), num3.toFloat(), "测试"))
+                    when (countLen) {
+                        2 -> {
+                            y.add(Entry(i.toFloat(), studyArr1!![i - 1].toFloat(), ""))
+                            y2.add(Entry(i.toFloat(), studyArr2!![i - 1].toFloat(), ""))
+                        }
+
+                        3 -> {
+
+//                            y.add(Entry(i.toFloat(), num1.toFloat(), ""))
+//                            y2.add(Entry(i.toFloat(), num2.toFloat(), ""))
+//                            y3.add(Entry(i.toFloat(), num3.toFloat(), ""))
+
+                        }
+                    }
+
                 }
             }
 
         }
 
         val lineDataSet = arrayListOf<ILineDataSet>()
-        val set1 = LineDataSet(y, "")
+        val set1 = LineDataSet(y, "学习的单词")
         set1.setCircleColor(resources.getColor(R.color.red))
         set1.setDrawCircles(false)
         set1.color = resources.getColor(R.color.red)
@@ -432,34 +609,38 @@ class PageFragment : ProV4Fragment() {
             set1.fillColor = resources.getColor(R.color.red)
         }
 
-        val set2 = LineDataSet(y2, "")
+        val set2 = LineDataSet(y2, "熟悉的单词")
         set2.setCircleColor(resources.getColor(R.color.blue_login))
         set2.setDrawCircles(false)
         set2.color = resources.getColor(R.color.blue_login)
         set2.mode = LineDataSet.Mode.CUBIC_BEZIER
         set2.valueTextColor = resources.getColor(R.color.blue_login)
+
         if (code == 2) {
             set2.setDrawFilled(true)
             // 填充颜色
             set2.fillColor = resources.getColor(R.color.blue_login)
         }
 
-        val set3 = LineDataSet(y3, "")
-        set3.setCircleColor(resources.getColor(R.color.colorAccent))
-        set3.setDrawCircles(false)
-        set3.color = resources.getColor(R.color.colorAccent)
-        set3.mode = LineDataSet.Mode.CUBIC_BEZIER
-        set3.valueTextColor = resources.getColor(R.color.colorAccent)
+        if (countLen == 3) {
+            val set3 = LineDataSet(y3, "")
+            set3.setCircleColor(resources.getColor(R.color.colorAccent))
+            set3.setDrawCircles(false)
+            set3.color = resources.getColor(R.color.colorAccent)
+            set3.mode = LineDataSet.Mode.CUBIC_BEZIER
+            set3.valueTextColor = resources.getColor(R.color.colorAccent)
 
-        if (code == 2) {
-            set3.setDrawFilled(true)
-            // 填充颜色
-            set3.fillColor = resources.getColor(R.color.colorAccent)
+            if (code == 2) {
+                set3.setDrawFilled(true)
+                // 填充颜色
+                set3.fillColor = resources.getColor(R.color.colorAccent)
+            }
+
+            lineDataSet.add(set3)
         }
 
         lineDataSet.add(set1)
         lineDataSet.add(set2)
-        lineDataSet.add(set3)
 
         val data = LineData(lineDataSet)
 
@@ -623,7 +804,6 @@ class PageFragment : ProV4Fragment() {
         //设置初始旋转角度
         cxPieChart.rotationAngle = 0f
 
-        bindData(3)
 
     }
 
@@ -631,12 +811,19 @@ class PageFragment : ProV4Fragment() {
      *  显示饼状图数据
      * @param count 分成几部分
      */
-    private fun bindData(count: Int) {
+    private fun bindData(countBookArr: ArrayList<BookInfo>) {
+        val bb1 = countBookArr[0]  // 熟悉词
+        val bb2 = countBookArr[1]  // 夹生词
+        val bb3 = countBookArr[2]  // 陌生词
+        val all = bb1.sxc + bb2.jsc + bb3.msc
+        val num1 = bb1.sxc / all
+        val num2 = bb3.msc / all
+        val num3 = bb2.jsc / all
 
         val valueList: ArrayList<PieEntry> = arrayListOf()
-        valueList.add(PieEntry(2f, "熟悉词"))
-        valueList.add(PieEntry(3f, "陌生词"))
-        valueList.add(PieEntry(5f, "夹生词"))
+        valueList.add(PieEntry(num1.toFloat(), "熟悉词"))
+        valueList.add(PieEntry(num2.toFloat(), "陌生词"))
+        valueList.add(PieEntry(num3.toFloat(), "夹生词"))
 
         // 显示在比例图上
         val dataSet = PieDataSet(valueList, "")

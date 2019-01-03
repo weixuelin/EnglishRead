@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager
 import com.wt.yc.englishread.R
 import com.wt.yc.englishread.base.Constant
 import com.wt.yc.englishread.base.ProActivity
+import com.wt.yc.englishread.base.ProV4Fragment
 import com.wt.yc.englishread.info.Info
 import com.wt.yc.englishread.main.adapter.LoadAdapter
 import com.wt.yc.englishread.main.fragment.expandtest.*
@@ -56,8 +57,7 @@ class MainPageActivity : ProActivity() {
         userPicHead.setOnClickListener {
             val t = manager!!.beginTransaction()
             t.addToBackStack("UserFragment")
-            t.replace(R.id.frameLayout,  UserFragment())
-            t.commit()
+            twoIndexFragment = switchContent(twoIndexFragment!!, UserFragment(), R.id.frameLayout, t)
         }
 
         imageViewSignIn.setOnClickListener {
@@ -110,9 +110,12 @@ class MainPageActivity : ProActivity() {
     var lastIndexNum = 0
 
     private fun initLoadAdapter() {
+
+        twoIndexFragment = oneFragmentList[0]
+
         val tran = manager!!.beginTransaction()
-        tran.add(R.id.frameLayout, PageFragment())
-        tran.commit()
+
+        twoIndexFragment = switchContent(twoIndexFragment!!, twoIndexFragment!!, R.id.frameLayout, tran)
 
         for (i in titleArr.indices) {
             val info = Info()
@@ -171,7 +174,6 @@ class MainPageActivity : ProActivity() {
                     info.sonList = tuoArr
                 }
 
-
             }
             mainArr.add(info)
         }
@@ -212,6 +214,8 @@ class MainPageActivity : ProActivity() {
         }
     }
 
+
+    var twoIndexFragment: ProV4Fragment? = null
 
     /**
      * 二级点击跳转
@@ -398,6 +402,11 @@ class MainPageActivity : ProActivity() {
 
     }
 
+    /**
+     * 一级页面
+     */
+    val oneFragmentList = arrayListOf<ProV4Fragment>(PageFragment(), StudyFragment(),
+            NewWordFragment(), BookRackFragment())
 
     /**
      * 一级点击跳转
@@ -406,41 +415,35 @@ class MainPageActivity : ProActivity() {
 
         adapter!!.updateClick(position)
 
+        val tran = manager!!.beginTransaction()
+
         when (position) {
-            0 -> {
+            0 -> twoIndexFragment = switchContent(twoIndexFragment!!, oneFragmentList[0], R.id.frameLayout, tran)
 
-                val tran = manager!!.beginTransaction()
-                tran.replace(R.id.frameLayout, PageFragment())
-                tran.commit()
-            }
-
-            1 -> {
-
-                val tran = manager!!.beginTransaction()
-                tran.replace(R.id.frameLayout, StudyFragment())
-                tran.commit()
-            }
+            1 -> twoIndexFragment = switchContent(twoIndexFragment!!, oneFragmentList[1], R.id.frameLayout, tran)
 
             3 -> {
-
             }
 
-            4 -> {
-                val tran = manager!!.beginTransaction()
-                tran.replace(R.id.frameLayout, NewWordFragment())
-                tran.commit()
+            4 -> twoIndexFragment = switchContent(twoIndexFragment!!, oneFragmentList[2], R.id.frameLayout, tran)
+            5 -> twoIndexFragment = switchContent(twoIndexFragment!!, oneFragmentList[3], R.id.frameLayout, tran)
 
-            }
-
-            5 -> {
-                val tran = manager!!.beginTransaction()
-                tran.replace(R.id.frameLayout, BookRackFragment())
-                tran.commit()
-
-            }
         }
     }
 
+
+    val joupFragmentList =
+            arrayListOf<ProV4Fragment>(ReviewFragment(),
+                    UnitTestFragment(),
+                    ListenChooseFragment(),
+                    ListenWriteFragment(),
+                    ListenReadFragment(),
+                    TestDetailsFragment(),
+                    AnswerFinishFragment(),
+                    MainChallengeFragment(),
+                    MyGroupUpFragment(),
+                    MyGroupUpFragment(),
+                    StudyFragment())
 
     /**
      * 到哪个界面
@@ -448,105 +451,97 @@ class MainPageActivity : ProActivity() {
      */
     fun toWhere(code: Int, info: Info?) {
 
+        val tt = manager!!.beginTransaction()
+
         when (code) {
 
             Constant.STUDY_REVIEW -> {
                 /// 复习界面
-                val tt = manager!!.beginTransaction()
-                val rf = ReviewFragment()
-                rf.rfInfo = info
-                tt.replace(R.id.frameLayout, rf)
                 tt.addToBackStack("ReviewFragment")
-                tt.commit()
+
+                val rf = joupFragmentList[0] as ReviewFragment
+                rf.rfInfo = info
+
+                twoIndexFragment = switchContent(twoIndexFragment!!, rf, R.id.frameLayout, tt)
+
             }
+
 
             Constant.STUDY_TEST -> {
                 /// 测试内容选择
-                val tt = manager!!.beginTransaction()
-                val ff = UnitTestFragment()
+                tt.addToBackStack("UnitTestFragment")
+                val ff = joupFragmentList[1] as UnitTestFragment
                 ff.title = "单元测试"
                 ff.unitInfo = info
-                tt.replace(R.id.frameLayout, ff)
-                tt.addToBackStack("UnitTestFragment")
-                tt.commit()
+
+                twoIndexFragment = switchContent(twoIndexFragment!!, ff, R.id.frameLayout, tt)
+
             }
 
             Constant.LISTEN_CHOOSE_CODE -> {
                 // 听写  汉译英  英译汉
-                val tt = manager!!.beginTransaction()
-                val listen = ListenChooseFragment()
-                listen.code = info!!.code
-                tt.replace(R.id.frameLayout, listen)
                 tt.addToBackStack("ListenChooseFragment")
-                tt.commit()
+                val listen = joupFragmentList[2] as UnitTestFragment
+                listen.code = info!!.code
+                twoIndexFragment = switchContent(twoIndexFragment!!, listen, R.id.frameLayout, tt)
+
             }
 
             Constant.LISTEN_WRITE_CODE -> {
                 // 听写
-                val tt = manager!!.beginTransaction()
-                tt.replace(R.id.frameLayout, ListenWriteFragment())
                 tt.addToBackStack("ListenWriteFragment")
-                tt.commit()
+                twoIndexFragment = switchContent(twoIndexFragment!!, joupFragmentList[3], R.id.frameLayout, tt)
+
             }
 
             Constant.LISTEN_READ_CODE -> {
                 // 听读训练
-                val tt = manager!!.beginTransaction()
-                tt.replace(R.id.frameLayout, ListenReadFragment())
                 tt.addToBackStack("ListenReadFragment")
-                tt.commit()
+                twoIndexFragment = switchContent(twoIndexFragment!!, joupFragmentList[4], R.id.frameLayout, tt)
+
             }
 
             Constant.TEST_DETAILS_CODE -> {
-                val tt = manager!!.beginTransaction()
-                tt.replace(R.id.frameLayout, TestDetailsFragment())
+
                 tt.addToBackStack("TestDetailsFragment")
-                tt.commit()
+                twoIndexFragment = switchContent(twoIndexFragment!!, joupFragmentList[5], R.id.frameLayout, tt)
+
             }
 
             Constant.ANSWER_RESULT -> {
                 /// 答题完成后的成绩
-                val tt = manager!!.beginTransaction()
-                tt.replace(R.id.frameLayout, AnswerFinishFragment())
                 tt.addToBackStack("AnswerFinishFragment")
-                tt.commit()
+                twoIndexFragment = switchContent(twoIndexFragment!!, joupFragmentList[6], R.id.frameLayout, tt)
             }
 
             Constant.MAIN_TIAO_ZHAN -> {
                 // 首页挑战
-                val tt = manager!!.beginTransaction()
-                tt.replace(R.id.frameLayout, MainChallengeFragment())
                 tt.addToBackStack("MainChallengeFragment")
-                tt.commit()
-
+                twoIndexFragment = switchContent(twoIndexFragment!!, joupFragmentList[7], R.id.frameLayout, tt)
             }
 
             Constant.MY_GROUP_UP_CODE -> {
 
-                val tran = manager!!.beginTransaction()
-                val fragment = MyGroupUpFragment()
+                val fragment = joupFragmentList[8] as MyGroupUpFragment
                 fragment.code = 1
-                tran.replace(R.id.frameLayout, fragment)
-                tran.addToBackStack("MyGroupUpFragment")
-                tran.commit()
+
+                tt.addToBackStack("MyGroupUpFragment")
+                twoIndexFragment = switchContent(twoIndexFragment!!, fragment, R.id.frameLayout, tt)
 
             }
 
             Constant.MY_WEEK_CODE -> {
-                val tran = manager!!.beginTransaction()
-                val fragment = MyGroupUpFragment()
+
+                val fragment = joupFragmentList[9] as MyGroupUpFragment
                 fragment.code = 2
-                tran.replace(R.id.frameLayout, fragment)
-                tran.addToBackStack("MyGroupUpFragment")
-                tran.commit()
+                tt.addToBackStack("MyGroupUpFragment")
+                twoIndexFragment = switchContent(twoIndexFragment!!, fragment, R.id.frameLayout, tt)
+
             }
 
             Constant.MAIN_STADUY_CODE -> {
-
-                val tt = manager!!.beginTransaction()
-                tt.replace(R.id.frameLayout, StudyFragment())
                 tt.addToBackStack("StudyFragment")
-                tt.commit()
+                twoIndexFragment = switchContent(twoIndexFragment!!, joupFragmentList[10], R.id.frameLayout, tt)
 
             }
         }

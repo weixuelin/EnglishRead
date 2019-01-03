@@ -54,6 +54,7 @@
                 android:src="@drawable/head_pic" />
 
             <EditText
+                android:id="@+id/etAccount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_12"
@@ -86,6 +87,7 @@
                 android:src="@drawable/pwd_pic" />
 
             <EditText
+                android:id="@+id/etPwd"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_12"
@@ -118,6 +120,7 @@
                 android:src="@drawable/yan_pic" />
 
             <EditText
+                android:id="@+id/etImageYan"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_12"
@@ -144,6 +147,7 @@
             android:background="@color/line" />
 
         <Button
+            android:id="@+id/btLogin"
             android:layout_width="@dimen/dp_300"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -160,6 +164,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/tvZXPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="资讯电话:"

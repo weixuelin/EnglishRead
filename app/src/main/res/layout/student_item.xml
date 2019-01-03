@@ -6,25 +6,30 @@
     android:padding="@dimen/dp_8">
 
     <ImageView
+        android:id="@+id/studentImageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        android:src="@drawable/pic1" />
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY" />
 
     <TextView
+        android:id="@+id/tvStudentTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="恋上单次名师指导"
-        android:textColor="@color/black"
         android:layout_marginTop="@dimen/dp_8"
-        android:textSize="@dimen/sp_12" />
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_10" />
 
     <TextView
+        android:id="@+id/tvStudentContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/a585858"
-        android:text="恋上单次名师指导"
         android:layout_marginTop="@dimen/dp_4"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/a585858"
         android:textSize="@dimen/sp_10" />
 
 

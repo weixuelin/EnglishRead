@@ -9,7 +9,8 @@ class Info {
     var isLock: Int = 1
     var code: Int = 0
     var isSonOpen: Boolean = false
-    var answer:String=""
+    var answer: String = ""
+    var icon: String = ""
 
     var sonList: ArrayList<Son>? = null
     var id: Int = 0

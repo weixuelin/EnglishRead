@@ -7,12 +7,18 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.google.gson.reflect.TypeToken
 import com.wt.yc.englishread.R
+import com.wt.yc.englishread.base.Config
 import com.wt.yc.englishread.base.ItemClickListener
 import com.wt.yc.englishread.base.ProV4Fragment
+import com.wt.yc.englishread.info.Info
+import com.wt.yc.englishread.info.MainInfo
 import com.wt.yc.englishread.main.activity.MainPageActivity
 import com.wt.yc.englishread.main.adapter.StudentAdapter
+import com.xin.lv.yang.utils.utils.HttpUtils
 import kotlinx.android.synthetic.main.main_fragment_layout.*
+import org.json.JSONObject
 
 /**
  * 首页fragment
@@ -20,6 +26,59 @@ import kotlinx.android.synthetic.main.main_fragment_layout.*
 class MainFragment : ProV4Fragment() {
 
     override fun handler(msg: Message) {
+        val str = msg.obj as String
+        when (msg.what) {
+            Config.MAIN_DATA_CODE -> {
+                val json = JSONObject(str)
+                val code = json.optInt(Config.CODE)
+
+                if (code == Config.SUCCESS) {
+
+                    val jsonObject = json.optJSONObject(Config.DATA)
+                    val bannerResult = jsonObject.optString("banner")
+
+                    if (bannerResult != "" && bannerResult != "null") {
+                        if(bannerResult.startsWith("{")){
+                            val info=gson!!.fromJson<MainInfo>(bannerResult,MainInfo::class.java)
+                            showBanner(arrayListOf(info))
+
+                        }else{
+                            val bannerArr = gson!!.fromJson<ArrayList<MainInfo>>(bannerResult, object : TypeToken<ArrayList<MainInfo>>() {}.type)
+                            if (bannerArr != null) {
+                                showBanner(bannerArr)
+                            }
+                        }
+
+                    }
+
+                    val studentResult = jsonObject.optString("student")
+
+                    if (studentResult != "" && studentResult != "null") {
+
+                        val studentArr = gson!!.fromJson<ArrayList<MainInfo>>(studentResult, object : TypeToken<ArrayList<MainInfo>>() {}.type)
+                        if (studentArr != null) {
+                            showStudent(studentArr)
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+    }
+
+    private fun showStudent(studentArr: ArrayList<MainInfo>?) {
+        adapter!!.updateData(studentArr!!)
+
+    }
+
+    private fun showBanner(bannerArr: ArrayList<MainInfo>?) {
+        for (temp in bannerArr!!) {
+            picList.add(Config.IP + temp.icon)
+        }
+
+        initViewPager(activity!!, picViewPager, picList, handler!!, 1)
 
     }
 
@@ -27,7 +86,7 @@ class MainFragment : ProV4Fragment() {
         return inflater.inflate(R.layout.main_fragment_layout, container, false)
     }
 
-    val picList = arrayListOf("https://i01piccdn.sogoucdn.com/5b328b8a33658654","https://i04piccdn.sogoucdn.com/0b7aaf8556ce2bbe")
+    val picList = arrayListOf<String>()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -36,8 +95,13 @@ class MainFragment : ProV4Fragment() {
 
         initClick()
 
-        initViewPager(activity!!, picViewPager, picList, handler!!, 2)
+        getMainData()
 
+
+    }
+
+    private fun getMainData() {
+        HttpUtils.getInstance().postJson(Config.GET_MAIN_DATA, "", Config.MAIN_DATA_CODE, handler)
     }
 
     private fun initClick() {
@@ -47,12 +111,17 @@ class MainFragment : ProV4Fragment() {
 
     }
 
+    var adapter: StudentAdapter? = null
+    val list = arrayListOf<MainInfo>()
+
     private fun initStudentAdapter() {
         studentRecyclerView.isNestedScrollingEnabled = false
+
         studentRecyclerView.layoutManager = GridLayoutManager(activity, 4)
-        val adapter = StudentAdapter(activity!!, arrayListOf<String>("", "", "", "", "", ""))
+        adapter = StudentAdapter(activity!!, list)
+
         studentRecyclerView.adapter = adapter
-        adapter.itemClickListener = object : ItemClickListener {
+        adapter!!.itemClickListener = object : ItemClickListener {
             override fun onItemClick(position: Int) {
 
             }

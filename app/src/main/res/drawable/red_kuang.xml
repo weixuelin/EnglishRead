@@ -5,6 +5,10 @@
         android:bottomRightRadius="@dimen/dp_4"
         android:topLeftRadius="@dimen/dp_4"
         android:topRightRadius="@dimen/dp_4" />
+
     <solid android:color="@color/holo_red_light" />
+
+    <size android:width="@dimen/dp_160"
+        android:height="@dimen/dp_160"/>
 
 </shape>
