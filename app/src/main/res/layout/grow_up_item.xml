@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/imgPic"
-        android:layout_width="@dimen/dp_18"
-        android:layout_height="@dimen/dp_18"
+        android:layout_width="@dimen/dp_12"
+        android:layout_height="@dimen/dp_12"
         android:src="@drawable/set" />
 
     <TextView
@@ -26,8 +26,8 @@
 
     <ImageView
         android:id="@+id/imgRight"
-        android:layout_width="@dimen/dp_14"
-        android:layout_height="@dimen/dp_14"
+        android:layout_width="@dimen/dp_12"
+        android:layout_height="@dimen/dp_12"
         android:src="@drawable/right" />
 
 

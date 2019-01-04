@@ -12,10 +12,12 @@ import com.wt.yc.englishread.R
 import com.wt.yc.englishread.base.Config
 import com.wt.yc.englishread.base.ItemClickListener
 import com.wt.yc.englishread.base.ProV4Fragment
+import com.wt.yc.englishread.base.Share
 import com.wt.yc.englishread.info.Info
 import com.wt.yc.englishread.info.MainInfo
 import com.wt.yc.englishread.main.activity.MainPageActivity
 import com.wt.yc.englishread.main.adapter.StudentAdapter
+import com.wt.yc.englishread.user.LoginActivity
 import com.xin.lv.yang.utils.utils.HttpUtils
 import kotlinx.android.synthetic.main.main_fragment_layout.*
 import org.json.JSONObject
@@ -38,11 +40,11 @@ class MainFragment : ProV4Fragment() {
                     val bannerResult = jsonObject.optString("banner")
 
                     if (bannerResult != "" && bannerResult != "null") {
-                        if(bannerResult.startsWith("{")){
-                            val info=gson!!.fromJson<MainInfo>(bannerResult,MainInfo::class.java)
+                        if (bannerResult.startsWith("{")) {
+                            val info = gson!!.fromJson<MainInfo>(bannerResult, MainInfo::class.java)
                             showBanner(arrayListOf(info))
 
-                        }else{
+                        } else {
                             val bannerArr = gson!!.fromJson<ArrayList<MainInfo>>(bannerResult, object : TypeToken<ArrayList<MainInfo>>() {}.type)
                             if (bannerArr != null) {
                                 showBanner(bannerArr)
@@ -106,7 +108,13 @@ class MainFragment : ProV4Fragment() {
 
     private fun initClick() {
         linearLayout1.setOnClickListener {
-            startActivity(Intent(activity!!, MainPageActivity::class.java))
+            if (Share.getUid(activity!!) != 0) {
+                startActivity(Intent(activity!!, MainPageActivity::class.java))
+            } else {
+                startActivity(Intent(activity!!, LoginActivity::class.java))
+                showShortToast(activity!!, "请登录")
+            }
+
         }
 
     }

@@ -13,13 +13,13 @@
 
         <ImageView
             android:id="@+id/imageMainBack"
-            android:layout_width="@dimen/dp_20"
-            android:layout_height="@dimen/dp_20"
+            android:layout_width="@dimen/dp_12"
+            android:layout_height="@dimen/dp_12"
             android:src="@drawable/back_w" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/dp_13"
+            android:layout_height="@dimen/dp_13"
             android:layout_marginLeft="@dimen/dp_8"
             android:src="@drawable/logo" />
 
@@ -29,7 +29,7 @@
             android:layout_marginLeft="@dimen/dp_8"
             android:text="恋词英语学习平台"
             android:textColor="@color/ac7d7e8"
-            android:textSize="@dimen/sp_12" />
+            android:textSize="@dimen/sp_10" />
 
         <View
             android:layout_width="0dp"
@@ -48,8 +48,8 @@
 
             <ImageView
                 android:id="@+id/imageViewSignIn"
-                android:layout_width="@dimen/dp_18"
-                android:layout_height="@dimen/dp_18"
+                android:layout_width="@dimen/dp_14"
+                android:layout_height="@dimen/dp_14"
                 android:src="@drawable/qian_check_in" />
 
             <TextView
@@ -61,8 +61,8 @@
                 android:textSize="@dimen/sp_10" />
 
             <ImageView
-                android:layout_width="@dimen/dp_18"
-                android:layout_height="@dimen/dp_18"
+                android:layout_width="@dimen/dp_14"
+                android:layout_height="@dimen/dp_14"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:src="@drawable/qian_check_in" />
 
@@ -78,15 +78,15 @@
 
         <ImageView
             android:id="@+id/imageMainSet"
-            android:layout_width="@dimen/dp_20"
-            android:layout_height="@dimen/dp_20"
+            android:layout_width="@dimen/dp_14"
+            android:layout_height="@dimen/dp_14"
             android:layout_marginLeft="@dimen/dp_18"
             android:src="@drawable/set" />
 
         <ImageView
             android:id="@+id/userPicHead"
-            android:layout_width="@dimen/dp_20"
-            android:layout_height="@dimen/dp_20"
+            android:layout_width="@dimen/dp_14"
+            android:layout_height="@dimen/dp_14"
             android:layout_marginLeft="@dimen/dp_18"
             android:src="@drawable/set" />
 
@@ -100,8 +100,8 @@
 
         <ImageView
             android:id="@+id/imageMainLoginOut"
-            android:layout_width="@dimen/dp_20"
-            android:layout_height="@dimen/dp_20"
+            android:layout_width="@dimen/dp_14"
+            android:layout_height="@dimen/dp_14"
             android:layout_marginLeft="@dimen/dp_18"
             android:src="@drawable/exit_pic" />
 

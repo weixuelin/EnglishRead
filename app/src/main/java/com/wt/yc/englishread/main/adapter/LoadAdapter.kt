@@ -121,6 +121,9 @@ class LoadAdapter(val context: Context, val list: ArrayList<Info>) : BaseExpanda
     }
 
 
+    /**
+     * 改变显示状态
+     */
     fun updateClick(position: Int) {
 
         for (i in list.indices) {

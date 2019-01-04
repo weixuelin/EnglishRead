@@ -8,7 +8,7 @@ import android.view.MotionEvent
 class CustomViewPager(context:Context,attr: AttributeSet) : ViewPager(context,attr) {
 
     /**
-     * 是否可以滑动
+     * 是否可以滑动 默认不可滑动
      */
     private var isCanScroll = false
 

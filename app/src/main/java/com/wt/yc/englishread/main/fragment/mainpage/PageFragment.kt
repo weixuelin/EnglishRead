@@ -199,26 +199,28 @@ class PageFragment : ProV4Fragment() {
      */
     private fun initWOrH() {
 
-        val w = getW(activity!!) - BitmapUtil.dip2px(activity!!, 170f)
+        val scanW = getW(activity!!) - BitmapUtil.dip2px(activity!!, 170f)
+        val w = scanW / 3
+        val h = w * 4 / 5
 
-        linear1.layoutParams = LinearLayout.LayoutParams(w / 3, w / 3)
+        linear1.layoutParams = LinearLayout.LayoutParams(w, h)
 
-        linear2.layoutParams = LinearLayout.LayoutParams(w / 3, w / 3)
+        linear2.layoutParams = LinearLayout.LayoutParams(w, h)
         setMargen(linear2, 8)
 
-        linear3.layoutParams = LinearLayout.LayoutParams(w / 3, w / 3)
+        linear3.layoutParams = LinearLayout.LayoutParams(w, h)
         setMargen(linear3, 8)
 
-        linear4.layoutParams = LinearLayout.LayoutParams(w * 2 / 3, w / 3)
-        linear5.layoutParams = LinearLayout.LayoutParams(w / 3, w / 3)
-        linear6.layoutParams = LinearLayout.LayoutParams(w * 2 / 3, w / 3)
+        linear4.layoutParams = LinearLayout.LayoutParams(w * 2, h)
+        linear5.layoutParams = LinearLayout.LayoutParams(w, h)
+        linear6.layoutParams = LinearLayout.LayoutParams(w * 2, h)
 
-        linear7.layoutParams = LinearLayout.LayoutParams(w / 3, w / 3)
+        linear7.layoutParams = LinearLayout.LayoutParams(w, h)
         setMargen(linear7, 8)
 
-        linear8.layoutParams = LinearLayout.LayoutParams(w * 2 / 3, w / 3)
+        linear8.layoutParams = LinearLayout.LayoutParams(w * 2, h)
 
-        linear9.layoutParams = LinearLayout.LayoutParams(w / 3, w / 3)
+        linear9.layoutParams = LinearLayout.LayoutParams(w, h)
         setMargen(linear9, 8)
 
     }
@@ -785,10 +787,10 @@ class PageFragment : ProV4Fragment() {
         cxPieChart.setUsePercentValues(true)
         //设置饼图右下角的文字描述
         val des = Description()
-        des.text = ""
+        des.text = "统计"
         cxPieChart.description = des
         //是否显示圆盘中间文字，默认显示
-        cxPieChart.setDrawCenterText(true)
+        cxPieChart.setDrawCenterText(false)
         //设置圆盘中间文字的颜色
         cxPieChart.setCenterTextColor(Color.RED)
         //设置圆盘中间文字的字体
@@ -796,7 +798,7 @@ class PageFragment : ProV4Fragment() {
         //设置中间圆盘的颜色
         cxPieChart.setHoleColor(Color.TRANSPARENT)
         //设置中间圆盘的半径,值为所占饼图的百分比
-        cxPieChart.holeRadius = 76f
+        cxPieChart.holeRadius = 65f
         //是否显示饼图中间空白区域，默认显示
         cxPieChart.isDrawHoleEnabled = true
         //设置圆盘是否转动，默认转动
@@ -809,12 +811,12 @@ class PageFragment : ProV4Fragment() {
 
     /**
      *  显示饼状图数据
-     * @param count 分成几部分
      */
     private fun bindData(countBookArr: ArrayList<BookInfo>) {
         val bb1 = countBookArr[0]  // 熟悉词
         val bb2 = countBookArr[1]  // 夹生词
         val bb3 = countBookArr[2]  // 陌生词
+
         val all = bb1.sxc + bb2.jsc + bb3.msc
         val num1 = bb1.sxc / all
         val num2 = bb3.msc / all
@@ -852,12 +854,11 @@ class PageFragment : ProV4Fragment() {
         dataSet.valueLinePart1Length = 0.1f
 //      当值位置为外边线时，表示线的后半段长度。
         dataSet.valueLinePart2Length = 0.2f
-//      当ValuePosits为OutsiDice时，指示偏移为切片大小的百分比
-        dataSet.valueLinePart1OffsetPercentage = 80f
+
         // 当值位置为外边线时，表示线的颜色。
         dataSet.valueLineColor = Color.parseColor("#a1a1a1")
 //        设置Y值的位置是在圆内还是圆外
-        dataSet.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
+        dataSet.yValuePosition = PieDataSet.ValuePosition.INSIDE_SLICE
 //        设置Y轴描述线和填充区域的颜色一致
         dataSet.setAutomaticallyDisableSliceSpacing(false)
 //        设置每条之前的间隙

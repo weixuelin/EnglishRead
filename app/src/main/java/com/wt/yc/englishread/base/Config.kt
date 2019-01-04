@@ -11,7 +11,7 @@ class Config {
         val CODE201 = 201
 
         val MSG = "msg"
-        val STATUS="status"
+        val STATUS = "status"
 
 
         val IP = "http://lianci.59156.cn"
@@ -37,8 +37,20 @@ class Config {
         /**
          * 学习首页数据
          */
-        val GET_MAIN_PAGE_URL="$IP/app/student/index"
-        val MAIN_PAGE_CODE=4
+        val GET_MAIN_PAGE_URL = "$IP/app/student/index"
+        val MAIN_PAGE_CODE = 4
+
+        /**
+         *  获取用户信息
+         */
+        val GET_USER_INFO_URL = "$IP/app/student/find_user"
+        val GET_USER_INFO_CODE = 5
+
+        /**
+         * 修改密码
+         */
+        val UPDATE_PWD_URL = "$IP/app/student/edit_pwd"
+        val UPDATE_PWD_CODE = 6
 
     }
 }

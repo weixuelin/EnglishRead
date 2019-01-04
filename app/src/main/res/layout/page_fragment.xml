@@ -212,13 +212,20 @@
 
                 </LinearLayout>
 
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/cxPieChart"
-                    android:layout_width="@dimen/dp_80"
-                    android:layout_height="@dimen/dp_80"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:padding="@dimen/dp_16" />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dp_4">
+
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/cxPieChart"
+                        android:layout_width="@dimen/dp_80"
+                        android:layout_height="@dimen/dp_80"
+                        android:layout_gravity="center_horizontal"
+                        />
+
+                </FrameLayout>
+
 
             </LinearLayout>
 
@@ -301,9 +308,9 @@
         </LinearLayout>
 
         <LinearLayout
+            style="@style/margin4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/margin4"
             android:orientation="horizontal">
 
             <!-- 学习-->
@@ -498,9 +505,9 @@
         </LinearLayout>
 
         <LinearLayout
+            style="@style/margin4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/margin4"
             android:orientation="horizontal">
 
             <!-- 转换量趋势-->
@@ -582,24 +589,24 @@
                         android:layout_width="@dimen/dp_1"
                         android:layout_height="@dimen/dp_16"
                         android:layout_marginLeft="@dimen/dp_24"
-                        android:visibility="gone"
-                        android:background="@color/line" />
+                        android:background="@color/line"
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp_24"
-                        android:visibility="gone"
                         android:textColor="@color/colorAccent"
-                        android:textSize="@dimen/sp_12" />
+                        android:textSize="@dimen/sp_12"
+                        android:visibility="gone" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp_4"
-                        android:visibility="gone"
                         android:text="熟悉量"
-                        android:textSize="@dimen/sp_8" />
+                        android:textSize="@dimen/sp_8"
+                        android:visibility="gone" />
 
                 </LinearLayout>
 
@@ -668,9 +675,9 @@
         </LinearLayout>
 
         <LinearLayout
+            style="@style/margin4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/margin4"
             android:orientation="horizontal">
 
             <!--智能测试-->

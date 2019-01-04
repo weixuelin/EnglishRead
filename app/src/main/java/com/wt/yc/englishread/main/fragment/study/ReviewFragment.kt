@@ -43,7 +43,10 @@ class ReviewFragment : ProV4Fragment() {
         }
 
         tvTopTitle.text = "复习"
-        tvTopName.text = "${rfInfo!!.title} 第一阶段"
+
+        if(rfInfo!=null){
+            tvTopName.text = "${rfInfo!!.title} 第一阶段"
+        }
 
         initClick()
         getOneList()
