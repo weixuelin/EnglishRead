@@ -4,5 +4,96 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <RelativeLayout
+        style="@style/margin4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/write_kuang"
+        android:orientation="vertical"
+        android:padding="@dimen/dp_8">
+
+        <TextView
+            android:id="@+id/tvThreeContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/a00fff0"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:id="@+id/tvThreeYuTi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:layout_toRightOf="@id/tvThreeContent"
+            android:textColor="@color/aff6600"
+            android:textSize="@dimen/sp_14" />
+
+        <ImageView
+            android:id="@+id/imageThreePlay"
+            android:layout_width="@dimen/dp_18"
+            android:layout_height="@dimen/dp_18"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_toRightOf="@id/tvThreeYuTi"
+            android:src="@drawable/review_ting" />
+
+        <LinearLayout
+            android:id="@+id/linear1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvThreeContent"
+            android:layout_marginTop="@dimen/dp_12"
+            android:background="@drawable/gray_kuang"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="@dimen/dp_10">
+
+           <EditText
+               android:id="@+id/inPutEditText"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center_horizontal"
+               android:textSize="@dimen/sp_10"
+               android:hint="请输入单词"
+               android:layout_marginTop="@dimen/dp_32"
+               android:background="@null"/>
+
+            <TextView
+                android:id="@+id/tvThreeWordYiSi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_8"
+                android:layout_marginBottom="@dimen/dp_32"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_14" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/linear1"
+            android:layout_marginTop="@dimen/dp_8"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvTwoLiContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="例句:"
+                android:textSize="@dimen/sp_12" />
+
+            <TextView
+                android:id="@+id/tvThreeLiFanYi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:textSize="@dimen/sp_10" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
 
 </LinearLayout>

@@ -16,16 +16,21 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.google.gson.reflect.TypeToken
 import com.wt.yc.englishread.R
+import com.wt.yc.englishread.base.Config
 import com.wt.yc.englishread.base.Constant
 import com.wt.yc.englishread.base.ProV4Fragment
+import com.wt.yc.englishread.info.BookInfo
 import com.wt.yc.englishread.info.Info
 import com.wt.yc.englishread.main.activity.MainPageActivity
 import com.wt.yc.englishread.main.adapter.FinishAdapter
 import com.wt.yc.englishread.main.adapter.StudyAdapter
 import com.wt.yc.englishread.main.adapter.TextVoiceAdapter
+import com.xin.lv.yang.utils.utils.HttpUtils
 import kotlinx.android.synthetic.main.pop_text.view.*
 import kotlinx.android.synthetic.main.study_fragment_layout.*
+import org.json.JSONObject
 
 class StudyFragment : ProV4Fragment() {
 
@@ -35,20 +40,20 @@ class StudyFragment : ProV4Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         initAdapter()
-
         initMsAdapter()
         initFinishAdapter()
-
-        initStudyChart(studyChart)
 
         initClick()
 
         get()
     }
 
-    fun get(){
+    fun get() {
+        val json = JSONObject()
+        json.put("uid", uid)
+        json.put("token", token)
+        HttpUtils.getInstance().postJson(Config.GET_STUDY_URL, json.toString(), Config.GET_STUDY_CODE, handler)
 
     }
 
@@ -58,18 +63,21 @@ class StudyFragment : ProV4Fragment() {
         }
     }
 
+    var finishAdapter: FinishAdapter? = null
+    val finishList= arrayListOf<BookInfo>()
+
     /**
      * 初始化完成adapter
      */
     private fun initFinishAdapter() {
         finishNumRecyclerView.isNestedScrollingEnabled = false
         finishNumRecyclerView.layoutManager = LinearLayoutManager(activity)
-        finishNumRecyclerView.adapter = FinishAdapter(activity!!, textArr)
+        finishAdapter = FinishAdapter(activity!!, finishList)
+        finishNumRecyclerView.adapter = finishAdapter
     }
 
 
-    val textArr = arrayListOf("", "一单元", "二单元", "三单元", "四单元", "五单元",
-            "六单元", "七单元", "八单元", "九单元", "十单元")
+    var textArr = arrayListOf<String>("")
 
     /**
      * 初始化曲线图
@@ -103,7 +111,7 @@ class StudyFragment : ProV4Fragment() {
         val mLegend: Legend = studyLineChart.legend
         // mLegend.setPosition(LegendPosition.BELOW_CHART_CENTER);
         // 图例样式 (CIRCLE圆形；LINE线性；SQUARE是方块）
-        mLegend.form = Legend.LegendForm.NONE
+        mLegend.form = Legend.LegendForm.LINE
 
         studyLineChart.axisRight.isEnabled = false
 
@@ -116,7 +124,7 @@ class StudyFragment : ProV4Fragment() {
         // 设置X轴的数据显示在报表的下方
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         // 轴线
-        xAxis.setDrawAxisLine(true)
+        xAxis.setDrawAxisLine(false)  // 是否绘制曲线
         xAxis.setDrawGridLines(false)
         // 设置不从X轴发出纵向直线
         xAxis.setDrawGridLines(false)
@@ -141,8 +149,6 @@ class StudyFragment : ProV4Fragment() {
         // 执行的动画,x轴（动画持续时间）
         studyLineChart.animateX(2500)
 
-        setTextData(studyLineChart)
-
         studyLineChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
             override fun onNothingSelected() {
 
@@ -158,45 +164,79 @@ class StudyFragment : ProV4Fragment() {
     }
 
     private fun showStudyView(studyView: View, h: Highlight) {
-        studyView.tvText1.text = "熟悉词:${h.y.toInt()}"
-        studyView.tvText2.text = "夹生词:${h.y.toInt()}"
-        studyView.tvText3.text = "陌生词:${h.y.toInt()}"
+        studyView.tvText1.text = "熟悉词:${text1Arr!![h.x.toInt() - 1]}"
+        studyView.tvText2.text = "夹生词:${text11Arr!![h.x.toInt() - 1]}"
+        studyView.tvText3.text = "陌生词:${text113Arr!![h.x.toInt() - 1]}"
 
     }
 
 
+    var text1Arr: ArrayList<String>? = null
+    var text11Arr: ArrayList<String>? = null
+    var text113Arr: ArrayList<String>? = null
+
     /**
      * 显示线性数据
      */
-    private fun setTextData(chart: LineChart) {
+    private fun setTextData(chart: LineChart, text1: String, text2: String, text3: String) {
         val y = arrayListOf<Entry>()
+        y.add(Entry(0f, 0f, ""))
+        text1Arr = gson!!.fromJson<ArrayList<String>>(text1, object : TypeToken<ArrayList<String>>() {}.type)
 
-        for (i in 0 until textArr.size) {
-            if (i == 0) {
-                y.add(Entry(i.toFloat(), 0f, "测试"))
-            } else {
-                val num1 = Math.random() * 50
-                y.add(Entry(i.toFloat(), num1.toFloat(), "测试"))
-            }
-
-
+        for (i in text1Arr!!.indices) {
+            y.add(Entry((i + 1).toFloat(), text1Arr!![i].toFloat(), ""))
         }
 
         val lineDataSet = arrayListOf<ILineDataSet>()
-        val set1 = LineDataSet(y, "")
+        val set1 = LineDataSet(y, "熟悉词")
         set1.setCircleColor(resources.getColor(R.color.red))
         set1.setDrawCircles(false)
         set1.color = resources.getColor(R.color.red)
         set1.mode = LineDataSet.Mode.CUBIC_BEZIER
         set1.valueTextColor = resources.getColor(R.color.red)
-
         lineDataSet.add(set1)
+
+        val y11 = arrayListOf<Entry>()
+        y11.add(Entry(0f, 0f, ""))
+        text11Arr = gson!!.fromJson<ArrayList<String>>(text2, object : TypeToken<ArrayList<String>>() {}.type)
+
+        for (i in text11Arr!!.indices) {
+            y11.add(Entry((i + 1).toFloat(), text11Arr!![i].toFloat(), ""))
+        }
+
+
+        val set2 = LineDataSet(y11, "夹生词")
+        set2.setCircleColor(resources.getColor(R.color.green))
+        set2.setDrawCircles(false)
+        set2.color = resources.getColor(R.color.green)
+        set2.mode = LineDataSet.Mode.CUBIC_BEZIER
+        set2.valueTextColor = resources.getColor(R.color.green)
+        lineDataSet.add(set2)
+
+        val y113 = arrayListOf<Entry>()
+        y113.add(Entry(0f, 0f, ""))
+        text113Arr = gson!!.fromJson<ArrayList<String>>(text3, object : TypeToken<ArrayList<String>>() {}.type)
+
+        for (i in text113Arr!!.indices) {
+            y113.add(Entry((i + 1).toFloat(), text113Arr!![i].toFloat(), ""))
+        }
+
+        val set3 = LineDataSet(y113, "陌生词")
+        set3.setCircleColor(resources.getColor(R.color.blue_login))
+        set3.setDrawCircles(false)
+        set3.color = resources.getColor(R.color.blue_login)
+        set3.mode = LineDataSet.Mode.CUBIC_BEZIER
+        set3.valueTextColor = resources.getColor(R.color.blue_login)
+        lineDataSet.add(set3)
 
         val data = LineData(lineDataSet)
 
         chart.data = data
 
     }
+
+    var jsOrMsAdapter: TextVoiceAdapter? = null
+    val jsOrMsList = arrayListOf<BookInfo>()
 
     /**
      * 初始化夹生词adapter
@@ -207,11 +247,12 @@ class StudyFragment : ProV4Fragment() {
         manager.orientation = LinearLayoutManager.HORIZONTAL
         msRecyclerView.layoutManager = manager
 
-        val adapter = TextVoiceAdapter(activity!!, arrayListOf("", "", "", ""))
-        msRecyclerView.adapter = adapter
-        adapter.onVoiceListener = object : TextVoiceAdapter.OnVoiceListener {
+        jsOrMsAdapter = TextVoiceAdapter(activity!!, jsOrMsList)
+        msRecyclerView.adapter = jsOrMsAdapter
+        jsOrMsAdapter!!.onVoiceListener = object : TextVoiceAdapter.OnVoiceListener {
             override fun onVoice(position: Int) {
-                playWordVoice("voice")
+                val info = jsOrMsList[position]
+                playVoice(activity!!, Config.IP + info.video!!)
 
             }
 
@@ -220,8 +261,11 @@ class StudyFragment : ProV4Fragment() {
     }
 
 
-    val list = arrayListOf<Info>()
-    var contentArr = arrayListOf("", "", "", "", "", "", "")
+    /**
+     * 单元集合信息
+     */
+    val list = arrayListOf<BookInfo>()
+    var studyAdapter: StudyAdapter? = null
 
     /**
      * 初始单元adapter
@@ -229,47 +273,29 @@ class StudyFragment : ProV4Fragment() {
     private fun initAdapter() {
         list.clear()
 
-        for (i in 0 until contentArr.size) {
-            val info = Info()
-            when (i) {
-                0, 1, 3, 5 -> {
-                    info.click = true
-                    info.isLock = 1
-                }
-                else -> {
-                    info.isLock = 2
-                    info.click = false
-                }
-            }
-
-            list.add(info)
-
-        }
-
         studyRecyclerView.isNestedScrollingEnabled = false
         studyRecyclerView.layoutManager = GridLayoutManager(activity, 4)
-        val adapter = StudyAdapter(activity!!, list)
-        studyRecyclerView.adapter = adapter
+        studyAdapter = StudyAdapter(activity!!, list)
+        studyRecyclerView.adapter = studyAdapter
 
-        adapter.onTvListener = object : StudyAdapter.OnClickListener {
+        studyAdapter!!.onTvListener = object : StudyAdapter.OnClickListener {
             override fun onReview(position: Int) {
-                val info = Info()
-                info.title = "第${position + 1}单元"
+                val info = list[position]
                 (activity as MainPageActivity).toWhere(Constant.STUDY_REVIEW, info)
 
             }
 
             override fun onTest(position: Int) {
-                (activity as MainPageActivity).toWhere(Constant.STUDY_TEST, Info())
+                (activity as MainPageActivity).toWhere(Constant.STUDY_TEST, BookInfo())
             }
 
             override fun onDictation(position: Int) {
-                (activity as MainPageActivity).toWhere(Constant.LISTEN_WRITE_CODE, Info())
+                (activity as MainPageActivity).toWhere(Constant.LISTEN_WRITE_CODE, BookInfo())
 
             }
 
             override fun onDictationTraining(position: Int) {
-                (activity as MainPageActivity).toWhere(Constant.LISTEN_READ_CODE, Info())
+                (activity as MainPageActivity).toWhere(Constant.LISTEN_READ_CODE, BookInfo())
             }
 
         }
@@ -277,6 +303,69 @@ class StudyFragment : ProV4Fragment() {
     }
 
     override fun handler(msg: Message) {
+        val str = msg.obj as String
+        when (msg.what) {
+            Config.GET_STUDY_CODE -> {
+                val json = JSONObject(str)
+                val code = json.optInt(Config.CODE)
+                if (code == Config.SUCCESS) {
+                    val resultData = json.optJSONObject(Config.DATA)
+                    val resultBook = resultData.optString("book")
+                    val book = gson!!.fromJson<BookInfo>(resultBook, BookInfo::class.java)
+                    showBook(book)
+
+                    val bookUnit = resultData.optString("unit")
+                    val unitResultArr = gson!!.fromJson<ArrayList<BookInfo>>(bookUnit, object : TypeToken<ArrayList<BookInfo>>() {}.type)
+
+                    studyAdapter!!.updateDataClear(unitResultArr)
+                    finishAdapter!!.updateDataClear(unitResultArr)
+
+                    val unitName = resultData.optString("unit_name")
+                    val sxWord = resultData.optString("sx")
+                    val jsWord = resultData.optString("js")
+                    val msWord = resultData.optString("ms")
+
+                    showTongJi(unitName, sxWord, jsWord, msWord)
+
+                    val jsOrMsResult = resultData.optString("js_word")
+                    val jsOrMsArr = gson!!.fromJson<ArrayList<BookInfo>>(jsOrMsResult, object : TypeToken<ArrayList<BookInfo>>() {}.type)
+
+                    showJsOrMs(jsOrMsArr)
+
+                    val wordInfo = resultData.optString("pm")
+                    val bookDetails = gson!!.fromJson<BookInfo>(wordInfo, BookInfo::class.java)
+                    showDetails(bookDetails)
+
+                }
+            }
+        }
+
+    }
+
+    private fun showDetails(bookDetails: BookInfo?) {
+        tvMingCiNum.text = bookDetails!!.zpm.toString()
+        tvChaJu.text = bookDetails.cj.toString()
+        tvTodayNum.text = bookDetails.study_word.toString()
+    }
+
+    private fun showJsOrMs(jsOrMsArr: ArrayList<BookInfo>?) {
+        jsOrMsAdapter!!.updateDataClear(jsOrMsArr!!)
+
+    }
+
+    private fun showTongJi(unitName: String?, sxWord: String, jsWord: String, msWord: String) {
+        textArr.addAll(gson!!.fromJson(unitName, object : TypeToken<ArrayList<String>>() {}.type))
+
+        initStudyChart(studyChart)
+
+        setTextData(studyChart, sxWord, jsWord, msWord)
+
+
+    }
+
+
+    private fun showBook(book: BookInfo?) {
+        tvStudyBookName.text = book!!.book_name
 
     }
 }

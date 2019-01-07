@@ -266,7 +266,9 @@ public class ImageUtil {
                 .priority(Priority.HIGH)
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
 
-        Glide.with(context).load(url).apply(options).into(new SimpleTarget<Drawable>() {
+        Glide.with(context).load(url).apply(options)
+                .transition(new DrawableTransitionOptions().crossFade(TIME))
+                .into(new SimpleTarget<Drawable>() {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                 imageView.setImageDrawable(resource);

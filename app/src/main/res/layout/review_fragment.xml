@@ -6,11 +6,30 @@
 
     <include layout="@layout/study_head" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/reviewViewPager"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:layout_height="0dp">
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/reviewViewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/tvTextTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/blue_point"
+            android:text="10"
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginRight="@dimen/dp_10"
+            android:textColor="@color/write"
+            android:padding="@dimen/dp_8"
+            android:layout_gravity="end"/>
+
+    </FrameLayout>
+
 
     <Button
         android:id="@+id/buttonNext"
@@ -22,6 +41,7 @@
         android:layout_marginBottom="10dp"
         android:background="@drawable/blue_kuang_yuan"
         android:text="下一个"
+        android:visibility="gone"
         android:textColor="@color/write"
         android:textSize="14sp" />
 

@@ -10,7 +10,6 @@
         android:id="@+id/tvTopTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="复习"
         android:textSize="@dimen/sp_10" />
 
     <TextView
@@ -19,7 +18,6 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_8"
         android:layout_weight="1"
-        android:text="第一单元"
         android:textSize="@dimen/sp_10" />
 
     <TextView
@@ -28,6 +26,7 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:text="返回"
+        android:textColor="@color/black"
         android:textSize="@dimen/sp_10" />
 
 </LinearLayout>

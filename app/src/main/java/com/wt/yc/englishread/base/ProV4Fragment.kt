@@ -108,6 +108,8 @@ abstract class ProV4Fragment : Fragment() {
 
                             else -> a!!.handler(msg)
                         }
+                    }else{
+                        a!!.handler(msg)
                     }
                 }
             }

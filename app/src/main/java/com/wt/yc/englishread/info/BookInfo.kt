@@ -18,7 +18,19 @@ class BookInfo {
     var time: String = ""
     var type: String = ""
     var test_time: String = ""
-    var test_cj:String=""
+    var test_cj: String = ""
+    var status: Int = 0
+    var unit_num: Int = 0
+    var video: String? = ""
+    var zpm: Int = 0
+    var cj: Int = 0
+    var study_word: Int = 0
+    var jd: Int = 0
+    var code: Int = 0
+    var chinese:String=""
+    var ipa:String=""
+    var english_example:String=""
+    var chinese_example:String=""
 
 
 }

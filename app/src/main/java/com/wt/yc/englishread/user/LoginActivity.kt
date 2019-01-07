@@ -27,13 +27,14 @@ class LoginActivity : ProActivity() {
                 val code = json.optInt("code")
                 val message = json.optString(Config.MSG)
 
+                showToastShort(message)
+
                 if (code == Config.SUCCESS) {
 
                     val result = json.optString("data")
                     val userInfo = gson!!.fromJson<UserInfo>(result, UserInfo::class.java)
 
                     Share.saveTokenAndUid(this, userInfo)
-                    showToastShort(message)
 
                     finish()
 

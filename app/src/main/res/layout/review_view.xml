@@ -26,7 +26,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_8"
             android:layout_toRightOf="@id/tvContent"
-            android:text="[]"
             android:textColor="@color/aff6600"
             android:textSize="@dimen/sp_14" />
 
@@ -53,15 +52,13 @@
                 android:id="@+id/reviewImageView"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/forget" />
+                android:layout_gravity="center_horizontal" />
 
             <TextView
                 android:id="@+id/tvWordYiSi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_8"
-                android:text="感谢，谢谢"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_14" />
 
@@ -87,13 +84,13 @@
                     android:id="@+id/reviewTrue"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:src="@drawable/forget" />
+                    android:src="@drawable/true_pic" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_8"
-                    android:text="正确"
+                    android:text="记得"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_12" />
 
@@ -111,13 +108,13 @@
                     android:id="@+id/reviewError"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/true_pic" />
+                    android:src="@drawable/forget" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_8"
-                    android:text="错误"
+                    android:text="不记得"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_12" />
 

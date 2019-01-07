@@ -228,7 +228,7 @@ class PageFragment : ProV4Fragment() {
     private fun initClick() {
         buttonContinue.setOnClickListener {
             /// 继续学习
-            (activity as MainPageActivity).toWhere(Constant.MAIN_STADUY_CODE, Info())
+            (activity as MainPageActivity).toWhere(Constant.MAIN_STADUY_CODE, BookInfo())
 
         }
 
@@ -236,12 +236,11 @@ class PageFragment : ProV4Fragment() {
             showNumDialog()
         }
 
-        tvIndexInfo.setOnClickListener { showSetNum() }
-
         linear3.setOnClickListener {
-            (activity as MainPageActivity).toWhere(Constant.MAIN_TIAO_ZHAN, Info())
+            (activity as MainPageActivity).toWhere(Constant.MAIN_TIAO_ZHAN, BookInfo())
         }
     }
+
 
     override fun onResume() {
         super.onResume()
@@ -275,34 +274,6 @@ class PageFragment : ProV4Fragment() {
 
     }
 
-
-    /**
-     * 设置今日单词目标
-     */
-    private fun showSetNum() {
-        val setDCView = layoutInflater.inflate(R.layout.set_num_doalog, null)
-
-        val setDialog: Dialog = Dialog(activity, R.style.style)
-        setDialog.setContentView(setDCView)
-        setDialog.show()
-        setAlpha(activity!!, 0.6f)
-
-        setDialog.setOnDismissListener {
-            setAlpha(activity!!, 1f)
-        }
-
-
-        setDCView.setNumClose.setOnClickListener {
-            setAlpha(activity!!, 1f)
-            setDialog.dismiss()
-        }
-
-        setDCView.setNumQure.setOnClickListener {
-            setAlpha(activity!!, 1f)
-            setDialog.dismiss()
-        }
-
-    }
 
     /**
      * 显示排名dialog

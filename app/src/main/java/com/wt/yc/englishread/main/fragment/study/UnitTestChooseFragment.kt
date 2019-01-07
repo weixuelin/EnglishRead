@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.wt.yc.englishread.R
 import com.wt.yc.englishread.base.Constant
 import com.wt.yc.englishread.base.ProV4Fragment
+import com.wt.yc.englishread.info.BookInfo
 import com.wt.yc.englishread.info.Info
 import com.wt.yc.englishread.main.activity.MainPageActivity
 import com.xin.lv.yang.utils.view.AdTextView
@@ -38,22 +39,21 @@ class UnitTestChooseFragment : ProV4Fragment() {
 
 
         chooseLinear1.setOnClickListener {
-            val info = Info()
+            val info = BookInfo()
             info.code = 1
-
 
             (activity as MainPageActivity).toWhere(Constant.LISTEN_CHOOSE_CODE, info)
 
         }
 
         chooseLinear2.setOnClickListener {
-            val info = Info()
+            val info = BookInfo()
             info.code = 2
             (activity as MainPageActivity).toWhere(Constant.LISTEN_CHOOSE_CODE, info)
         }
 
         chooseLinear3.setOnClickListener {
-            val info = Info()
+            val info = BookInfo()
             info.code = 3
             (activity as MainPageActivity).toWhere(Constant.LISTEN_CHOOSE_CODE, info)
         }

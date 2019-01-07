@@ -87,14 +87,15 @@
             android:id="@+id/userPicHead"
             android:layout_width="@dimen/dp_14"
             android:layout_height="@dimen/dp_14"
-            android:layout_marginLeft="@dimen/dp_18"
-            android:src="@drawable/set" />
+            android:src="@drawable/head_pic"
+            android:layout_marginLeft="@dimen/dp_18" />
 
         <TextView
+            android:id="@+id/tvUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_8"
-            android:text="杨洋"
+            android:clickable="true"
             android:textColor="@color/ab8c6d6"
             android:textSize="@dimen/sp_10" />
 

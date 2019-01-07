@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/margin4"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/write_line_top6"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/linearBg"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:padding="@dimen/dp_6">
@@ -20,18 +20,18 @@
             android:src="@drawable/choose_y" />
 
         <TextView
+            android:id="@+id/tvStudyUnitName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_4"
-            android:text="第一单元"
             android:textColor="@color/write"
             android:textSize="@dimen/sp_10" />
 
         <TextView
+            android:id="@+id/tvWordNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_4"
-            android:text="2018-10"
             android:textColor="@color/ab8c6d6"
             android:textSize="@dimen/sp_10" />
 

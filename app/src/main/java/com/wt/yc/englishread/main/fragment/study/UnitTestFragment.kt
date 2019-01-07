@@ -10,6 +10,7 @@ import com.wt.yc.englishread.R
 import com.wt.yc.englishread.base.Constant
 import com.wt.yc.englishread.base.ItemClickListener
 import com.wt.yc.englishread.base.ProV4Fragment
+import com.wt.yc.englishread.info.BookInfo
 import com.wt.yc.englishread.info.Info
 import com.wt.yc.englishread.main.activity.MainPageActivity
 import com.wt.yc.englishread.main.adapter.TextChooseAdapter
@@ -38,7 +39,7 @@ class UnitTestFragment : ProV4Fragment() {
      */
     var code = 1
     var title = ""
-    var unitInfo: Info? = null
+    var unitInfo: BookInfo? = null
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -46,7 +47,7 @@ class UnitTestFragment : ProV4Fragment() {
         tvTopTitle.text = title
 
         if (unitInfo != null) {
-            tvTopName.text = unitInfo!!.title
+            tvTopName.text = unitInfo!!.unit_name
         } else {
             tvTopName.text = ""
         }
@@ -86,40 +87,19 @@ class UnitTestFragment : ProV4Fragment() {
     }
 
 
-    val list = arrayListOf<Info>()
-    var chooseInfo: Info? = null
+    val list = arrayListOf<BookInfo>()
+
+    var chooseInfo: BookInfo? = null
 
     private fun initUnitAdapter() {
         list.clear()
-
-        for (i in 0..4) {
-            val info = Info()
-            when (i) {
-                0 -> {
-                    info.title = "1"
-                    info.isErr = 0
-                }
-                1 -> {
-                    info.title = "2"
-                    info.isErr = 1
-                }
-
-                else -> {
-                    info.title = "3"
-                    info.isErr = 2
-
-                }
-            }
-
-            list.add(info)
-
-        }
 
         unitRecyclerView.layoutManager = GridLayoutManager(activity, 6)
         val adapter = TextChooseAdapter(activity!!, list)
         unitRecyclerView.adapter = adapter
 
         adapter.itemClickListener = object : ItemClickListener {
+
             override fun onItemClick(position: Int) {
                 chooseInfo = list[position]
                 adapter.updateClick(position)

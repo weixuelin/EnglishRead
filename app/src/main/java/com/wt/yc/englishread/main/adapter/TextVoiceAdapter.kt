@@ -6,17 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import com.wt.yc.englishread.R
 import com.wt.yc.englishread.base.ProBaseAdapter
+import com.wt.yc.englishread.info.BookInfo
 import kotlinx.android.synthetic.main.text_voice_item.view.*
 
-class TextVoiceAdapter(context: Context, list: ArrayList<String>) : ProBaseAdapter<String>(context, list) {
+class TextVoiceAdapter(context: Context, list: ArrayList<BookInfo>) : ProBaseAdapter<BookInfo>(context, list) {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val vh = holder as VH
+        val info=list[position]
+
         vh.imageViewVoice.setOnClickListener {
             if (onVoiceListener != null) {
                 onVoiceListener!!.onVoice(vh.adapterPosition)
             }
 
         }
+
 
     }
 

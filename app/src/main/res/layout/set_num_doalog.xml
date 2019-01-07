@@ -17,14 +17,14 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_10"
-            android:text="赛季排名"
+            android:text="设置今日单词目标"
             android:textColor="@color/write"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/sp_10" />
 
         <ImageView
             android:id="@+id/setNumClose"
-            android:layout_width="@dimen/dp_20"
-            android:layout_height="@dimen/dp_20"
+            android:layout_width="@dimen/dp_14"
+            android:layout_height="@dimen/dp_14"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dp_10"
@@ -52,7 +52,7 @@
                 android:gravity="center"
                 android:text="单词:"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/sp_10" />
 
             <EditText
                 android:id="@+id/setNumEdit"
@@ -60,9 +60,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_8"
                 android:background="@drawable/edit_check_selecter"
-                android:padding="@dimen/dp_8"
+                android:padding="@dimen/dp_4"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/sp_8" />
 
         </LinearLayout>
 
@@ -76,7 +76,7 @@
             android:background="@drawable/blue_kuang_yuan"
             android:text="确定"
             android:textColor="@color/write"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/sp_10" />
 
 
     </LinearLayout>

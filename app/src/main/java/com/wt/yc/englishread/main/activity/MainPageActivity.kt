@@ -8,9 +8,13 @@ import android.os.Message
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
+import android.text.SpannableString
+import android.widget.TextView
 import com.wt.yc.englishread.R
 import com.wt.yc.englishread.base.*
+import com.wt.yc.englishread.info.BookInfo
 import com.wt.yc.englishread.info.Info
+import com.wt.yc.englishread.info.UserInfo
 import com.wt.yc.englishread.main.adapter.LoadAdapter
 import com.wt.yc.englishread.main.fragment.expandtest.*
 import com.wt.yc.englishread.main.fragment.intelligence.IntelligenceTestFragment
@@ -23,9 +27,14 @@ import com.wt.yc.englishread.main.fragment.study.*
 import com.wt.yc.englishread.user.LoginActivity
 import com.wt.yc.englishread.user.fragment.UserFragment
 import com.xin.lv.yang.utils.utils.HttpUtils
+import com.xin.lv.yang.utils.utils.ImageUtil
+import com.xin.lv.yang.utils.utils.TextUtils
 import kotlinx.android.synthetic.main.main_page_layout.*
 import kotlinx.android.synthetic.main.main_top.*
 import kotlinx.android.synthetic.main.open_door.view.*
+import kotlinx.android.synthetic.main.pai_number_dialog.view.*
+import kotlinx.android.synthetic.main.set_num_doalog.*
+import kotlinx.android.synthetic.main.set_num_doalog.view.*
 import org.json.JSONObject
 
 /**
@@ -37,6 +46,8 @@ class MainPageActivity : ProActivity() {
         val str = msg.obj as String
         when (msg.what) {
             Config.SIGN_CODE -> {
+
+                removeLoadDialog()
                 val json = JSONObject(str)
                 val code = json.optInt(Config.CODE)
                 if (code == Config.SUCCESS) {
@@ -44,7 +55,40 @@ class MainPageActivity : ProActivity() {
                     isSignIn = 2
                 }
             }
+
+            Config.GET_USER_INFO_CODE -> {
+
+                removeLoadDialog()
+                val json = JSONObject(str)
+                val code = json.optInt(Config.CODE)
+                if (code == Config.SUCCESS) {
+                    val result = json.optString(Config.DATA)
+                    val user = gson!!.fromJson<UserInfo>(result, UserInfo::class.java)
+                    showUserInfo(user)
+                }
+            }
+
+            Config.SET_TODAY_CODE -> {
+
+                removeLoadDialog()
+
+                val json = JSONObject(str)
+                val code = json.optInt(Config.CODE)
+
+                if (code == Config.SUCCESS) {
+                    showToastShort("设置成功")
+
+                } else {
+                    showToastShort(json.optString(Config.MSG))
+                }
+            }
         }
+
+    }
+
+    private fun showUserInfo(user: UserInfo?) {
+        ImageUtil.getInstance().loadCircleImage(this, userPicHead, "", R.drawable.head_pic)
+        tvUserName.text = user!!.username
 
     }
 
@@ -61,6 +105,15 @@ class MainPageActivity : ProActivity() {
 
         initClick()
 
+        getUserInfo()
+
+    }
+
+    private fun getUserInfo() {
+        val json = JSONObject()
+        json.put("uid", uid)
+        json.put("token", token)
+        HttpUtils.getInstance().postJson(Config.GET_USER_INFO_URL, json.toString(), Config.GET_USER_INFO_CODE, handler)
     }
 
 
@@ -110,6 +163,15 @@ class MainPageActivity : ProActivity() {
     var isSignIn = 1
 
     private fun initClick() {
+        imageMainBack.setOnClickListener {
+            finish()
+        }
+
+        tvUserName.setOnClickListener {
+            lastIndexPosition = customViewPager.currentItem
+
+            customViewPager.currentItem = 4
+        }
 
         userPicHead.setOnClickListener {
 
@@ -143,12 +205,64 @@ class MainPageActivity : ProActivity() {
         imageMainLoginOut.setOnClickListener {
             loginOut()
         }
+
+        imageMainSet.setOnClickListener {
+            ///  设置今日目标
+            showSetNum()
+
+        }
+    }
+
+
+    /**
+     * 设置今日单词目标
+     */
+    private fun showSetNum() {
+        val setDCView = layoutInflater.inflate(R.layout.set_num_doalog, null)
+
+        val setDialog: Dialog = Dialog(this, R.style.style)
+        setDialog.setContentView(setDCView)
+
+        setDialog.show()
+        setAlpha(0.6f)
+
+        setDialog.setOnDismissListener {
+            setAlpha(1f)
+        }
+
+
+        setDCView.setNumClose.setOnClickListener {
+            setAlpha(1f)
+            setDialog.dismiss()
+        }
+
+        setDCView.setNumQure.setOnClickListener {
+            val wordResult = setDCView.setNumEdit.text.toString()
+
+            if (wordResult != "") {
+                val json = JSONObject()
+                json.put("uid", uid)
+                json.put("token", token)
+                json.put("target", wordResult)
+                HttpUtils.getInstance().postJson(Config.SET_TODAY_WORD_URL, json.toString(), Config.SET_TODAY_CODE, handler)
+                showLoadDialog("设置中")
+
+                setAlpha(1f)
+                setDialog.dismiss()
+
+            } else {
+                showToastShort("请输入数量")
+            }
+
+        }
+
     }
 
     /**
      * 登出
      */
     private fun loginOut() {
+        Share.clearUser(this)
 
     }
 
@@ -488,7 +602,7 @@ class MainPageActivity : ProActivity() {
      * 到哪个界面
      * code 1 复习  2 单元测试  3 听写   4 听写训练
      */
-    fun toWhere(code: Int, info: Info?) {
+    fun toWhere(code: Int, info: BookInfo?) {
 
         when (code) {
 

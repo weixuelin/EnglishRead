@@ -13,18 +13,18 @@
         android:padding="@dimen/dp_8">
 
         <TextView
+            android:id="@+id/tvPaiTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_10"
-            android:text="赛季排名"
             android:textColor="@color/write"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/sp_10" />
 
         <ImageView
             android:id="@+id/paiClose"
-            android:layout_width="@dimen/dp_20"
-            android:layout_height="@dimen/dp_20"
+            android:layout_width="@dimen/dp_14"
+            android:layout_height="@dimen/dp_14"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dp_10"

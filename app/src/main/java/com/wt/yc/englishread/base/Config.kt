@@ -52,5 +52,29 @@ class Config {
         val UPDATE_PWD_URL = "$IP/app/student/edit_pwd"
         val UPDATE_PWD_CODE = 6
 
+        /**
+         * 设置今日目标
+         */
+        val SET_TODAY_WORD_URL = "$IP/app/student/day_target"
+        val SET_TODAY_CODE = 7
+
+        /**
+         * 获取学习的信息
+         */
+        val GET_STUDY_URL = "$IP/app/student/study"
+        val GET_STUDY_CODE = 8
+
+        /**
+         * 学习 复习的单词
+         */
+        val REVIEW_WORD_URL = "$IP/app/student/word"
+        val REVIRE_CODE = 9
+
+        /**
+         * 完成复习
+         */
+        val FINISH_REVIRE_URL = "$IP/app/student/word"
+        val FINISH_CODE = 10
+
     }
 }

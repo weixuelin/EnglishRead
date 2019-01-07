@@ -14,7 +14,6 @@ class Share {
         fun getUid(context: Context): Int = context.getSharedPreferences(USER, Context.MODE_PRIVATE).getInt("uid", 0)
 
 
-
         fun saveTokenAndUid(context: Context, userInfo: UserInfo?) {
             val edit = context.getSharedPreferences(USER, Context.MODE_PRIVATE).edit()
             edit.putString("token", userInfo!!.token)
@@ -30,7 +29,14 @@ class Share {
             edit.apply()
         }
 
-        fun getAccount(context: Context)= context.getSharedPreferences(USER, Context.MODE_PRIVATE).getString("account", "")
+        fun getAccount(context: Context) = context.getSharedPreferences(USER, Context.MODE_PRIVATE).getString("account", "")
+
+
+        fun clearUser(context: Context) {
+            val edit = context.getSharedPreferences(USER, Context.MODE_PRIVATE).edit()
+            edit.clear()
+            edit.apply()
+        }
 
     }
 }
