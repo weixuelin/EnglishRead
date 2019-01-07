@@ -48,11 +48,16 @@ class MainPageActivity : ProActivity() {
             Config.SIGN_CODE -> {
 
                 removeLoadDialog()
+
                 val json = JSONObject(str)
                 val code = json.optInt(Config.CODE)
                 if (code == Config.SUCCESS) {
                     showToastShort("签到成功")
                     isSignIn = 2
+
+                    showSignDialog()
+
+                    getUserInfo()
                 }
             }
 
@@ -86,9 +91,21 @@ class MainPageActivity : ProActivity() {
 
     }
 
+    private fun showSignDialog() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("提示")
+                .setMessage("已获得10金币的奖励!!")
+                .setPositiveButton("确定") { dialog, i ->
+                    dialog.dismiss()
+
+                }.show()
+    }
+
+
     private fun showUserInfo(user: UserInfo?) {
         ImageUtil.getInstance().loadCircleImage(this, userPicHead, "", R.drawable.head_pic)
         tvUserName.text = user!!.username
+        tvAllMoney.text=user.gold
 
     }
 
@@ -182,20 +199,15 @@ class MainPageActivity : ProActivity() {
         }
 
         imageViewSignIn.setOnClickListener {
+
             if (isSignIn == 1) {
-                val builder = AlertDialog.Builder(this)
-                builder.setTitle("提示")
-                        .setMessage("已获得10金币的奖励!!")
-                        .setPositiveButton("确定") { dialog, i ->
-                            dialog.dismiss()
-                            if (Share.getUid(this) != 0) {
-                                sign()
-                            } else {
-                                startActivity(Intent(this, LoginActivity::class.java))
-                            }
 
+                if (Share.getUid(this) != 0) {
+                    sign()
+                } else {
+                    startActivity(Intent(this, LoginActivity::class.java))
+                }
 
-                        }.show()
             } else {
                 showToastShort("您已签到")
             }
@@ -266,6 +278,9 @@ class MainPageActivity : ProActivity() {
 
     }
 
+    /**
+     * 签到
+     */
     fun sign() {
         uid = Share.getUid(this)
         token = Share.getToken(this)

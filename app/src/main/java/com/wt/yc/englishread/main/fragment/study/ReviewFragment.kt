@@ -31,8 +31,19 @@ import java.util.*
 class ReviewFragment : ProV4Fragment() {
     var rfInfo: BookInfo? = null
 
+    /**
+     * 书籍编号id
+     */
+    var unitId: String = ""
+    /**
+     * 单元id
+     */
+    var muId: String = ""
+
+
     override fun handler(msg: Message) {
         val str = msg.obj as String
+
         when (msg.what) {
 
             9999 -> {
@@ -54,6 +65,10 @@ class ReviewFragment : ProV4Fragment() {
                 val code = json.optInt(Config.CODE)
                 if (code == Config.SUCCESS) {
                     val data = json.optJSONObject(Config.DATA)
+
+                    unitId = data.optString("unit_id")
+                    muId = data.optString("mu_id")
+
                     val wordResult = data.optString("word")
 
                     if (wordResult != null && wordResult != "") {
@@ -90,6 +105,14 @@ class ReviewFragment : ProV4Fragment() {
         }
 
         initClick()
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if(timer!=null){
+            timer!!.cancel()
+        }
 
     }
 
@@ -214,15 +237,32 @@ class ReviewFragment : ProV4Fragment() {
 
                     val index = reviewViewPager.currentItem
 
-                    if (inputStr != "" && threeArr[index].english == inputStr) {
+                    if (index == threeArr.size - 1) {
+                        // 提交数据
+                        save()
 
-                        indexView++
-                        reviewViewPager.currentItem = indexView
+                    } else {
 
-                        initTime()
+                        if (inputStr != "") {
 
-                    }else{
-                        showShortToast(activity!!,"请输入单词")
+                            val info = threeArr[index]
+
+                            if (info.english == inputStr) {
+                                info.status = 1
+
+                            } else {
+                                info.status = 0
+                            }
+
+                            finishWordList.add(info)
+
+                            indexView++
+                            reviewViewPager.currentItem = indexView
+                            initTime()
+
+                        } else {
+                            showShortToast(activity!!, "请输入单词")
+                        }
                     }
 
                 }
@@ -232,6 +272,24 @@ class ReviewFragment : ProV4Fragment() {
         tvFinishBack.setOnClickListener {
             (activity!! as MainPageActivity).backTo()
         }
+    }
+
+    /**
+     * 保存数据
+     */
+    private fun save() {
+        val json = JSONObject()
+        json.put("uid", uid)
+        json.put("token", token)
+        json.put("study_data", buildList())
+        HttpUtils.getInstance().postJson(Config.FINISH_REVIRE_URL, json.toString(), Config.FINISH_CODE, handler!!)
+
+    }
+
+    private fun buildList(): String? {
+
+        return gson!!.toJson("")
+
     }
 
 
@@ -432,11 +490,26 @@ class ReviewFragment : ProV4Fragment() {
             }
 
             twoView.linearTwoSure.setOnClickListener {
+                val number = reviewViewPager.currentItem
 
+                if (number == twoArr.size - 1) {
+                    showThreeDialog()
+                } else {
+                    indexView++
+                    reviewViewPager.currentItem = indexView
+                }
 
             }
 
             twoView.linearTwoError.setOnClickListener {
+                val number = reviewViewPager.currentItem
+
+                if (number == twoArr.size - 1) {
+                    showThreeDialog()
+                } else {
+                    indexView++
+                    reviewViewPager.currentItem = indexView
+                }
 
             }
 
@@ -465,7 +538,6 @@ class ReviewFragment : ProV4Fragment() {
             }
 
         }
-
     }
 
     /**

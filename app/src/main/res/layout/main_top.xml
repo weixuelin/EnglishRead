@@ -67,10 +67,10 @@
                 android:src="@drawable/qian_check_in" />
 
             <TextView
+                android:id="@+id/tvAllMoney"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_4"
-                android:text="500"
                 android:textColor="@color/ab8c6d6"
                 android:textSize="@dimen/sp_10" />
 
