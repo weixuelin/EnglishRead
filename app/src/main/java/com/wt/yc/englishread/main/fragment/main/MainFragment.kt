@@ -30,6 +30,7 @@ class MainFragment : ProV4Fragment() {
     override fun handler(msg: Message) {
         val str = msg.obj as String
         when (msg.what) {
+
             Config.MAIN_DATA_CODE -> {
                 val json = JSONObject(str)
                 val code = json.optInt(Config.CODE)
@@ -80,7 +81,9 @@ class MainFragment : ProV4Fragment() {
             picList.add(Config.IP + temp.icon)
         }
 
-        initViewPager(activity!!, picViewPager, picList, handler!!, 1)
+        if(picViewPager!=null){
+            initViewPager(activity!!, picViewPager, picList, handler!!, 1)
+        }
 
     }
 

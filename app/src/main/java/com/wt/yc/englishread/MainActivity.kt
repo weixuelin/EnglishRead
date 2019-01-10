@@ -12,6 +12,7 @@ import com.wt.yc.englishread.main.fragment.main.AboutFragment
 import com.wt.yc.englishread.main.fragment.main.MainFragment
 import com.wt.yc.englishread.main.fragment.main.MapFragment
 import com.wt.yc.englishread.user.LoginActivity
+import com.xin.lv.yang.utils.utils.StatusBarUtil
 import kotlinx.android.synthetic.main.activity_main.*
 
 /**
@@ -27,6 +28,7 @@ class MainActivity : ProActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
         manager = supportFragmentManager
 

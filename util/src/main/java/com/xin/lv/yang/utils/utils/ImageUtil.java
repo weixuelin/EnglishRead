@@ -266,14 +266,17 @@ public class ImageUtil {
                 .priority(Priority.HIGH)
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
 
-        Glide.with(context).load(url).apply(options)
-                .transition(new DrawableTransitionOptions().crossFade(TIME))
-                .into(new SimpleTarget<Drawable>() {
-            @Override
-            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                imageView.setImageDrawable(resource);
-            }
-        });
+        if (context != null) {
+            Glide.with(context).load(url).apply(options)
+                    .transition(new DrawableTransitionOptions().crossFade(TIME))
+                    .into(new SimpleTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            imageView.setImageDrawable(resource);
+                        }
+                    });
+        }
+
     }
 
 
@@ -349,7 +352,7 @@ public class ImageUtil {
 
 
     public void loadImageNoTransformation(Context context, final ImageView imageView, int resId, String url) {
-        Log.i("result","url--------"+url);
+        Log.i("result", "url--------" + url);
 
         if (context != null && !((Activity) context).isFinishing()) {
 

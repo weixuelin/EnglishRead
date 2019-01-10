@@ -28,14 +28,16 @@
             android:layout_marginLeft="@dimen/dp_5"
             android:layout_toRightOf="@id/image1"
             android:text="恋词英语学习平台"
+            android:textStyle="bold"
             android:textColor="@color/black"
             android:textSize="@dimen/sp_10" />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_30"
             android:layout_centerInParent="true"
+            app:tabTextAppearance="@style/text_sise"
             app:tabIndicatorColor="@color/blue_login"
             app:tabSelectedTextColor="@color/blue_login"
             app:tabTextColor="@color/black">
@@ -64,6 +66,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_8"
+            android:layout_marginRight="@dimen/dp_10"
             android:clickable="true"
             android:text="登录"
             android:textColor="@color/black"

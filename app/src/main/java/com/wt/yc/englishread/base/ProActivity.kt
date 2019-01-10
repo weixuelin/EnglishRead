@@ -66,11 +66,14 @@ abstract class ProActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+
         if (Build.VERSION.SDK_INT >= 21) {
             StatusBarUtil.transparencyBar(this)
-        }
 
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            StatusBarUtil.setStatusBarLightMode(window, true)
+
+        }
 
         gson = Gson()
 
