@@ -6,9 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import com.wt.yc.englishread.R
 import com.wt.yc.englishread.base.ProBaseAdapter
+import com.wt.yc.englishread.info.Info
+import com.xin.lv.yang.utils.view.AdTextView
+import kotlinx.android.synthetic.main.bool_content_item.view.*
 
-class BookRackContentAdapter(context: Context, list: ArrayList<String>) : ProBaseAdapter<String>(context, list) {
+class BookRackContentAdapter(context: Context, list: ArrayList<Info>) : ProBaseAdapter<Info>(context, list) {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val vh = holder as VH
+        val info = list[position]
+        vh.tvBookContentName.text = info.book_name
+
 
     }
 
@@ -23,6 +30,6 @@ class BookRackContentAdapter(context: Context, list: ArrayList<String>) : ProBas
 
 
     inner class VH(view: View) : RecyclerView.ViewHolder(view) {
-
+        val tvBookContentName = view.tvBookContentName
     }
 }

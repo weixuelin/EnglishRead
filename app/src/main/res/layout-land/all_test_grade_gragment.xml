@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/margin10"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/write_kuang_line"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_16"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/buttonNext"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_24"
+            android:background="@drawable/blue_kuang_yuan"
+            android:text="下一页"
+            android:textColor="@color/write" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:text="当前第一页，共两页"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/testSpinner"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_24"
+            android:background="@drawable/gray_kuang"
+            android:padding="@dimen/dp_4" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_16"
+        android:background="@color/green"
+        android:padding="@dimen/dp_8">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="测试内容"
+            android:textColor="@color/write"
+            android:textSize="@dimen/sp_10" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="成绩"
+            android:textColor="@color/write"
+            android:textSize="@dimen/sp_10" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="测试时间"
+            android:textColor="@color/write"
+            android:textSize="@dimen/sp_10" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="用时(分秒)"
+            android:textColor="@color/write"
+            android:textSize="@dimen/sp_10" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="测试类型"
+            android:textColor="@color/write"
+            android:textSize="@dimen/sp_10" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/allGradeRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/dp_16"
+        android:layout_marginRight="@dimen/dp_16"
+        android:background="@drawable/gray_kuang" />
+
+</LinearLayout>

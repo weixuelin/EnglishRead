@@ -38,8 +38,14 @@ class StudyFragment : ProV4Fragment() {
         return inflater.inflate(R.layout.study_fragment_layout, container, false)
     }
 
+    var bookInfo:BookInfo?=null
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        if(bookInfo!=null){
+            tvStudyBookName.text=bookInfo!!.book_name
+        }
+
         initAdapter()
         initMsAdapter()
         initFinishAdapter()
@@ -64,7 +70,7 @@ class StudyFragment : ProV4Fragment() {
     }
 
     var finishAdapter: FinishAdapter? = null
-    val finishList= arrayListOf<BookInfo>()
+    val finishList = arrayListOf<BookInfo>()
 
     /**
      * 初始化完成adapter
@@ -286,7 +292,7 @@ class StudyFragment : ProV4Fragment() {
             }
 
             override fun onTest(position: Int) {
-                (activity as MainPageActivity).toWhere(Constant.STUDY_TEST, BookInfo())
+                (activity as MainPageActivity).toWhere(Constant.STUDY_TEST, list[position])
             }
 
             override fun onDictation(position: Int) {
@@ -308,7 +314,9 @@ class StudyFragment : ProV4Fragment() {
             Config.GET_STUDY_CODE -> {
                 val json = JSONObject(str)
                 val code = json.optInt(Config.CODE)
-                if (code == Config.SUCCESS) {
+                val state = json.optBoolean(Config.STATUS)
+
+                if (code == Config.SUCCESS && state) {
                     val resultData = json.optJSONObject(Config.DATA)
                     val resultBook = resultData.optString("book")
                     val book = gson!!.fromJson<BookInfo>(resultBook, BookInfo::class.java)
@@ -330,7 +338,10 @@ class StudyFragment : ProV4Fragment() {
                     val jsOrMsResult = resultData.optString("js_word")
                     val jsOrMsArr = gson!!.fromJson<ArrayList<BookInfo>>(jsOrMsResult, object : TypeToken<ArrayList<BookInfo>>() {}.type)
 
-                    showJsOrMs(jsOrMsArr)
+                    if (jsOrMsArr != null && jsOrMsArr.size != 0) {
+                        showJsOrMs(jsOrMsArr)
+                    }
+
 
                     val wordInfo = resultData.optString("pm")
                     val bookDetails = gson!!.fromJson<BookInfo>(wordInfo, BookInfo::class.java)
@@ -343,29 +354,41 @@ class StudyFragment : ProV4Fragment() {
     }
 
     private fun showDetails(bookDetails: BookInfo?) {
-        tvMingCiNum.text = bookDetails!!.zpm.toString()
-        tvChaJu.text = bookDetails.cj.toString()
-        tvTodayNum.text = bookDetails.study_word.toString()
+        if(tvMingCiNum!=null){
+            tvMingCiNum.text = bookDetails!!.zpm.toString()
+        }
+
+        if(tvChaJu!=null){
+            tvChaJu.text = bookDetails!!.cj.toString()
+        }
+
+        if(tvTodayNum!=null){
+            tvTodayNum.text = bookDetails!!.study_word.toString()
+        }
+
     }
 
     private fun showJsOrMs(jsOrMsArr: ArrayList<BookInfo>?) {
-        jsOrMsAdapter!!.updateDataClear(jsOrMsArr!!)
-
+        if (jsOrMsAdapter != null) {
+            jsOrMsAdapter!!.updateDataClear(jsOrMsArr!!)
+        }
     }
 
     private fun showTongJi(unitName: String?, sxWord: String, jsWord: String, msWord: String) {
         textArr.addAll(gson!!.fromJson(unitName, object : TypeToken<ArrayList<String>>() {}.type))
 
-        initStudyChart(studyChart)
-
-        setTextData(studyChart, sxWord, jsWord, msWord)
-
+        if (studyChart != null) {
+            initStudyChart(studyChart)
+            setTextData(studyChart, sxWord, jsWord, msWord)
+        }
 
     }
 
 
     private fun showBook(book: BookInfo?) {
-        tvStudyBookName.text = book!!.book_name
+        if (tvStudyBookName != null) {
+            tvStudyBookName.text = book!!.book_name
+        }
 
     }
 }

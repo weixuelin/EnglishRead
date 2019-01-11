@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.wt.yc.englishread.R
+import com.wt.yc.englishread.base.Config
 import com.wt.yc.englishread.base.Constant
 import com.wt.yc.englishread.base.ItemClickListener
 import com.wt.yc.englishread.base.ProV4Fragment
@@ -14,18 +15,26 @@ import com.wt.yc.englishread.info.BookInfo
 import com.wt.yc.englishread.info.Info
 import com.wt.yc.englishread.main.activity.MainPageActivity
 import com.wt.yc.englishread.main.adapter.TextChooseAdapter
+import com.xin.lv.yang.utils.utils.HttpUtils
 import kotlinx.android.synthetic.main.study_head.*
 import kotlinx.android.synthetic.main.unit_test_fragment.*
+import org.json.JSONObject
 
 /**
- * 单元测试 界面
+ * 单元测试 界面  生词测试
  */
 class UnitTestFragment : ProV4Fragment() {
 
     override fun handler(msg: Message) {
         val str = msg.obj as String
         when (msg.what) {
+            Config.GET_TEST_CODE -> {
+                val json = JSONObject(str)
+                val status = json.optBoolean(Config.STATUS)
+                if (status) {
 
+                }
+            }
         }
 
     }
@@ -40,6 +49,11 @@ class UnitTestFragment : ProV4Fragment() {
     var code = 1
     var title = ""
     var unitInfo: BookInfo? = null
+
+    /**
+     * 0 为单元测试     1 为生词测试
+     */
+    var testCode: Int = 1
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -67,7 +81,27 @@ class UnitTestFragment : ProV4Fragment() {
             }
         }
 
+        getTestList()
 
+
+    }
+
+    private fun getTestList() {
+        val json = JSONObject()
+        json.put("uid", uid)
+        json.put("token", token)
+        json.put("type", when (testCode) {
+            1 -> "sc"
+            2 -> ""
+            else -> "unit"
+        })
+
+        if (testCode == 0) {
+            json.put("unit_id", "1")
+        }
+
+
+        HttpUtils.getInstance().postJson(Config.GET_TEST_URL, json.toString(), Config.GET_TEST_CODE, handler)
     }
 
     private fun initClick() {
@@ -92,6 +126,7 @@ class UnitTestFragment : ProV4Fragment() {
     var chooseInfo: BookInfo? = null
 
     private fun initUnitAdapter() {
+        
         list.clear()
 
         unitRecyclerView.layoutManager = GridLayoutManager(activity, 6)

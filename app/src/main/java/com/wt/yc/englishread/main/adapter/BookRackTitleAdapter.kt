@@ -13,6 +13,7 @@ class BookRackTitleAdapter(context: Context, list: ArrayList<Info>) : ProBaseAda
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val vh = holder as V
         val info = list[position]
+        vh.tvTitle.text = info.title
         if (info.click) {
             vh.tvTitle.setBackgroundResource(R.drawable.blue_kuang_yuan)
         } else {

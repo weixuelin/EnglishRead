@@ -11,9 +11,13 @@ class Info {
     var isSonOpen: Boolean = false
     var answer: String = ""
     var icon: String = ""
+    var classify_id:Int=0
 
     var sonList: ArrayList<Son>? = null
     var id: Int = 0
+    var book_name:String=""
+
+    var video:ArrayList<QuestionInfo>?=null
 
 
     companion object {

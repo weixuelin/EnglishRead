@@ -6,10 +6,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Message
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import android.text.SpannableString
-import android.widget.TextView
+import android.util.Log
+import android.view.KeyEvent
 import com.wt.yc.englishread.R
 import com.wt.yc.englishread.base.*
 import com.wt.yc.englishread.info.BookInfo
@@ -28,12 +27,9 @@ import com.wt.yc.englishread.user.LoginActivity
 import com.wt.yc.englishread.user.fragment.UserFragment
 import com.xin.lv.yang.utils.utils.HttpUtils
 import com.xin.lv.yang.utils.utils.ImageUtil
-import com.xin.lv.yang.utils.utils.TextUtils
 import kotlinx.android.synthetic.main.main_page_layout.*
 import kotlinx.android.synthetic.main.main_top.*
 import kotlinx.android.synthetic.main.open_door.view.*
-import kotlinx.android.synthetic.main.pai_number_dialog.view.*
-import kotlinx.android.synthetic.main.set_num_doalog.*
 import kotlinx.android.synthetic.main.set_num_doalog.view.*
 import org.json.JSONObject
 
@@ -66,7 +62,9 @@ class MainPageActivity : ProActivity() {
                 removeLoadDialog()
                 val json = JSONObject(str)
                 val code = json.optInt(Config.CODE)
-                if (code == Config.SUCCESS) {
+                val status = json.optBoolean(Config.STATUS)
+
+                if (code == Config.SUCCESS && status) {
                     val result = json.optString(Config.DATA)
                     val user = gson!!.fromJson<UserInfo>(result, UserInfo::class.java)
                     showUserInfo(user)
@@ -103,17 +101,23 @@ class MainPageActivity : ProActivity() {
 
 
     private fun showUserInfo(user: UserInfo?) {
-        ImageUtil.getInstance().loadCircleImage(this, userPicHead, "", R.drawable.head_pic)
-        tvUserName.text = user!!.username
-        tvAllMoney.text=user.gold
+
+        if (!isFinishing) {
+
+//            ImageUtil.getInstance().loadCircleImage(this, userPicHead, "", R.drawable.head_pic)
+
+            tvUserName.text = user!!.username
+            tvAllMoney.text = user.gold
+        }
+
 
     }
-
 
     var lastIndexPosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.main_page_layout)
 
         initLoadAdapter()
@@ -133,6 +137,8 @@ class MainPageActivity : ProActivity() {
         HttpUtils.getInstance().postJson(Config.GET_USER_INFO_URL, json.toString(), Config.GET_USER_INFO_CODE, handler)
     }
 
+
+    val testList = arrayListOf<ProV4Fragment>(StudyFragment())
 
     /**
      * 一级页面
@@ -476,10 +482,11 @@ class MainPageActivity : ProActivity() {
                 when (p3) {
                     0 -> {
                         ///  智能测试  生词测试
-                        val f1 = oneFragmentList[6] as UnitTestFragment
-                        f1.title = "生词测试"
+                        val f1 = oneFragmentList[10] as TestDetailsFragment
 
-                        customViewPager.currentItem = 6
+                        f1.testCode = 1
+
+                        customViewPager.currentItem = 10
 
                     }
 
@@ -593,21 +600,22 @@ class MainPageActivity : ProActivity() {
 
 
     /**
-     * 一级点击跳转
+     * 一级点击跳转     PageFragment(), StudyFragment(),
+     *                  NewWordFragment(), BookRackFragment()
      */
     fun mainJoup(position: Int) {
 
         adapter!!.updateClick(position)
 
         when (position) {
-            0 -> customViewPager.currentItem = 0
-            1 -> customViewPager.currentItem = 1
+            0 -> customViewPager.currentItem = 0   // 首页  PageFragment
+            1 -> customViewPager.currentItem = 1   // 学习  StudyFragment
 
             3 -> {
             }
 
-            4 -> customViewPager.currentItem = 2
-            5 -> customViewPager.currentItem = 3
+            4 -> customViewPager.currentItem = 2  // 生词本  NewWordFragment
+            5 -> customViewPager.currentItem = 3  // 书架    BookRackFragment
 
         }
     }
@@ -633,10 +641,10 @@ class MainPageActivity : ProActivity() {
 
             Constant.STUDY_TEST -> {
                 /// 测试内容选择
-                val ff = oneFragmentList[6] as UnitTestFragment
-                ff.title = "单元测试"
+                val ff = oneFragmentList[10] as TestDetailsFragment
+                ff.testCode = 0
                 ff.unitInfo = info
-                customViewPager.currentItem = 6
+                customViewPager.currentItem = 10
 
             }
 
@@ -697,11 +705,39 @@ class MainPageActivity : ProActivity() {
             }
 
             Constant.MAIN_STADUY_CODE -> {
+                val studyFragment = oneFragmentList[15] as StudyFragment
+                studyFragment.bookInfo = info
 
                 //  StudyFragment
                 customViewPager.currentItem = 15
 
             }
         }
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event!!.action == KeyEvent.ACTION_DOWN) {
+
+            val pp = customViewPager.currentItem
+            val ff = oneFragmentList[pp]
+
+            return if (ff is TestDetailsFragment) {
+
+                Log.i("result", "不能退出---")
+
+                ff.indexTime != 0
+
+            } else {
+
+                Log.i("result", "可以退出---")
+
+                backTo()
+
+                false
+
+            }
+        }
+        return onKeyDown(keyCode, event)
+
     }
 }

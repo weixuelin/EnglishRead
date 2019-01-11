@@ -1,7 +1,6 @@
 package com.wt.yc.englishread.main.fragment.mainpage
 
 import android.app.Dialog
-import android.app.ProgressDialog.show
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
@@ -41,7 +40,6 @@ import com.xin.lv.yang.utils.utils.HttpUtils
 import com.xin.lv.yang.utils.utils.TextUtils
 import kotlinx.android.synthetic.main.finish_dialog.view.*
 import kotlinx.android.synthetic.main.pai_number_dialog.view.*
-import kotlinx.android.synthetic.main.set_num_doalog.view.*
 import org.json.JSONObject
 import kotlin.collections.ArrayList
 
@@ -94,9 +92,13 @@ class PageFragment : ProV4Fragment() {
 
                     val level = jsonObject.optString("level")
                     val target = jsonObject.optString("target")
-                    tvUserLevel.text = level
-                    tvLevelFen.text = "[$target]"
+                    if (tvUserLevel != null) {
+                        tvUserLevel.text = level
+                    }
 
+                    if (tvLevelFen != null) {
+                        tvLevelFen.text = "[$target]"
+                    }
 
                 }
             }
@@ -109,8 +111,14 @@ class PageFragment : ProV4Fragment() {
      * 学习转化量
      */
     fun showBook(info: BookInfo) {
-        tvStudyNum.text = info.xx
-        tvFuXiStudyNum.text = info.fx
+        if (tvStudyNum != null) {
+            tvStudyNum.text = info.xx
+        }
+
+        if (tvFuXiStudyNum != null) {
+            tvFuXiStudyNum.text = info.fx
+        }
+
 
 //        setTextData(zhlLineChart, 1, 2)
 
@@ -130,7 +138,10 @@ class PageFragment : ProV4Fragment() {
 
         studyArr2 = gson!!.fromJson<Array<String>>(wordShuXi, object : TypeToken<Array<String>>() {}.type)
 
-        setTextData(studyLineChart, 2, 2)
+        if (studyLineChart != null) {
+            setTextData(studyLineChart, 2, 2)
+        }
+
 
     }
 
@@ -146,9 +157,17 @@ class PageFragment : ProV4Fragment() {
      * 显示学习的单词信息
      */
     private fun showBook1(book1: BookInfo?, book2: BookInfo?, book3: BookInfo?) {
-        tvBookName.text = book1!!.book_name
-        tvUnitName.text = "正在学习单元: ${book2!!.unit_name}"
-        tvUnitWord.text = "上次学习单词: ${book3!!.english}"
+        if (tvBookName != null) {
+            tvBookName.text = book1!!.book_name
+        }
+
+        if (tvUnitName != null) {
+            tvUnitName.text = "正在学习单元: ${book2!!.unit_name}"
+        }
+
+        if (tvUnitWord != null) {
+            tvUnitWord.text = "上次学习单词: ${book3!!.english}"
+        }
 
     }
 
@@ -168,15 +187,12 @@ class PageFragment : ProV4Fragment() {
 
         initAdapter()
         initCzAdapter()
-
         initClick()
-
-        get()
-
         setIndexTime()
 
 
     }
+
 
     private fun setIndexTime() {
         val indexTime = System.currentTimeMillis()
@@ -199,9 +215,11 @@ class PageFragment : ProV4Fragment() {
      */
     private fun initWOrH() {
 
-        val scanW = getW(activity!!) - BitmapUtil.dip2px(activity!!, 170f)
+        val scanW = getW(activity!!) - activity!!.resources.getDimension(R.dimen.dp_120).toInt()
         val w = scanW / 3
         val h = w * 4 / 5
+
+        val hh = w * 2 * 4 / 5
 
         linear1.layoutParams = LinearLayout.LayoutParams(w, h)
 
@@ -211,16 +229,22 @@ class PageFragment : ProV4Fragment() {
         linear3.layoutParams = LinearLayout.LayoutParams(w, h)
         setMargen(linear3, 8)
 
-        linear4.layoutParams = LinearLayout.LayoutParams(w * 2, h)
-        linear5.layoutParams = LinearLayout.LayoutParams(w, h)
-        linear6.layoutParams = LinearLayout.LayoutParams(w * 2, h)
+        linear4.layoutParams = LinearLayout.LayoutParams(w * 2, hh)
+        linear5.layoutParams = LinearLayout.LayoutParams(w, hh)
+
+        linear6.layoutParams = LinearLayout.LayoutParams(w * 2, hh)
+
+        timeIndexLayout.layoutParams = LinearLayout.LayoutParams(w, hh / 2 - 40)
+
+        progressLatout.layoutParams = LinearLayout.LayoutParams(w, hh / 2 - 40)
+        setMargenTop(progressLatout, 6)
 
         linear7.layoutParams = LinearLayout.LayoutParams(w, h)
         setMargen(linear7, 8)
 
-        linear8.layoutParams = LinearLayout.LayoutParams(w * 2, h)
+        linear8.layoutParams = LinearLayout.LayoutParams(w * 2, hh)
 
-        linear9.layoutParams = LinearLayout.LayoutParams(w, h)
+        linear9.layoutParams = LinearLayout.LayoutParams(w, LinearLayout.LayoutParams.WRAP_CONTENT)
         setMargen(linear9, 8)
 
     }
@@ -246,6 +270,8 @@ class PageFragment : ProV4Fragment() {
         super.onResume()
 
         initImagePic()
+
+        get()
 
     }
 
@@ -343,6 +369,8 @@ class PageFragment : ProV4Fragment() {
 
 
     private fun initCzAdapter() {
+
+        czList.clear()
 
         for (i in czPicList.indices) {
             val info = Info()
@@ -571,42 +599,42 @@ class PageFragment : ProV4Fragment() {
 
         val lineDataSet = arrayListOf<ILineDataSet>()
         val set1 = LineDataSet(y, "学习的单词")
-        set1.setCircleColor(resources.getColor(R.color.red))
+        set1.setCircleColor(activity!!.resources.getColor(R.color.red))
         set1.setDrawCircles(false)
-        set1.color = resources.getColor(R.color.red)
+        set1.color = activity!!.resources.getColor(R.color.red)
         set1.mode = LineDataSet.Mode.CUBIC_BEZIER
-        set1.valueTextColor = resources.getColor(R.color.red)
+        set1.valueTextColor = activity!!.resources.getColor(R.color.red)
         if (code == 2) {
             set1.setDrawFilled(true)
             // 填充颜色
-            set1.fillColor = resources.getColor(R.color.red)
+            set1.fillColor = activity!!.resources.getColor(R.color.red)
         }
 
         val set2 = LineDataSet(y2, "熟悉的单词")
-        set2.setCircleColor(resources.getColor(R.color.blue_login))
+        set2.setCircleColor(activity!!.resources.getColor(R.color.blue_login))
         set2.setDrawCircles(false)
-        set2.color = resources.getColor(R.color.blue_login)
+        set2.color = activity!!.resources.getColor(R.color.blue_login)
         set2.mode = LineDataSet.Mode.CUBIC_BEZIER
-        set2.valueTextColor = resources.getColor(R.color.blue_login)
+        set2.valueTextColor = activity!!.resources.getColor(R.color.blue_login)
 
         if (code == 2) {
             set2.setDrawFilled(true)
             // 填充颜色
-            set2.fillColor = resources.getColor(R.color.blue_login)
+            set2.fillColor = activity!!.resources.getColor(R.color.blue_login)
         }
 
         if (countLen == 3) {
             val set3 = LineDataSet(y3, "")
-            set3.setCircleColor(resources.getColor(R.color.colorAccent))
+            set3.setCircleColor(activity!!.resources.getColor(R.color.colorAccent))
             set3.setDrawCircles(false)
-            set3.color = resources.getColor(R.color.colorAccent)
+            set3.color = activity!!.resources.getColor(R.color.colorAccent)
             set3.mode = LineDataSet.Mode.CUBIC_BEZIER
-            set3.valueTextColor = resources.getColor(R.color.colorAccent)
+            set3.valueTextColor = activity!!.resources.getColor(R.color.colorAccent)
 
             if (code == 2) {
                 set3.setDrawFilled(true)
                 // 填充颜色
-                set3.fillColor = resources.getColor(R.color.colorAccent)
+                set3.fillColor = activity!!.resources.getColor(R.color.colorAccent)
             }
 
             lineDataSet.add(set3)
@@ -730,7 +758,10 @@ class PageFragment : ProV4Fragment() {
         // 第一个参数是各个矩形在y轴方向上的值得集合，第二个参数为比例的文字说明
         val set1 = BarDataSet(yVals1, "")
 
-        val colors: ArrayList<Int> = arrayListOf(resources.getColor(R.color.green), resources.getColor(R.color.blue_login), resources.getColor(R.color.red))
+        val colors: ArrayList<Int> = arrayListOf(
+                activity!!.resources.getColor(R.color.green),
+                activity!!.resources.getColor(R.color.blue_login),
+                activity!!.resources.getColor(R.color.red))
 
         set1.colors = colors
 
@@ -809,14 +840,14 @@ class PageFragment : ProV4Fragment() {
 
         /// 设置饼图各个区域颜色
         val colors: ArrayList<Int> = ArrayList<Int>()
-        colors.add(resources.getColor(R.color.blue_login))
-        colors.add(resources.getColor(R.color.green))
-        colors.add(resources.getColor(R.color.red))
+        colors.add(activity!!.resources.getColor(R.color.blue_login))
+        colors.add(activity!!.resources.getColor(R.color.green))
+        colors.add(activity!!.resources.getColor(R.color.red))
 
         dataSet.colors = colors
 
         dataSet.valueTextColor = Color.BLACK
-        dataSet.valueTextSize = 14f
+        dataSet.valueTextSize = activity!!.resources.getDimension(R.dimen.sp_8)
         dataSet.valueTypeface = Typeface.DEFAULT_BOLD
 
         /// 是否在图上显示数值
@@ -840,16 +871,18 @@ class PageFragment : ProV4Fragment() {
         //设置以百分比显示
         data.setValueFormatter(PercentFormatter())
         //区域文字的大小
-        data.setValueTextSize(11f)
+        data.setValueTextSize(activity!!.resources.getDimension(R.dimen.sp_8))
         //设置区域文字的颜色
         data.setValueTextColor(Color.BLACK)
         //设置区域文字的字体
         data.setValueTypeface(Typeface.DEFAULT)
 
-        cxPieChart.data = data
+        if (cxPieChart != null) {
+            cxPieChart.data = data
+            cxPieChart.highlightValues(null)
+            cxPieChart.invalidate()
+        }
 
-        cxPieChart.highlightValues(null)
-        cxPieChart.invalidate()
     }
 
 }

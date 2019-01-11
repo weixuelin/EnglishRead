@@ -255,19 +255,19 @@ public class ImageUtil {
     /**
      * 加载圆形图片
      */
-    public void loadCircleImage(Context context, final ImageView imageView, String url, int resId) {
+    public void loadCircleImage(Activity activity, final ImageView imageView, String url, int resId) {
 
         Log.i("result", "图片地址----" + url);
 
         RequestOptions options = RequestOptions
-                .bitmapTransform(new CropCircleTransformation(context))
+                .bitmapTransform(new CropCircleTransformation(activity))
                 .placeholder(resId)
                 .error(resId)
                 .priority(Priority.HIGH)
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
 
-        if (context != null) {
-            Glide.with(context).load(url).apply(options)
+        if (activity != null) {
+            Glide.with(activity).load(url).apply(options)
                     .transition(new DrawableTransitionOptions().crossFade(TIME))
                     .into(new SimpleTarget<Drawable>() {
                         @Override

@@ -76,5 +76,30 @@ class Config {
         val FINISH_REVIRE_URL = "$IP/app/student/word"
         val FINISH_CODE = 10
 
+        /**
+         * 我的生词本
+         */
+        val GET_ALL_WORD_URL = "$IP/app/student/scb"
+        val GET_ALL_CODE = 11
+
+
+        /**
+         * 测试单词接口
+         */
+        val GET_TEST_URL = "$IP/app/student/paper"
+        val GET_TEST_CODE = 12
+
+        /**
+         * 书籍信息
+         */
+        val GET_BOOK_LIST = "$IP/app/student/book"
+        val GET_BOOK_CODE = 13
+
+        /**
+         * 交卷
+         */
+        val FINISH_TEST_URL="$IP/app/student/post_paper"
+
+
     }
 }

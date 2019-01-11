@@ -7,10 +7,7 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.net.Uri
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
+import android.os.*
 import android.support.v4.app.Fragment
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
@@ -18,9 +15,11 @@ import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.Toast
 import butterknife.Unbinder
 import com.google.gson.Gson
@@ -54,6 +53,7 @@ abstract class ProV4Fragment : Fragment() {
         super.onCreate(savedInstanceState)
         activity = getActivity()
         handler = ProHandler(this)
+
         gson = Gson()
 
         uid = Share.getUid(activity!!)
@@ -83,38 +83,19 @@ abstract class ProV4Fragment : Fragment() {
 
             override fun handleMessage(msg: Message?) {
                 super.handleMessage(msg)
+                a!!.handler(msg!!)
 
-                if (msg!!.obj is String) {
-
-                    val str = msg.obj as String
-
-                    if (str != "" && str != "null") {
-                        val json = JSONObject(str)
-                        val code = json.optInt("code")
-                        when (code) {
-                            501 -> {
-                                a!!.showToastShort(a.activity!!, json.optString("msg"))
-
-                                /// 重启app
-                                val i: Intent = a.activity!!.baseContext.packageManager.getLaunchIntentForPackage(a.activity!!.baseContext.packageName)
-                                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                                a.activity!!.startActivity(i)
-
-                            }
-
-                            201 -> {
-                                a!!.activity!!.finish()
-                            }
-
-                            else -> a!!.handler(msg)
-                        }
-                    }else{
-                        a!!.handler(msg)
-                    }
-                }
             }
         }
 
+    }
+
+
+
+    fun reOpenApp(){
+        val i: Intent = activity!!.baseContext.packageManager.getLaunchIntentForPackage(activity!!.baseContext.packageName)
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        activity!!.startActivity(i)
     }
 
     var voiceFilePath: String? = ""
@@ -164,6 +145,11 @@ abstract class ProV4Fragment : Fragment() {
         player!!.setOnPreparedListener { mp ->
             mp.start()
         }
+
+        player!!.setOnCompletionListener {
+            removeLoadDialog()
+        }
+
     }
 
 
@@ -231,6 +217,14 @@ abstract class ProV4Fragment : Fragment() {
         ceshiTv.layoutParams = lp
     }
 
+    fun setMargenTop(layout: RelativeLayout, margen: Int) {
+        val lp: LinearLayout.LayoutParams = layout.layoutParams as LinearLayout.LayoutParams
+
+        lp.setMargins(0, margen, 0, 0)
+
+        layout.layoutParams = lp
+    }
+
     fun setAlpha(activity: Activity, f: Float) {
         val manager = activity.window.attributes
         manager.alpha = f
@@ -248,7 +242,11 @@ abstract class ProV4Fragment : Fragment() {
             customProgressDialog = CustomProgressDialog(context)
         }
         customProgressDialog!!.setText(string)
-        customProgressDialog!!.show()
+
+        if (!customProgressDialog!!.isShowing) {
+            customProgressDialog!!.show()
+        }
+
 
     }
 
@@ -393,5 +391,54 @@ abstract class ProV4Fragment : Fragment() {
         return att.height
     }
 
+
+    /**
+     * 获取虚拟按键的高度
+     */
+    fun getNavigationBarHeight(context: Context): Int {
+        var result = 0;
+        if (hasNavBar(context)) {
+            val res = context.resources
+            val resourceId = res.getIdentifier("navigation_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                result = res.getDimensionPixelSize(resourceId);
+            }
+        }
+        return result;
+    }
+
+    fun hasNavBar(context: Context): Boolean {
+        val res = context.resources
+        val resourceId = res.getIdentifier("config_showNavigationBar", "bool", "android");
+        if (resourceId != 0) {
+            var hasNav = res.getBoolean(resourceId);
+            // check override flag
+            val sNavBarOverride = getNavBarOverride()
+            if ("1" == sNavBarOverride) {
+                hasNav = false
+            } else if ("0" == sNavBarOverride) {
+                hasNav = true
+            }
+            return hasNav;
+        } else {
+            return !ViewConfiguration.get(context).hasPermanentMenuKey()
+        }
+    }
+
+
+    fun getNavBarOverride(): String {
+        var sNavBarOverride = ""
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            try {
+                val c = Class.forName("android.os.SystemProperties");
+                val m = c.getDeclaredMethod("get", String::class.java)
+                m!!.isAccessible = true
+                sNavBarOverride = m.invoke(null, "qemu.hw.mainkeys") as String
+            } catch (e: Throwable) {
+            }
+        }
+
+        return sNavBarOverride
+    }
 
 }

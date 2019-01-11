@@ -12,30 +12,100 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import com.google.gson.reflect.TypeToken
 import com.wt.yc.englishread.R
+import com.wt.yc.englishread.base.Config
 import com.wt.yc.englishread.base.Constant
 import com.wt.yc.englishread.base.ItemClickListener
 import com.wt.yc.englishread.base.ProV4Fragment
+import com.wt.yc.englishread.info.BookInfo
 import com.wt.yc.englishread.info.Info
+import com.wt.yc.englishread.info.QuestionInfo
 import com.wt.yc.englishread.main.activity.MainPageActivity
 import com.wt.yc.englishread.main.adapter.MuLuAdapter
 import com.wt.yc.englishread.main.adapter.TextChooseAdapter
+import com.xin.lv.yang.utils.utils.HttpUtils
 import com.xin.lv.yang.utils.view.AdTextView
 import kotlinx.android.synthetic.main.test_details_fragment.*
 import kotlinx.android.synthetic.main.view_pager_test.view.*
+import org.json.JSONObject
 import java.lang.StringBuilder
+import java.util.*
+import kotlin.collections.HashMap
 
 
 /**
- * 测试详情fragment 页面
+ * 测试详情fragment 页面  开始答题
  */
 class TestDetailsFragment : ProV4Fragment() {
 
     override fun handler(msg: Message) {
         val str = msg.obj as String
         when (msg.what) {
+            Config.GET_TEST_CODE -> {
+                val json = JSONObject(str)
+                val status = json.optBoolean(Config.STATUS)
+
+                if (status) {
+                    val data = json.optString(Config.DATA)
+                    val info = gson!!.fromJson<Info>(data, Info::class.java)
+
+                    questionArr = info.video!!
+
+                    initTestViewPager()
+                    showTime()
+                }
+            }
+
+            1234 -> {
+
+                if (indexTime != 0) {
+                    indexTime--
+                }
+
+                tvTestTime.text = "${indexTime / 60}分 ${indexTime % 60}秒"
+
+            }
+
+            Config.FINISH_CODE -> {
+
+                indexTime = 0
+                removeLoadDialog()
+
+                val json = JSONObject(str)
+                val status = json.optBoolean(Config.STATUS)
+
+                if (status) {
+
+                    fragmentManager!!.popBackStackImmediate("TestDetailsFragment", 0)
+                    (activity as MainPageActivity).toWhere(Constant.ANSWER_RESULT, null)
+
+                }
+            }
+        }
+    }
+
+    var timeStr = "6分钟"
+    val timer = Timer()
+    var indexTime = 6 * 60
+
+    private fun showTime() {
+
+        tvTestTime.text = timeStr
+
+        val timerTask = object : TimerTask() {
+            override fun run() {
+                val message = handler!!.obtainMessage()
+                message.what = 1234
+                message.obj = ""
+                handler!!.sendMessage(message)
+
+            }
 
         }
+
+        timer.schedule(timerTask, 0, 1000)
+
     }
 
 
@@ -43,10 +113,22 @@ class TestDetailsFragment : ProV4Fragment() {
         return inflater.inflate(R.layout.test_details_fragment, container, false)
     }
 
+
+    /**
+     * 0 为单元测试     1 为生词测试
+     */
+    var testCode: Int = 1
+    var unitInfo: BookInfo? = null
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        initTestViewPager()
-        tvTitle.text = "单元测试"
+
+        tvTitle.text = when (testCode) {
+            0 -> "单元测试"
+            1 -> "生词测试"
+            else -> ""
+        }
+
         tvName.text = "第一单元"
 
         initClick()
@@ -54,12 +136,39 @@ class TestDetailsFragment : ProV4Fragment() {
         initRightMuLu()
 
         getQuestList()
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 
     /**
      * 获取问题列表
      */
     private fun getQuestList() {
+        getTestList()
+    }
+
+
+    private fun getTestList() {
+        val json = JSONObject()
+        json.put("uid", uid)
+        json.put("token", token)
+        json.put("type", when (testCode) {
+            0 -> "unit"
+            1 -> "sc"
+            2 -> ""
+            else -> ""
+        })
+
+        if (testCode == 0) {
+            json.put("unit_id", unitInfo!!.id)
+        }
+
+        HttpUtils.getInstance().postJson(Config.GET_TEST_URL, json.toString(), Config.GET_TEST_CODE, handler)
+
 
     }
 
@@ -110,13 +219,21 @@ class TestDetailsFragment : ProV4Fragment() {
         }
 
         btPost.setOnClickListener {
-            val str = buildArr(answerArr)
+            timer.cancel()
+
+            val str = buildArr(answerMap)
+
+            val json = JSONObject()
+            json.put("uid", uid)
+            json.put("token", token)
+            json.put("arr", str)
+
+            json.put("time", 6 * 60 - indexTime)
+
+            HttpUtils.getInstance().postJson(Config.FINISH_TEST_URL, json.toString(), Config.FINISH_CODE, handler)
+            showLoadDialog(activity!!, "交卷中")
 
             log("wwwwwww------$str")
-
-            fragmentManager!!.popBackStackImmediate("TestDetailsFragment", 0)
-
-            (activity as MainPageActivity).toWhere(Constant.ANSWER_RESULT, null)
 
         }
 
@@ -126,19 +243,13 @@ class TestDetailsFragment : ProV4Fragment() {
         }
     }
 
-    private fun buildArr(answerArr: ArrayList<Info>): String {
-        val sb = StringBuilder()
-        val len = answerArr.size
-
-        for (i in answerArr.indices) {
-            val temp = answerArr[i]
-            sb.append(temp.answer)
-            if (i < len - 1) {
-                sb.append(",")
-            }
+    private fun buildArr(answerArr: HashMap<Int, String>): String {
+        val json = JSONObject()
+        for (temp in answerArr) {
+            json.put(temp.key.toString(), temp.value)
         }
+        return json.toString()
 
-        return sb.toString()
     }
 
     /**
@@ -149,12 +260,12 @@ class TestDetailsFragment : ProV4Fragment() {
     /**
      * 答案数组
      */
-    val answerArr = arrayListOf<Info>()
+    val answerMap = hashMapOf<Int, String>()
 
     /**
      * 问题数组信息
      */
-    val questionArr: ArrayList<Info> = arrayListOf(Info(), Info(), Info(), Info(), Info())
+    var questionArr: ArrayList<QuestionInfo> = arrayListOf()
 
     private fun initTestViewPager() {
 
@@ -162,30 +273,31 @@ class TestDetailsFragment : ProV4Fragment() {
 
             val view = layoutInflater.inflate(R.layout.view_pager_test, null)
 
-            view.rb1.text = "测试题一"
-            view.rb2.text = "测试题二"
-            view.rb3.text = "测试题三"
-            view.rb4.text = "测试题四"
+            view.tvTestName.text = temp.number.toString()
+            view.tvTestYinBiao.text = temp.ipa
+            val answerArr = temp.answer
 
-            view.radioGroup.setOnCheckedChangeListener { p0, p1 ->
-                when (p1) {
-                    R.id.rb1 -> {
-                        temp.answer = "A"
-                    }
-                    R.id.rb2 -> {
-                        temp.answer = "B"
-                    }
-                    R.id.rb3 -> {
-                        temp.answer = "C"
-                    }
-                    R.id.rb4 -> {
-                        temp.answer = "D"
-                    }
+            view.rb1.text = answerArr!![0].dn
+            view.rb2.text = answerArr[1].dn
+            view.rb3.text = answerArr[2].dn
+            view.rb4.text = answerArr[3].dn
 
-                }
+            view.ivVoicePlay.setOnClickListener {
+                playVoice(activity!!, Config.IP + temp.title)
             }
 
-            checkArr(temp)
+            view.radioGroup.setOnCheckedChangeListener { p0, p1 ->
+                val number = temp.number
+                when (p1) {
+                    R.id.rb1 -> answerMap[number] = answerArr[0].dn
+                    R.id.rb2 -> answerMap[number] = answerArr[1].dn
+                    R.id.rb3 -> answerMap[number] = answerArr[2].dn
+                    R.id.rb4 -> answerMap[number] = answerArr[3].dn
+                }
+
+
+            }
+
 
             viewPagerList.add(view)
         }
@@ -212,24 +324,6 @@ class TestDetailsFragment : ProV4Fragment() {
         }
     }
 
-    private fun checkArr(temp: Info) {
-        val num = isExit(answerArr, temp)
-
-        if (num != -1) {
-
-            val info = answerArr[num]
-            answerArr.removeAt(num)
-
-            info.answer = temp.answer
-
-            answerArr.add(num, info)
-
-        } else {
-            answerArr.add(temp)
-        }
-
-
-    }
 
     private fun isExit(answerArr: ArrayList<Info>, temp: Info): Int {
         for (i in answerArr.indices) {

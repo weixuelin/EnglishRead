@@ -344,12 +344,13 @@ class ReviewFragment : ProV4Fragment() {
         vv.tvContent.text = info.english
         vv.tvYuTi.text = "[${info.ipa}]"
         vv.tvWordYiSi.text = ""
+
         val eng = info.english_example
         val chn = info.chinese_example
 
         if (eng != null && eng != "null" && eng != "") {
-            if (chn != null && chn != "null" && chn != "") {
 
+            if (chn != null && chn != "null" && chn != "") {
                 vv.tvLiFanYi.text = "$eng\n$chn"
             } else {
                 vv.tvLiFanYi.text = eng
