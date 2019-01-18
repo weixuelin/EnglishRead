@@ -175,7 +175,14 @@ class MainPageActivity : ProActivity() {
      * 返回上一个界面
      */
     fun backTo() {
-        customViewPager.currentItem = lastIndexPosition
+        val pp = customViewPager.currentItem
+        val ff = oneFragmentList[pp]
+        if (ff is PageFragment) {
+            finish()
+        } else {
+            customViewPager.currentItem = lastIndexPosition
+        }
+
 
     }
 
@@ -281,6 +288,7 @@ class MainPageActivity : ProActivity() {
      */
     private fun loginOut() {
         Share.clearUser(this)
+        startActivity(Intent(this, LoginActivity::class.java))
 
     }
 
@@ -724,6 +732,8 @@ class MainPageActivity : ProActivity() {
             return if (ff is TestDetailsFragment) {
 
                 Log.i("result", "不能退出---")
+
+                showToastShort("正在测试")
 
                 ff.indexTime != 0
 

@@ -2,10 +2,7 @@ package com.wt.yc.englishread.main.fragment.study
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.os.Message
-import android.support.v4.view.PagerAdapter
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -26,6 +23,7 @@ import kotlinx.android.synthetic.main.review_view.view.*
 import kotlinx.android.synthetic.main.study_head.*
 import org.json.JSONObject
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class ReviewFragment : ProV4Fragment() {
@@ -54,9 +52,16 @@ class ReviewFragment : ProV4Fragment() {
 
                 if (indexTime <= 0) {
                     timer!!.cancel()
-                    tvTextTime.text = "0"
+
+                    if (tvTextTime != null) {
+                        tvTextTime.text = "0"
+                    }
+
                 } else {
-                    tvTextTime.text = indexTime.toString()
+                    if (tvTextTime != null) {
+                        tvTextTime.text = indexTime.toString()
+                    }
+
                 }
             }
 
@@ -110,7 +115,7 @@ class ReviewFragment : ProV4Fragment() {
 
     override fun onStop() {
         super.onStop()
-        if(timer!=null){
+        if (timer != null) {
             timer!!.cancel()
         }
 
@@ -135,17 +140,25 @@ class ReviewFragment : ProV4Fragment() {
         threeArr.addAll(firstArr)
 
         initFirstList()
-
         initTime()
+
     }
 
     var timer: Timer? = null
     var timerTask: TimerTask? = null
+
     var indexTime = 10
 
 
     private fun initTime() {
+        indexTime = 10
+
+        if(timer!=null){
+            timer!!.cancel()
+        }
+
         timer = Timer()
+
         timerTask = object : TimerTask() {
             override fun run() {
                 val message = handler!!.obtainMessage()
@@ -162,6 +175,9 @@ class ReviewFragment : ProV4Fragment() {
      * 获取第二阶段的测试信息
      */
     private fun getTwoList() {
+        oneIndexNum = 0
+        indexCode = 2
+
         initTwoList()
 
     }
@@ -170,13 +186,16 @@ class ReviewFragment : ProV4Fragment() {
      * 获取第三阶段的测试信息
      */
     private fun getThreeList() {
+
+        oneIndexNum = 0
+        indexCode = 3
+
         initThreeList()
 
     }
 
-    val finishWordList = arrayListOf<BookInfo>()
-
-    var vList: ArrayList<View> = arrayListOf()
+    val finishWordList: HashMap<String, BookInfo> = hashMapOf()
+    val threeHashMap: HashMap<String, BookInfo> = hashMapOf()
 
     var firstArr = arrayListOf<BookInfo>()
 
@@ -184,9 +203,9 @@ class ReviewFragment : ProV4Fragment() {
 
     val threeArr = arrayListOf<BookInfo>()
 
-    var indexView = 0
 
     var indexCode = 1
+
     /**
      * 输入的单词
      */
@@ -199,9 +218,7 @@ class ReviewFragment : ProV4Fragment() {
             when (indexCode) {
                 1 -> {
 
-                    val number = reviewViewPager.currentItem
-
-                    if (number == firstArr.size - 1) {
+                    if (oneIndexNum == firstArr.size) {
 
                         showTiDialog()
 
@@ -209,13 +226,9 @@ class ReviewFragment : ProV4Fragment() {
 
                     } else {
 
-                        indexView++
-                        reviewViewPager.currentItem = indexView
-
-                        indexTime = 10
+                        addOneView(firstArr[oneIndexNum])
 
                         initTime()
-
                         buttonNext.visibility = View.GONE
 
                     }
@@ -223,21 +236,18 @@ class ReviewFragment : ProV4Fragment() {
 
                 2 -> {
 
-                    val number = reviewViewPager.currentItem
-
-                    if (number == twoArr.size - 1) {
+                    if (oneIndexNum == twoArr.size) {
                         showThreeDialog()
                     } else {
-                        indexView++
-                        reviewViewPager.currentItem = indexView
+
+                        addTwo(twoArr[oneIndexNum])
+                        initTime()
                     }
                 }
 
                 3 -> {
 
-                    val index = reviewViewPager.currentItem
-
-                    if (index == threeArr.size - 1) {
+                    if (oneIndexNum == threeArr.size) {
                         // 提交数据
                         save()
 
@@ -245,7 +255,7 @@ class ReviewFragment : ProV4Fragment() {
 
                         if (inputStr != "") {
 
-                            val info = threeArr[index]
+                            val info = threeArr[oneIndexNum]
 
                             if (info.english == inputStr) {
                                 info.status = 1
@@ -254,11 +264,14 @@ class ReviewFragment : ProV4Fragment() {
                                 info.status = 0
                             }
 
-                            finishWordList.add(info)
 
-                            indexView++
-                            reviewViewPager.currentItem = indexView
+                            val endTime = 10 - indexTime
+                            info.time = endTime.toString()
+
+                            threeHashMap[info.id.toString()] = info
+
                             initTime()
+                            addThree(info)
 
                         } else {
                             showShortToast(activity!!, "请输入单词")
@@ -283,10 +296,12 @@ class ReviewFragment : ProV4Fragment() {
         json.put("token", token)
         json.put("study_data", buildList())
         HttpUtils.getInstance().postJson(Config.FINISH_REVIRE_URL, json.toString(), Config.FINISH_CODE, handler!!)
+        showLoadDialog(activity!!, "提交中")
 
     }
 
     private fun buildList(): String? {
+
 
         return gson!!.toJson("")
 
@@ -302,8 +317,6 @@ class ReviewFragment : ProV4Fragment() {
 
                     getThreeList()
 
-                    indexView = 0
-                    indexCode = 3
                 }.show()
 
 
@@ -316,29 +329,31 @@ class ReviewFragment : ProV4Fragment() {
 
         builder.setMessage("进入第二阶段，逆向思维阶段").setTitle("提示")
                 .setPositiveButton("确定") { _, _ ->
+
                     getTwoList()
-                    indexView = 0
-                    indexCode = 2
+
                 }.show()
 
     }
 
+    /**
+     * 计数
+     */
+    var oneIndexNum = 0
 
     /**
      * 初始化第一阶段
      */
     private fun initFirstList() {
-        vList.clear()
 
-        for (i in firstArr.indices) {
-            addOneView(firstArr[i])
-        }
+        addOneView(firstArr[oneIndexNum])
 
-        reviewViewPager.adapter = firstAdapter
     }
 
 
     private fun addOneView(info: BookInfo) {
+        reviewLinearLayout.removeAllViews()
+
         val vv = layoutInflater.inflate(R.layout.review_view, null)
 
         vv.tvContent.text = info.english
@@ -364,11 +379,12 @@ class ReviewFragment : ProV4Fragment() {
             vv.reviewImageView.setImageResource(R.drawable.true_pic)
             vv.tvWordYiSi.text = info.chinese
 
-            if (!isExist(finishWordList, info)) {
-                val endTime = System.currentTimeMillis()
-                info.time = ""
-                finishWordList.add(info)
-            }
+            val endTime = 10 - indexTime
+
+            info.time = endTime.toString()
+
+            finishWordList[info.id.toString()] = info
+
             buttonNext.visibility = View.VISIBLE
         }
 
@@ -377,10 +393,6 @@ class ReviewFragment : ProV4Fragment() {
             vv.tvWordYiSi.text = info.chinese
 
             firstArr.add(info)
-
-            addOneView(info)
-
-            firstAdapter.notifyDataSetChanged()
 
             buttonNext.visibility = View.VISIBLE
 
@@ -395,7 +407,9 @@ class ReviewFragment : ProV4Fragment() {
             playVoice(activity!!, Config.IP + info.video)
         }
 
-        vList.add(vv)
+        reviewLinearLayout.addView(vv)
+
+        oneIndexNum++
 
     }
 
@@ -409,194 +423,120 @@ class ReviewFragment : ProV4Fragment() {
 
     }
 
-    val firstAdapter = object : PagerAdapter() {
-        override fun isViewFromObject(view: View, `object`: Any): Boolean {
-            return view == `object`
-        }
-
-        override fun getCount(): Int = vList.size
-
-        override fun instantiateItem(container: ViewGroup, position: Int): Any {
-            container.addView(vList[position])
-            return vList[position]
-        }
-
-        override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-            container.removeView(vList[position])
-        }
-
-    }
-
-
-    private fun toNextOne() {
-        voiceFilePath = null
-        indexView++
-        indexTime = 10
-        if (indexView == firstArr.size) {
-            getTwoList()
-        } else {
-            reviewViewPager.currentItem = indexView
-
-            initTime()
-        }
-    }
-
-
-    private fun toThreeOne() {
-        indexView++
-        if (indexView == twoArr.size) {
-            getThreeList()
-        } else {
-            reviewViewPager.currentItem = indexView
-        }
-
-    }
 
     /**
      * 初始化第二阶段
      */
     private fun initTwoList() {
 
-        vList.clear()
-
         val str = "${rfInfo!!.unit_name} 第二阶段"
         tvTopName.text = str
-        indexView = 0
 
-        for (i in 0 until twoArr.size) {
-            val twoView = layoutInflater.inflate(R.layout.review_two_view, null)
-            val info = twoArr[i]
-            twoView.tvTwoContent.text = info.english
-            twoView.tvTwoYuTi.text = "[${info.ipa}]"
-            twoView.tvTwoWordYiSi.text = info.chinese
-            val eng = info.english_example
-            val chn = info.chinese_example
+        addTwo(twoArr[oneIndexNum])
 
-            if (eng != null && eng != "null" && eng != "") {
-                if (chn != null && chn != "null" && chn != "") {
+    }
 
-                    twoView.tvTwoLiFanYi.text = "$eng\n$chn"
-                } else {
-                    twoView.tvTwoLiFanYi.text = eng
-                }
+    fun addTwo(info: BookInfo) {
+        reviewLinearLayout.removeAllViews()
 
+        val twoView = layoutInflater.inflate(R.layout.review_two_view, null)
+        twoView.tvTwoContent.text = info.english
+        twoView.tvTwoYuTi.text = "[${info.ipa}]"
+        twoView.tvTwoWordYiSi.text = info.chinese
+        val eng = info.english_example
+        val chn = info.chinese_example
+
+        if (eng != null && eng != "null" && eng != "") {
+            if (chn != null && chn != "null" && chn != "") {
+
+                twoView.tvTwoLiFanYi.text = "$eng\n$chn"
             } else {
-                twoView.tvTwoLiFanYi.text = ""
+                twoView.tvTwoLiFanYi.text = eng
             }
 
+        } else {
+            twoView.tvTwoLiFanYi.text = ""
+        }
 
-            twoView.imageTwoPlay.setOnClickListener {
-                playVoice(activity!!, Config.IP + info.video)
 
-            }
-
-            twoView.linearTwoSure.setOnClickListener {
-                val number = reviewViewPager.currentItem
-
-                if (number == twoArr.size - 1) {
-                    showThreeDialog()
-                } else {
-                    indexView++
-                    reviewViewPager.currentItem = indexView
-                }
-
-            }
-
-            twoView.linearTwoError.setOnClickListener {
-                val number = reviewViewPager.currentItem
-
-                if (number == twoArr.size - 1) {
-                    showThreeDialog()
-                } else {
-                    indexView++
-                    reviewViewPager.currentItem = indexView
-                }
-
-            }
-
-            twoView.linearTwoAgain.setOnClickListener {
-                playVoice(activity!!, Config.IP + info.video)
-            }
-
-            vList.add(twoView)
+        twoView.imageTwoPlay.setOnClickListener {
+            playVoice(activity!!, Config.IP + info.video)
 
         }
 
-        reviewViewPager.adapter = object : PagerAdapter() {
-            override fun isViewFromObject(view: View, `object`: Any): Boolean {
-                return view == `object`
-            }
+        twoView.linearTwoSure.setOnClickListener {
 
-            override fun getCount(): Int = vList.size
-
-            override fun instantiateItem(container: ViewGroup, position: Int): Any {
-                container.addView(vList[position])
-                return vList[position]
-            }
-
-            override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-                container.removeView(vList[position])
+            if (oneIndexNum == twoArr.size) {
+                showThreeDialog()
+            } else {
+                addTwo(twoArr[oneIndexNum])
             }
 
         }
+
+        twoView.linearTwoError.setOnClickListener {
+            if (oneIndexNum == twoArr.size) {
+                showThreeDialog()
+            } else {
+                addTwo(twoArr[oneIndexNum])
+            }
+        }
+
+        twoView.linearTwoAgain.setOnClickListener {
+            playVoice(activity!!, Config.IP + info.video)
+        }
+
+        reviewLinearLayout.addView(twoView)
+
+        oneIndexNum++
+
+
     }
 
     /**
      * 初始化第三阶段
      */
     private fun initThreeList() {
-        vList.clear()
 
         val str = "${rfInfo!!.unit_name} 第三阶段"
         tvTopName.text = str
-        indexView = 0
 
-        for (i in 0 until threeArr.size) {
-            val info = threeArr[i]
+        oneIndexNum = 0
 
-            val threeView = layoutInflater.inflate(R.layout.review_three_view, null)
+        addThree(threeArr[0])
 
-            threeView.tvThreeYuTi.text = "[${info.ipa}]"
-            threeView.tvThreeWordYiSi.text = info.chinese
-            threeView.inPutEditText.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(p0: Editable?) {
-                }
-
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                }
-
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    inputStr = threeView.inPutEditText.text.toString()
-                }
-
-            })
+    }
 
 
-            threeView.imageThreePlay.setOnClickListener {
-                playVoice(activity!!, Config.IP + info.video)
+    fun addThree(info: BookInfo) {
+
+        initTime()
+        reviewLinearLayout.removeAllViews()
+
+        val threeView = layoutInflater.inflate(R.layout.review_three_view, null)
+
+        threeView.tvThreeYuTi.text = "[${info.ipa}]"
+        threeView.tvThreeWordYiSi.text = info.chinese
+        threeView.inPutEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
             }
 
-            vList.add(threeView)
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
 
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                inputStr = threeView.inPutEditText.text.toString()
+            }
+
+        })
+
+
+        threeView.imageThreePlay.setOnClickListener {
+            playVoice(activity!!, Config.IP + info.video)
         }
 
-        reviewViewPager.adapter = object : PagerAdapter() {
-            override fun isViewFromObject(view: View, `object`: Any): Boolean {
-                return view == `object`
-            }
-
-            override fun getCount(): Int = vList.size
-
-            override fun instantiateItem(container: ViewGroup, position: Int): Any {
-                container.addView(vList[position])
-                return vList[position]
-            }
-
-            override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-                container.removeView(vList[position])
-            }
-
-        }
+        reviewLinearLayout.addView(threeView)
+        oneIndexNum++
 
     }
 }

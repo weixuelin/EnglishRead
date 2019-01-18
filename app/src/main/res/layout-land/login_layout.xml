@@ -60,6 +60,8 @@
                 android:layout_marginLeft="@dimen/dp_12"
                 android:background="@null"
                 android:hint="请输入账号"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:textColor="@color/write"
                 android:textColorHint="@color/write"
                 android:textSize="@dimen/sp_14" />
@@ -93,6 +95,9 @@
                 android:layout_marginLeft="@dimen/dp_12"
                 android:background="@null"
                 android:hint="请输入密码"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:inputType="textPassword"
                 android:textColor="@color/write"
                 android:textColorHint="@color/write"
                 android:textSize="@dimen/sp_14" />
@@ -126,6 +131,8 @@
                 android:layout_marginLeft="@dimen/dp_12"
                 android:layout_weight="1"
                 android:background="@null"
+                android:singleLine="true"
+                android:ellipsize="end"
                 android:hint="请输入验证码"
                 android:textColor="@color/write"
                 android:textColorHint="@color/write"

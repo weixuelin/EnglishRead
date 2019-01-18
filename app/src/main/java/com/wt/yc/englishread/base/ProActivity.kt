@@ -70,7 +70,6 @@ abstract class ProActivity : AppCompatActivity() {
 
 //        if (Build.VERSION.SDK_INT >= 21) {
 //            StatusBarUtil.transparencyBar(this)
-//
 //            StatusBarUtil.setStatusBarLightMode(window, true)
 //
 //        }
@@ -509,27 +508,8 @@ abstract class ProActivity : AppCompatActivity() {
                         a.showToastShort("提交失败，请稍后再试")
                     }
 
-
                     else -> {
-
-                        val str = msg.obj as String
-                        val json = JSONObject(str)
-                        val code = json.optInt("code")
-
-                        if (code == 501) {
-
-                            a.showToastShort(json.optString("msg"))
-
-                            /// 重启app
-                            val i: Intent = a.baseContext.packageManager.getLaunchIntentForPackage(a.baseContext.packageName)
-                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                            a.startActivity(i)
-
-                            App.exit()
-
-                        } else {
-                            a.handler(msg)
-                        }
+                        a.handler(msg)
 
                     }
 
@@ -537,6 +517,13 @@ abstract class ProActivity : AppCompatActivity() {
 
             }
         }
+    }
+
+
+    fun openApp(){
+        val i: Intent = packageManager.getLaunchIntentForPackage(packageName)
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(i)
     }
 
 

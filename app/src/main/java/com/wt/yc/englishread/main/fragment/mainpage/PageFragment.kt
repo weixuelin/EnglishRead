@@ -100,6 +100,8 @@ class PageFragment : ProV4Fragment() {
                         tvLevelFen.text = "[$target]"
                     }
 
+                } else {
+                    showShortToast(activity!!, json.optString("msg"))
                 }
             }
         }
