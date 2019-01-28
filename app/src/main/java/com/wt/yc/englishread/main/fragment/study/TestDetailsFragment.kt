@@ -41,6 +41,7 @@ class TestDetailsFragment : ProV4Fragment() {
 
     override fun handler(msg: Message) {
         val str = msg.obj as String
+
         when (msg.what) {
             Config.GET_TEST_CODE -> {
                 val json = JSONObject(str)
@@ -52,8 +53,20 @@ class TestDetailsFragment : ProV4Fragment() {
 
                     questionArr = info.video!!
 
-                    initTestViewPager()
-                    showTime()
+                    if (questionArr.size != 0) {
+                        initTestViewPager()
+                        showTime()
+                    } else {
+                        indexTime = 0
+                        (activity as MainPageActivity).isTestCode = false
+
+                    }
+
+                } else {
+
+                    indexTime = 0
+                    (activity as MainPageActivity).isTestCode = false
+
                 }
             }
 
@@ -63,7 +76,10 @@ class TestDetailsFragment : ProV4Fragment() {
                     indexTime--
                 }
 
-                tvTestTime.text = "${indexTime / 60}分 ${indexTime % 60}秒"
+                if (tvTestTime != null) {
+                    tvTestTime.text = "${indexTime / 60}分 ${indexTime % 60}秒"
+                }
+
 
             }
 
@@ -75,18 +91,51 @@ class TestDetailsFragment : ProV4Fragment() {
                 val json = JSONObject(str)
                 val status = json.optBoolean(Config.STATUS)
 
+                showShortToast(activity!!, json.optString(Config.MSG))
+
                 if (status) {
 
                     fragmentManager!!.popBackStackImmediate("TestDetailsFragment", 0)
                     (activity as MainPageActivity).toWhere(Constant.ANSWER_RESULT, null)
 
                 }
+
+            }
+
+            Config.GET_STUDY_CODE -> {
+
+                val json = JSONObject(str)
+                val code = json.optInt(Config.CODE)
+                val state = json.optBoolean(Config.STATUS)
+                if (code == Config.SUCCESS && state) {
+                    val resultData = json.optJSONObject(Config.DATA)
+
+                    val bookUnit = resultData.optString("unit")
+                    val unitResultArr = gson!!.fromJson<ArrayList<BookInfo>>(bookUnit, object : TypeToken<ArrayList<BookInfo>>() {}.type)
+
+                    showMuLuAdapter(unitResultArr)
+
+                }
             }
         }
     }
 
+    private fun showMuLuAdapter(unitResultArr: ArrayList<BookInfo>?) {
+        this.muLuArr = unitResultArr!!
+        val arr = arrayListOf<String>()
+        for (temp in unitResultArr!!) {
+            arr.add(temp.unit_name)
+
+        }
+
+        muLuAdapter!!.updateDataClear(arr)
+
+
+    }
+
     var timeStr = "6分钟"
     val timer = Timer()
+
     var indexTime = 6 * 60
 
     private fun showTime() {
@@ -101,7 +150,6 @@ class TestDetailsFragment : ProV4Fragment() {
                 handler!!.sendMessage(message)
 
             }
-
         }
 
         timer.schedule(timerTask, 0, 1000)
@@ -113,23 +161,40 @@ class TestDetailsFragment : ProV4Fragment() {
         return inflater.inflate(R.layout.test_details_fragment, container, false)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+
+        indexTime = 0
+
+        if (timer != null) {
+            timer.cancel()
+        }
+    }
+
 
     /**
-     * 0 为单元测试     1 为生词测试
+     * 0 为单元测试     1 为生词测试    2 为本书测试，综合测试   3 为熟词测试
      */
     var testCode: Int = 1
+
     var unitInfo: BookInfo? = null
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        if (unitInfo != null) {
+            testCode = unitInfo!!.code
+        }
+
         tvTitle.text = when (testCode) {
             0 -> "单元测试"
             1 -> "生词测试"
+            2 -> "综合测试"
+            3 -> "熟词测试"
             else -> ""
         }
 
-        tvName.text = "第一单元"
+        tvName.text = ""
 
         initClick()
 
@@ -159,11 +224,12 @@ class TestDetailsFragment : ProV4Fragment() {
         json.put("type", when (testCode) {
             0 -> "unit"
             1 -> "sc"
-            2 -> ""
-            else -> ""
+            2 -> "zh"
+            3 -> "sx"
+            else -> "unit"
         })
 
-        if (testCode == 0) {
+        if (testCode == 0 && unitInfo != null) {
             json.put("unit_id", unitInfo!!.id)
         }
 
@@ -172,10 +238,28 @@ class TestDetailsFragment : ProV4Fragment() {
 
     }
 
+    var isVisibleCode = false
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        this.isVisibleCode = isVisibleToUser
+    }
+
     /**
      * 目录列表信息
      */
-    val muLuArr = arrayListOf("测试一", "测试二", "测试三", "测试四")
+    var muLuArr = arrayListOf<BookInfo>()
+
+    fun get() {
+        val json = JSONObject()
+        json.put("uid", uid)
+        json.put("token", token)
+        HttpUtils.getInstance().postJson(Config.GET_STUDY_URL, json.toString(), Config.GET_STUDY_CODE, handler)
+
+    }
+
+
+    var muLuAdapter: MuLuAdapter? = null
 
     /**
      * 初始化目录信息
@@ -183,11 +267,18 @@ class TestDetailsFragment : ProV4Fragment() {
     private fun initRightMuLu() {
         muLuRecyclerView.layoutManager = LinearLayoutManager(activity)
         muLuRecyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
-        val muLuAdapter = MuLuAdapter(activity!!, muLuArr)
+        muLuAdapter = MuLuAdapter(activity!!, arrayListOf())
         muLuRecyclerView.adapter = muLuAdapter
-        muLuAdapter.itemClickListener = object : ItemClickListener {
+        muLuAdapter!!.itemClickListener = object : ItemClickListener {
             override fun onItemClick(position: Int) {
                 drawerLayout.closeDrawer(Gravity.END)
+                testCode = 1
+                unitInfo = muLuArr[position]
+
+                questionArr.clear()
+
+                getQuestList()
+
             }
 
             override fun onLongClick(position: Int) {

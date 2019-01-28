@@ -121,9 +121,6 @@ class PageFragment : ProV4Fragment() {
             tvFuXiStudyNum.text = info.fx
         }
 
-
-//        setTextData(zhlLineChart, 1, 2)
-
     }
 
     var studyArr1: Array<String>? = null
@@ -143,22 +140,34 @@ class PageFragment : ProV4Fragment() {
         if (studyLineChart != null) {
             setTextData(studyLineChart, 2, 2)
         }
-
-
     }
+
 
     /**
      * 显示单词统计
      */
     private fun showCountArr(countBookArr: ArrayList<BookInfo>?) {
-        bindData(countBookArr!!)
+
+        if (cxPieChart != null) {
+            if (countBookArr != null && countBookArr.size != 0) {
+                bindData(countBookArr)
+                cxPieChart.visibility = View.VISIBLE
+            } else {
+                cxPieChart.visibility = View.GONE
+            }
+        }
+
     }
 
+
+    var startBookInfo: BookInfo? = null
 
     /**
      * 显示学习的单词信息
      */
     private fun showBook1(book1: BookInfo?, book2: BookInfo?, book3: BookInfo?) {
+        this.startBookInfo = book1
+
         if (tvBookName != null) {
             tvBookName.text = book1!!.book_name
         }
@@ -221,32 +230,42 @@ class PageFragment : ProV4Fragment() {
         val w = scanW / 3
         val h = w * 4 / 5
 
-        val hh = w * 2 * 4 / 5
+        val hh = w
 
         linear1.layoutParams = LinearLayout.LayoutParams(w, h)
 
-        linear2.layoutParams = LinearLayout.LayoutParams(w, h)
+        linear2.layoutParams = LinearLayout.LayoutParams(w - 8, h)
         setMargen(linear2, 8)
 
-        linear3.layoutParams = LinearLayout.LayoutParams(w, h)
+        cxPieChart.layoutParams = FrameLayout.LayoutParams(w - 20, h - 20)
+
+        val paddingW = resources.getDimension(R.dimen.dp_20).toInt()
+
+        linear3.layoutParams = LinearLayout.LayoutParams(w - paddingW, h)
         setMargen(linear3, 8)
 
         linear4.layoutParams = LinearLayout.LayoutParams(w * 2, hh)
-        linear5.layoutParams = LinearLayout.LayoutParams(w, hh)
+        setMargen(linear4, 8)
+
+        linear5.layoutParams = LinearLayout.LayoutParams(w - paddingW, hh)
+        setMargen(linear5, 8)
 
         linear6.layoutParams = LinearLayout.LayoutParams(w * 2, hh)
+        setMargen(linear6, 8)
 
-        timeIndexLayout.layoutParams = LinearLayout.LayoutParams(w, hh / 2 - 40)
+        val ww40 = resources.getDimension(R.dimen.dp_40).toInt()
 
-        progressLatout.layoutParams = LinearLayout.LayoutParams(w, hh / 2 - 40)
-        setMargenTop(progressLatout, 6)
+        timeIndexLayout.layoutParams = LinearLayout.LayoutParams(w - paddingW, hh / 2)
 
-        linear7.layoutParams = LinearLayout.LayoutParams(w, h)
+        progressLatout.layoutParams = LinearLayout.LayoutParams(w - paddingW, hh / 2)
+        setMargenTop(progressLatout, 8)
+
+        linear7.layoutParams = LinearLayout.LayoutParams(w - paddingW, hh)
         setMargen(linear7, 8)
 
         linear8.layoutParams = LinearLayout.LayoutParams(w * 2, hh)
 
-        linear9.layoutParams = LinearLayout.LayoutParams(w, LinearLayout.LayoutParams.WRAP_CONTENT)
+        linear9.layoutParams = LinearLayout.LayoutParams(w - paddingW, LinearLayout.LayoutParams.WRAP_CONTENT)
         setMargen(linear9, 8)
 
     }
@@ -254,7 +273,8 @@ class PageFragment : ProV4Fragment() {
     private fun initClick() {
         buttonContinue.setOnClickListener {
             /// 继续学习
-            (activity as MainPageActivity).toWhere(Constant.MAIN_STADUY_CODE, BookInfo())
+            startBookInfo!!.code = 1
+            (activity as MainPageActivity).toWhere(Constant.STUDY_REVIEW, startBookInfo)
 
         }
 
@@ -303,11 +323,13 @@ class PageFragment : ProV4Fragment() {
     }
 
 
+    var paiMingNum = 1
+
     /**
      * 显示排名dialog
      */
     private fun showNumDialog() {
-        val paiText = "排名第 224 名"
+        val paiText = "排名第 ${paiMingNum} 名"
         val view = layoutInflater.inflate(R.layout.pai_number_dialog, null)
         val sp = SpannableString(paiText)
 
@@ -791,7 +813,7 @@ class PageFragment : ProV4Fragment() {
         cxPieChart.setUsePercentValues(true)
         //设置饼图右下角的文字描述
         val des = Description()
-        des.text = "统计"
+        des.text = ""
         cxPieChart.description = des
         //是否显示圆盘中间文字，默认显示
         cxPieChart.setDrawCenterText(false)
@@ -849,7 +871,7 @@ class PageFragment : ProV4Fragment() {
         dataSet.colors = colors
 
         dataSet.valueTextColor = Color.BLACK
-        dataSet.valueTextSize = activity!!.resources.getDimension(R.dimen.sp_8)
+        dataSet.valueTextSize = activity!!.resources.getDimension(R.dimen.sp_6)
         dataSet.valueTypeface = Typeface.DEFAULT_BOLD
 
         /// 是否在图上显示数值
@@ -873,7 +895,7 @@ class PageFragment : ProV4Fragment() {
         //设置以百分比显示
         data.setValueFormatter(PercentFormatter())
         //区域文字的大小
-        data.setValueTextSize(activity!!.resources.getDimension(R.dimen.sp_8))
+        data.setValueTextSize(activity!!.resources.getDimension(R.dimen.sp_6))
         //设置区域文字的颜色
         data.setValueTextColor(Color.BLACK)
         //设置区域文字的字体

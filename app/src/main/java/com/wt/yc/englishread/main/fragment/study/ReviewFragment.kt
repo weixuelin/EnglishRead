@@ -1,6 +1,7 @@
 package com.wt.yc.englishread.main.fragment.study
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.os.Bundle
 import android.os.Message
 import android.text.Editable
@@ -16,17 +17,21 @@ import com.wt.yc.englishread.base.ProV4Fragment
 import com.wt.yc.englishread.info.BookInfo
 import com.wt.yc.englishread.main.activity.MainPageActivity
 import com.xin.lv.yang.utils.utils.HttpUtils
+import kotlinx.android.synthetic.main.finish_dialog.view.*
 import kotlinx.android.synthetic.main.review_fragment.*
 import kotlinx.android.synthetic.main.review_three_view.view.*
 import kotlinx.android.synthetic.main.review_two_view.view.*
 import kotlinx.android.synthetic.main.review_view.view.*
 import kotlinx.android.synthetic.main.study_head.*
+import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 
 class ReviewFragment : ProV4Fragment() {
+
     var rfInfo: BookInfo? = null
 
     /**
@@ -66,6 +71,7 @@ class ReviewFragment : ProV4Fragment() {
             }
 
             Config.REVIRE_CODE -> {
+
                 val json = JSONObject(str)
                 val code = json.optInt(Config.CODE)
                 if (code == Config.SUCCESS) {
@@ -82,11 +88,71 @@ class ReviewFragment : ProV4Fragment() {
 
                     }
 
-                    getOneList()
+                    if (firstArr != null && firstArr.size != 0) {
+                        getOneList()
+                    } else {
+                        if (isVisibleCode) {
+                            showToastShort(activity!!, "暂无学习单次，请重新开始学习!!")
+                        }
+
+                    }
 
                 }
             }
+
+            Config.FINISH_CODE -> {
+
+                removeLoadDialog()
+                val json = JSONObject(str)
+
+                if (json != null) {
+
+                    val num = json.optInt("num")
+                    val gold = json.optInt("gold")
+
+                    showFinish(num, gold)
+
+                }
+
+            }
         }
+    }
+
+
+    /**
+     * 今日目标完成弹出dialog
+     */
+    private fun showFinish(num: Int, gold: Int) {
+
+        val view = layoutInflater.inflate(R.layout.finish_dialog, null)
+        val textViewTi = view.textViewTi
+        textViewTi.text = "学习单词数${num}\n获得金币${gold}"
+
+        val dialog: Dialog = Dialog(activity, R.style.style)
+        dialog.setContentView(view)
+        dialog.setCancelable(false)
+        dialog.show()
+        setAlpha(activity!!, 0.6f)
+
+        view.imageClose.setOnClickListener {
+            dialog.dismiss()
+            setAlpha(activity!!, 1f)
+
+            (activity!! as MainPageActivity).backTo()
+        }
+
+        view.buttonFinish.setOnClickListener {
+            dialog.dismiss()
+            setAlpha(activity!!, 1f)
+
+            (activity!! as MainPageActivity).backTo()
+        }
+
+
+        dialog.setOnDismissListener {
+            setAlpha(activity!!, 1f)
+        }
+
     }
 
 
@@ -113,20 +179,42 @@ class ReviewFragment : ProV4Fragment() {
 
     }
 
+
+    var isVisibleCode = false
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        isVisibleCode = isVisibleToUser
+    }
+
+
     override fun onStop() {
         super.onStop()
         if (timer != null) {
             timer!!.cancel()
         }
-
     }
 
     fun get() {
+
+        firstArr.clear()
+
         val json = JSONObject()
         json.put("uid", uid)
         json.put("token", token)
-        json.put("id", rfInfo!!.id)
-        json.put("type", "new_word")
+
+        json.put("id", if (rfInfo!!.code == 1) {
+            rfInfo!!.book_id
+        } else {
+            rfInfo!!.id
+        })
+
+        json.put("type", if (rfInfo!!.code == 1) {
+            "go_on"
+        } else {
+            "new_word"
+        })
+
         HttpUtils.getInstance().postJson(Config.REVIEW_WORD_URL, json.toString(), Config.REVIRE_CODE, handler)
     }
 
@@ -134,10 +222,13 @@ class ReviewFragment : ProV4Fragment() {
      * 获取第一阶段的测试信息
      */
     private fun getOneList() {
+        twoArr.clear()
+        threeArr.clear()
 
         twoArr.addAll(firstArr)
-
         threeArr.addAll(firstArr)
+
+        oneIndexNum = 0
 
         initFirstList()
         initTime()
@@ -147,13 +238,16 @@ class ReviewFragment : ProV4Fragment() {
     var timer: Timer? = null
     var timerTask: TimerTask? = null
 
+    /**
+     * 当前定时时间
+     */
     var indexTime = 10
 
 
     private fun initTime() {
         indexTime = 10
 
-        if(timer!=null){
+        if (timer != null) {
             timer!!.cancel()
         }
 
@@ -188,14 +282,22 @@ class ReviewFragment : ProV4Fragment() {
     private fun getThreeList() {
 
         oneIndexNum = 0
+
         indexCode = 3
 
         initThreeList()
 
     }
 
-    val finishWordList: HashMap<String, BookInfo> = hashMapOf()
-    val threeHashMap: HashMap<String, BookInfo> = hashMapOf()
+    /**
+     * 第一阶段答案
+     */
+    val finishWordList: ArrayList<BookInfo> = arrayListOf()
+
+    /**
+     * 第三阶段答案
+     */
+    val threeHashMap: ArrayList<BookInfo> = arrayListOf()
 
     var firstArr = arrayListOf<BookInfo>()
 
@@ -214,17 +316,20 @@ class ReviewFragment : ProV4Fragment() {
     private fun initClick() {
 
         buttonNext.setOnClickListener {
-
             when (indexCode) {
                 1 -> {
 
-                    if (oneIndexNum == firstArr.size) {
+                    isFirstClickError = false
+
+                    if (oneIndexNum == firstArr.size - 1) {
 
                         showTiDialog()
 
                         timer!!.cancel()
 
                     } else {
+
+                        oneIndexNum++
 
                         addOneView(firstArr[oneIndexNum])
 
@@ -236,9 +341,13 @@ class ReviewFragment : ProV4Fragment() {
 
                 2 -> {
 
-                    if (oneIndexNum == twoArr.size) {
+                    if (oneIndexNum == twoArr.size - 1) {
+
                         showThreeDialog()
+
                     } else {
+
+                        oneIndexNum++
 
                         addTwo(twoArr[oneIndexNum])
                         initTime()
@@ -247,9 +356,9 @@ class ReviewFragment : ProV4Fragment() {
 
                 3 -> {
 
-                    if (oneIndexNum == threeArr.size) {
+                    if (oneIndexNum == threeArr.size - 1) {
                         // 提交数据
-                        save()
+                        showSave()
 
                     } else {
 
@@ -257,21 +366,25 @@ class ReviewFragment : ProV4Fragment() {
 
                             val info = threeArr[oneIndexNum]
 
-                            if (info.english == inputStr) {
+                            Log.i("result", "------" + info.english + "------" + inputStr)
+
+                            if (info.english.trim() == inputStr.trim()) {
+
                                 info.status = 1
 
                             } else {
                                 info.status = 0
+                                threeArr.add(info)
                             }
-
 
                             val endTime = 10 - indexTime
                             info.time = endTime.toString()
 
-                            threeHashMap[info.id.toString()] = info
+                            threeHashMap.add(info)
 
-                            initTime()
-                            addThree(info)
+                            oneIndexNum++
+
+                            addThree(threeArr[oneIndexNum])
 
                         } else {
                             showShortToast(activity!!, "请输入单词")
@@ -287,6 +400,22 @@ class ReviewFragment : ProV4Fragment() {
         }
     }
 
+
+    /**
+     * 提示是否保存
+     */
+    private fun showSave() {
+
+        val build = AlertDialog.Builder(activity!!)
+        build.setMessage("复习结束，是否保存？？").setPositiveButton("保存") { dialog, _ ->
+            save()
+            dialog.dismiss()
+        }.setNegativeButton("取消") { _, _ ->
+            (activity!! as MainPageActivity).backTo()
+        }.show()
+
+    }
+
     /**
      * 保存数据
      */
@@ -300,10 +429,48 @@ class ReviewFragment : ProV4Fragment() {
 
     }
 
-    private fun buildList(): String? {
 
+    private fun buildList(): JSONArray? {
 
-        return gson!!.toJson("")
+        val arrList1 = JSONArray()
+        val arrList2 = JSONArray()
+
+        for (temp in finishWordList) {
+            val json = JSONObject()
+            json.put("word_id", temp.id.toString())
+            json.put("status", temp.status.toString())
+            json.put("time", temp.time)
+            json.put("unit_id", if (rfInfo!!.code == 1) {
+                rfInfo!!.book_id.toString()
+            } else {
+                rfInfo!!.id.toString()
+            })
+
+            arrList1.put(json)
+
+        }
+
+        for (temp in threeHashMap) {
+            val json = JSONObject()
+            json.put("word_id", temp.id.toString())
+            json.put("status", temp.status.toString())
+            json.put("time", temp.time)
+            json.put("unit_id", if (rfInfo!!.code == 1) {
+                rfInfo!!.book_id.toString()
+            } else {
+                rfInfo!!.id.toString()
+            })
+
+            arrList2.put(json)
+
+        }
+
+        val jsArr = JSONArray()
+
+        jsArr.put(arrList1)
+        jsArr.put(arrList2)
+
+        return jsArr
 
     }
 
@@ -345,15 +512,20 @@ class ReviewFragment : ProV4Fragment() {
      * 初始化第一阶段
      */
     private fun initFirstList() {
+        oneIndexNum = 0
 
         addOneView(firstArr[oneIndexNum])
 
     }
 
+    /**
+     * 第一次是否点击不记得
+     */
+    var isFirstClickError = false
 
     private fun addOneView(info: BookInfo) {
-        reviewLinearLayout.removeAllViews()
 
+        reviewLinearLayout.removeAllViews()
         val vv = layoutInflater.inflate(R.layout.review_view, null)
 
         vv.tvContent.text = info.english
@@ -376,21 +548,59 @@ class ReviewFragment : ProV4Fragment() {
         }
 
         vv.linearSure.setOnClickListener {
+
             vv.reviewImageView.setImageResource(R.drawable.true_pic)
             vv.tvWordYiSi.text = info.chinese
 
             val endTime = 10 - indexTime
-
             info.time = endTime.toString()
+            info.status = 1
 
-            finishWordList[info.id.toString()] = info
+            val index = isExist(finishWordList, info)
+
+            if (index != -1) {
+
+                ///  存在
+                finishWordList.removeAt(index)
+
+                finishWordList.add(index, info)
+
+                if (isFirstClickError) {
+
+                    firstArr.removeAt(firstArr.size - 1)
+
+                    isFirstClickError = false
+
+                }
+
+            } else {
+                /// 不存在
+                finishWordList.add(info)
+            }
 
             buttonNext.visibility = View.VISIBLE
+
         }
 
         vv.linearError.setOnClickListener {
             vv.reviewImageView.setImageResource(R.drawable.forget)
             vv.tvWordYiSi.text = info.chinese
+
+            isFirstClickError = true
+
+            val endTime = 10 - indexTime
+            info.time = endTime.toString()
+            info.status = 0
+
+            val index = isExist(finishWordList, info)
+
+            if (index != -1) {
+                ///  存在改变数据
+                finishWordList.removeAt(index)
+                finishWordList.add(index, info)
+            } else {
+                finishWordList.add(info)
+            }
 
             firstArr.add(info)
 
@@ -409,17 +619,16 @@ class ReviewFragment : ProV4Fragment() {
 
         reviewLinearLayout.addView(vv)
 
-        oneIndexNum++
-
     }
 
-    private fun isExist(finishWordList: ArrayList<BookInfo>, info: BookInfo): Boolean {
-        for (temp in finishWordList) {
+    private fun isExist(finishWordList: ArrayList<BookInfo>, info: BookInfo): Int {
+        for (i in finishWordList.indices) {
+            val temp = finishWordList[i]
             if (temp.id == info.id) {
-                return true
+                return i
             }
         }
-        return false
+        return -1
 
     }
 
@@ -437,9 +646,11 @@ class ReviewFragment : ProV4Fragment() {
     }
 
     fun addTwo(info: BookInfo) {
+
         reviewLinearLayout.removeAllViews()
 
         val twoView = layoutInflater.inflate(R.layout.review_two_view, null)
+
         twoView.tvTwoContent.text = info.english
         twoView.tvTwoYuTi.text = "[${info.ipa}]"
         twoView.tvTwoWordYiSi.text = info.chinese
@@ -447,9 +658,11 @@ class ReviewFragment : ProV4Fragment() {
         val chn = info.chinese_example
 
         if (eng != null && eng != "null" && eng != "") {
+
             if (chn != null && chn != "null" && chn != "") {
 
                 twoView.tvTwoLiFanYi.text = "$eng\n$chn"
+
             } else {
                 twoView.tvTwoLiFanYi.text = eng
             }
@@ -488,8 +701,6 @@ class ReviewFragment : ProV4Fragment() {
 
         reviewLinearLayout.addView(twoView)
 
-        oneIndexNum++
-
 
     }
 
@@ -508,7 +719,12 @@ class ReviewFragment : ProV4Fragment() {
     }
 
 
+    /**
+     * 添加第三阶段的数据
+     */
     fun addThree(info: BookInfo) {
+
+        inputStr = ""
 
         initTime()
         reviewLinearLayout.removeAllViews()
@@ -517,8 +733,11 @@ class ReviewFragment : ProV4Fragment() {
 
         threeView.tvThreeYuTi.text = "[${info.ipa}]"
         threeView.tvThreeWordYiSi.text = info.chinese
+
         threeView.inPutEditText.addTextChangedListener(object : TextWatcher {
+
             override fun afterTextChanged(p0: Editable?) {
+
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -536,7 +755,6 @@ class ReviewFragment : ProV4Fragment() {
         }
 
         reviewLinearLayout.addView(threeView)
-        oneIndexNum++
 
     }
 }

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/write_kuang_line"
+    android:padding="@dimen/dp_8"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="熟悉词:123"
+        android:drawableLeft="@drawable/pic_point1"
+        android:drawablePadding="@dimen/dp_4"
+        android:textSize="@dimen/sp_10" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="夹生词:123"
+        android:drawableLeft="@drawable/pic_point2"
+        android:drawablePadding="@dimen/dp_4"
+        android:textSize="@dimen/sp_10" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="陌生词:123"
+        android:drawableLeft="@drawable/pic_point3"
+        android:drawablePadding="@dimen/dp_4"
+        android:textSize="@dimen/sp_10" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="熟悉词:123"
+        android:drawableLeft="@drawable/pic_point4"
+        android:drawablePadding="@dimen/dp_4"
+        android:textSize="@dimen/sp_10" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="夹生词:123"
+        android:drawableLeft="@drawable/pic_point5"
+        android:drawablePadding="@dimen/dp_4"
+        android:textSize="@dimen/sp_10" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="陌生词:123"
+        android:drawableLeft="@drawable/pic_point6"
+        android:drawablePadding="@dimen/dp_4"
+        android:textSize="@dimen/sp_10" />
+
+</LinearLayout>

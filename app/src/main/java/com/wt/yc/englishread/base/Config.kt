@@ -73,7 +73,7 @@ class Config {
         /**
          * 完成复习
          */
-        val FINISH_REVIRE_URL = "$IP/app/student/word"
+        val FINISH_REVIRE_URL = "$IP/app/student/end"
         val FINISH_CODE = 10
 
         /**
@@ -98,7 +98,7 @@ class Config {
         /**
          * 交卷
          */
-        val FINISH_TEST_URL="$IP/app/student/post_paper"
+        val FINISH_TEST_URL = "$IP/app/student/post_paper"
 
 
     }

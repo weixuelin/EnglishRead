@@ -14,6 +14,7 @@ class Constant {
          * 学习复习
          */
         val STUDY_REVIEW = 1
+
         /**
          * 学习测试选择
          */

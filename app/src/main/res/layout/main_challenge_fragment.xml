@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/study_head" />
+
+    <android.support.v4.widget.NestedScrollView
+        style="@style/margin8"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:columnCount="3">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/write_kuang"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/dp_8"
+                app:layout_columnWeight="1">
+
+                <TextView
+                    android:id="@+id/tvK1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="口语应用"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <TextView
+                    android:id="@+id/tvLianXiCi1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvK1"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:drawableLeft="@drawable/blue_point"
+                    android:drawablePadding="@dimen/dp_4"
+                    android:text="联系单词"
+                    android:textColor="@color/a585858"
+                    android:textSize="@dimen/sp_10" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvLianXiCi1"
+                    android:drawableLeft="@drawable/red_point"
+                    android:drawablePadding="@dimen/dp_4"
+                    android:text="掌握单词"
+                    android:textColor="@color/a585858"
+                    android:textSize="@dimen/sp_10" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_toRightOf="@id/tvK1">
+
+
+                    <com.wt.yc.englishread.view.CustomRoundImageView
+                        android:id="@+id/roundImageView1"
+                        android:layout_width="@dimen/dp_50"
+                        android:layout_height="@dimen/dp_50"
+                        android:layout_gravity="center_vertical"
+                        app:max_circle_color="@color/red" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="50%"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+                </FrameLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:background="@drawable/write_kuang"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/dp_8"
+                app:layout_columnWeight="1">
+
+                <TextView
+                    android:id="@+id/tvK2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="选词填空"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <TextView
+                    android:id="@+id/tvLianXiCi2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvK2"
+                    android:drawableLeft="@drawable/blue_point"
+                    android:drawablePadding="@dimen/dp_4"
+                    android:text="联系单词"
+                    android:textColor="@color/a585858"
+                    android:textSize="@dimen/sp_10" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvLianXiCi2"
+                    android:drawableLeft="@drawable/red_point"
+                    android:drawablePadding="@dimen/dp_4"
+                    android:text="掌握单词"
+                    android:textColor="@color/a585858"
+                    android:textSize="@dimen/sp_10" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_toRightOf="@id/tvK2">
+
+                    <com.wt.yc.englishread.view.CustomRoundImageView
+                        android:id="@+id/roundImageView2"
+                        android:layout_width="@dimen/dp_50"
+                        android:layout_height="@dimen/dp_50"
+                        android:layout_gravity="center_vertical"
+                        app:max_circle_color="@color/zi" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="50%"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+
+                </FrameLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:background="@drawable/write_kuang"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/dp_8"
+                app:layout_columnWeight="1">
+
+                <TextView
+                    android:id="@+id/tvK3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="单项选择"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <TextView
+                    android:id="@+id/tvLianXiCi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvK3"
+                    android:drawableLeft="@drawable/blue_point"
+                    android:drawablePadding="@dimen/dp_4"
+                    android:text="联系单词"
+                    android:textColor="@color/a585858"
+                    android:textSize="@dimen/sp_10" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tvLianXiCi"
+                    android:drawableLeft="@drawable/red_point"
+                    android:drawablePadding="@dimen/dp_4"
+                    android:text="掌握单词"
+                    android:textColor="@color/a585858"
+                    android:textSize="@dimen/sp_10" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp_20"
+                    android:layout_toRightOf="@id/tvK3">
+
+                    <com.wt.yc.englishread.view.CustomRoundImageView
+                        android:id="@+id/roundImageView3"
+                        android:layout_width="@dimen/dp_50"
+                        android:layout_height="@dimen/dp_50"
+                        android:layout_gravity="center_vertical"
+                        app:max_circle_color="@color/green" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="50%"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+
+
+                </FrameLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/llLayout1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/write_kuang"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp_10"
+                app:layout_columnWeight="1">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:src="@drawable/lock" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="短文填空"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llLayout2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/write_kuang"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp_10"
+                app:layout_columnWeight="1">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:src="@drawable/lock" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="阅读理解"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llLayout3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/write_kuang"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp_10"
+                app:layout_columnWeight="1">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:src="@drawable/lock" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="语法填空"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llLayout4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/write_kuang"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp_10"
+                app:layout_columnWeight="1">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:src="@drawable/lock" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="完型填空"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llLayout5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/write_kuang"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp_10"
+                app:layout_columnWeight="1">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:src="@drawable/lock" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="短文改错"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llLayout6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/write_kuang"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp_10"
+                app:layout_columnWeight="1">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:src="@drawable/lock" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="翻译句子"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llLayout7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@drawable/write_kuang"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp_10"
+                app:layout_columnWeight="1">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:src="@drawable/lock" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_8"
+                    android:text="七  选  五"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+            </LinearLayout>
+
+
+        </android.support.v7.widget.GridLayout>
+
+
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

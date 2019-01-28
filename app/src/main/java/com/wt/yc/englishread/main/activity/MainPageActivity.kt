@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.util.Log
 import android.view.KeyEvent
+import android.widget.LinearLayout
 import com.wt.yc.englishread.R
 import com.wt.yc.englishread.base.*
 import com.wt.yc.englishread.info.BookInfo
@@ -120,6 +121,9 @@ class MainPageActivity : ProActivity() {
 
         setContentView(R.layout.main_page_layout)
 
+        val ww = resources.getDimension(R.dimen.dp_120).toInt()
+        pageLeadRecyclerView.layoutParams = LinearLayout.LayoutParams(ww, LinearLayout.LayoutParams.WRAP_CONTENT)
+
         initLoadAdapter()
 
         initCustomViewPager()
@@ -177,12 +181,11 @@ class MainPageActivity : ProActivity() {
     fun backTo() {
         val pp = customViewPager.currentItem
         val ff = oneFragmentList[pp]
-        if (ff is PageFragment) {
+        if (ff is PageFragment || ff is StudyFragment || ff is NewWordFragment || ff is BookRackFragment) {
             finish()
         } else {
             customViewPager.currentItem = lastIndexPosition
         }
-
 
     }
 
@@ -428,7 +431,11 @@ class MainPageActivity : ProActivity() {
                 pageLeadRecyclerView.collapseGroup(lastIndexNum)
                 adapter!!.updateSonNoClick(lastIndexNum)
 
-                mainJoup(p2)
+                if (isTestCode) {
+                    showToastShort("正在进行测试！！")
+                } else {
+                    mainJoup(p2)
+                }
 
                 true
             }
@@ -436,9 +443,12 @@ class MainPageActivity : ProActivity() {
 
         pageLeadRecyclerView.setOnChildClickListener { p0, p1, p2, p3, p4 ->
 
-            adapter!!.twoUpdate(p2, p3)
-
-            toSonJoup(p2, p3)
+            if (isTestCode) {
+                showToastShort("正在进行测试！！")
+            } else {
+                adapter!!.twoUpdate(p2, p3)
+                toSonJoup(p2, p3)
+            }
 
             true
         }
@@ -487,6 +497,9 @@ class MainPageActivity : ProActivity() {
             }
 
             3 -> {
+
+                isTestCode = true
+
                 when (p3) {
                     0 -> {
                         ///  智能测试  生词测试
@@ -500,18 +513,18 @@ class MainPageActivity : ProActivity() {
 
                     1 -> {
                         ///  智能测试 熟词测试
-                        val f2 = oneFragmentList[6] as UnitTestFragment
-                        f2.title = "熟词测试"
+                        val f2 = oneFragmentList[10] as TestDetailsFragment
+                        f2.testCode = 3
 
-                        customViewPager.currentItem = 6
+                        customViewPager.currentItem = 10
 
                     }
 
                     2 -> {
                         ///  智能测试 综合测试
-                        val f3 = oneFragmentList[6] as UnitTestFragment
-                        f3.title = "综合测试"
-                        customViewPager.currentItem = 6
+                        val f3 = oneFragmentList[10] as TestDetailsFragment
+                        f3.testCode = 2
+                        customViewPager.currentItem = 10
                     }
 
                     3 -> {
@@ -635,11 +648,14 @@ class MainPageActivity : ProActivity() {
      */
     fun toWhere(code: Int, info: BookInfo?) {
 
+        lastIndexPosition = customViewPager.currentItem
+
         when (code) {
 
             Constant.STUDY_REVIEW -> {
-                /// 复习界面
 
+                /// 复习界面
+                ///  ReviewFragment
                 val rf = oneFragmentList[5] as ReviewFragment
                 rf.rfInfo = info
                 customViewPager.currentItem = 5
@@ -649,8 +665,9 @@ class MainPageActivity : ProActivity() {
 
             Constant.STUDY_TEST -> {
                 /// 测试内容选择
+                isTestCode = true
+
                 val ff = oneFragmentList[10] as TestDetailsFragment
-                ff.testCode = 0
                 ff.unitInfo = info
                 customViewPager.currentItem = 10
 
@@ -685,8 +702,13 @@ class MainPageActivity : ProActivity() {
             }
 
             Constant.ANSWER_RESULT -> {
+
                 /// 答题完成后的成绩
-                customViewPager.currentItem = 11
+                isTestCode = false
+
+                backTo()
+
+///                customViewPager.currentItem = 11
 
             }
 
@@ -716,15 +738,22 @@ class MainPageActivity : ProActivity() {
                 val studyFragment = oneFragmentList[15] as StudyFragment
                 studyFragment.bookInfo = info
 
-                //  StudyFragment
+                ///  StudyFragment
                 customViewPager.currentItem = 15
 
             }
         }
     }
 
+
+    /**
+     * 是否正在进行单元测试  true  正在测试   false 测试完成
+     */
+    var isTestCode = false
+
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event!!.action == KeyEvent.ACTION_DOWN) {
+        if (keyCode == KeyEvent.KEYCODE_BACK &&
+                event!!.action == KeyEvent.ACTION_DOWN) {
 
             val pp = customViewPager.currentItem
             val ff = oneFragmentList[pp]
@@ -733,9 +762,16 @@ class MainPageActivity : ProActivity() {
 
                 Log.i("result", "不能退出---")
 
-                showToastShort("正在测试")
+                if (isTestCode) {
 
-                ff.indexTime != 0
+                    showToastShort("正在测试")
+
+                    true
+
+                } else {
+
+                    false
+                }
 
             } else {
 
@@ -747,7 +783,8 @@ class MainPageActivity : ProActivity() {
 
             }
         }
-        return onKeyDown(keyCode, event)
+
+        return false
 
     }
 }

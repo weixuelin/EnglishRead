@@ -49,8 +49,8 @@
 
             <ImageView
                 android:id="@+id/reviewTwoImageView"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_50"
                 android:layout_gravity="center_horizontal"
                 android:src="@drawable/forget" />
 
@@ -82,9 +82,10 @@
 
                 <ImageView
                     android:id="@+id/reviewTwoTrue"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/forget" />
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:clickable="true"
+                    android:src="@drawable/true_pic" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -107,9 +108,10 @@
 
                 <ImageView
                     android:id="@+id/reviewTwoError"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@drawable/true_pic" />
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:clickable="true"
+                    android:src="@drawable/forget" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -132,8 +134,9 @@
 
                 <ImageView
                     android:id="@+id/reviewTwoAgain"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:clickable="true"
                     android:src="@drawable/ting_again" />
 
                 <TextView

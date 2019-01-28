@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Message
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,12 +39,13 @@ class StudyFragment : ProV4Fragment() {
         return inflater.inflate(R.layout.study_fragment_layout, container, false)
     }
 
-    var bookInfo:BookInfo?=null
+    var bookInfo: BookInfo? = null
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        if(bookInfo!=null){
-            tvStudyBookName.text=bookInfo!!.book_name
+
+        if (bookInfo != null) {
+            tvStudyBookName.text = bookInfo!!.book_name
         }
 
         initAdapter()
@@ -64,8 +66,14 @@ class StudyFragment : ProV4Fragment() {
     }
 
     private fun initClick() {
-        tvTestBook.setOnClickListener {
-            (activity as MainPageActivity).toWhere(Constant.STUDY_TEST, null)
+
+        testLinearLayout.setOnClickListener {
+
+            Log.i("result", "book------$bookInfo")
+
+            bookInfo!!.code = 2
+
+            (activity as MainPageActivity).toWhere(Constant.STUDY_TEST, bookInfo)
         }
     }
 
@@ -292,7 +300,11 @@ class StudyFragment : ProV4Fragment() {
             }
 
             override fun onTest(position: Int) {
-                (activity as MainPageActivity).toWhere(Constant.STUDY_TEST, list[position])
+
+                val info = list[position]
+                info.code = 0
+                (activity as MainPageActivity).toWhere(Constant.STUDY_TEST, info)
+
             }
 
             override fun onDictation(position: Int) {
@@ -320,6 +332,7 @@ class StudyFragment : ProV4Fragment() {
                     val resultData = json.optJSONObject(Config.DATA)
                     val resultBook = resultData.optString("book")
                     val book = gson!!.fromJson<BookInfo>(resultBook, BookInfo::class.java)
+
                     showBook(book)
 
                     val bookUnit = resultData.optString("unit")
@@ -327,6 +340,8 @@ class StudyFragment : ProV4Fragment() {
 
                     studyAdapter!!.updateDataClear(unitResultArr)
                     finishAdapter!!.updateDataClear(unitResultArr)
+
+                    showIsAllTest(unitResultArr)
 
                     val unitName = resultData.optString("unit_name")
                     val sxWord = resultData.optString("sx")
@@ -353,16 +368,39 @@ class StudyFragment : ProV4Fragment() {
 
     }
 
+    private fun showIsAllTest(unitResultArr: ArrayList<BookInfo>?) {
+
+        var indexNum = 0
+
+        for (temp in unitResultArr!!) {
+            if (temp.status == 1) {
+                indexNum++
+            }
+        }
+
+        if (testLinearLayout != null) {
+
+            if (indexNum == unitResultArr.size - 1) {
+
+                testLinearLayout.visibility = View.VISIBLE
+
+            } else {
+                testLinearLayout.visibility = View.GONE
+            }
+        }
+
+    }
+
     private fun showDetails(bookDetails: BookInfo?) {
-        if(tvMingCiNum!=null){
+        if (tvMingCiNum != null) {
             tvMingCiNum.text = bookDetails!!.zpm.toString()
         }
 
-        if(tvChaJu!=null){
+        if (tvChaJu != null) {
             tvChaJu.text = bookDetails!!.cj.toString()
         }
 
-        if(tvTodayNum!=null){
+        if (tvTodayNum != null) {
             tvTodayNum.text = bookDetails!!.study_word.toString()
         }
 
@@ -385,7 +423,12 @@ class StudyFragment : ProV4Fragment() {
     }
 
 
+    /**
+     * 显示书籍
+     */
     private fun showBook(book: BookInfo?) {
+        this.bookInfo = book
+
         if (tvStudyBookName != null) {
             tvStudyBookName.text = book!!.book_name
         }

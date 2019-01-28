@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
-    android:background="@color/line">
+    android:background="@color/line"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -221,10 +220,9 @@
 
                     <com.github.mikephil.charting.charts.PieChart
                         android:id="@+id/cxPieChart"
-                        android:layout_width="@dimen/dp_80"
-                        android:layout_height="@dimen/dp_80"
-                        android:layout_gravity="center_horizontal"
-                        />
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal" />
 
                 </FrameLayout>
 
@@ -310,7 +308,6 @@
         </LinearLayout>
 
         <LinearLayout
-            style="@style/margin4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -318,10 +315,8 @@
             <!-- 学习-->
             <LinearLayout
                 android:id="@+id/linear4"
-                style="@style/margin4"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_160"
-                android:layout_marginTop="@dimen/dp_6"
                 android:layout_span="2"
                 android:background="@drawable/write_kuang"
                 android:orientation="vertical"
@@ -420,11 +415,9 @@
             <!-- 时间，进度-->
             <LinearLayout
                 android:id="@+id/linear5"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_6"
-                android:orientation="vertical"
-                android:padding="@dimen/dp_6">
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:id="@+id/timeIndexLayout"
@@ -437,16 +430,16 @@
                         android:id="@+id/tvIndexTime"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/sp_10"
-                        android:textColor="@color/black" />
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_10" />
 
                     <TextView
                         android:id="@+id/tvIndexWeek"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:textSize="@dimen/sp_10"
-                        android:textColor="@color/black1" />
+                        android:textColor="@color/black1"
+                        android:textSize="@dimen/sp_10" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -471,8 +464,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="我的课本完成情况"
-                        android:textSize="@dimen/sp_10"
-                        android:textColor="@color/text_color" />
+                        android:textColor="@color/text_color"
+                        android:textSize="@dimen/sp_10" />
 
                     <FrameLayout
                         android:id="@+id/picFrameLayout"
@@ -509,9 +502,9 @@
         </LinearLayout>
 
         <LinearLayout
-            style="@style/margin4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_4"
             android:orientation="horizontal">
 
             <!-- 转换量趋势-->
@@ -624,7 +617,6 @@
             <!-- 攻防战-->
             <LinearLayout
                 android:id="@+id/linear7"
-                style="@style/margin4"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_160"
                 android:layout_marginTop="@dimen/dp_6"
@@ -687,7 +679,6 @@
             <!--智能测试-->
             <LinearLayout
                 android:id="@+id/linear8"
-                style="@style/margin4"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_160"
                 android:background="@drawable/write_kuang"
@@ -728,7 +719,6 @@
             <!--成长经历-->
             <LinearLayout
                 android:id="@+id/linear9"
-                style="@style/margin4"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_160"
                 android:background="@drawable/write_kuang"

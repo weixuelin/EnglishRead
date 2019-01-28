@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="@dimen/dp_290"
+        android:layout_height="wrap_content"
+        android:background="@drawable/blue_kuang_top"
+        android:padding="@dimen/dp_8">
+
+        <TextView
+            android:id="@+id/tvPaiTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:textColor="@color/write"
+            android:textSize="@dimen/sp_10" />
+
+        <ImageView
+            android:id="@+id/paiClose"
+            android:layout_width="@dimen/dp_14"
+            android:layout_height="@dimen/dp_14"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_10"
+            android:src="@drawable/finish_close" />
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="@dimen/dp_290"
+        android:layout_height="@dimen/dp_120"
+        android:background="@drawable/write_kuang_bottom"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="本赛季共228个单词"
+                    android:textColor="@color/a9f9fa0"
+                    android:textSize="@dimen/sp_10" />
+
+                <TextView
+                    android:id="@+id/tvPaiMing"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:gravity="center_horizontal"
+                    android:text="排名第 240 名"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/logo" />
+
+            </FrameLayout>
+
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/paiBtQure"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/blue_kuang_yuan"
+            android:text="确定"
+            android:textColor="@color/write"
+            android:textSize="14sp" />
+
+
+    </LinearLayout>
+
+</LinearLayout>
