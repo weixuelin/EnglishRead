@@ -34,29 +34,29 @@
                 android:textSize="@dimen/sp_16" />
 
             <TextView
+                android:id="@+id/testUserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="100dp"
                 android:layout_marginTop="8dp"
-                android:text="杨洋  同学:"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_12" />
 
             <TextView
+                android:id="@+id/testUserScore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="100dp"
                 android:layout_marginTop="8dp"
-                android:text="          杨洋  同学:"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_12" />
 
             <TextView
+                android:id="@+id/testUserTi"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="100dp"
                 android:layout_marginTop="8dp"
-                android:text="          杨洋  同学:"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_12" />
 
@@ -79,6 +79,7 @@
                     android:layout_width="66dp"
                     android:layout_height="66dp"
                     android:layout_gravity="center"
+                    android:visibility="gone"
                     android:src="@drawable/next_blue" />
 
                 <TextView
@@ -87,7 +88,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:text="恋词英语研究会"
                     android:textColor="@color/black"
                     android:textSize="@dimen/sp_10" />
 
@@ -112,6 +112,7 @@
                 android:textColor="@color/write" />
 
             <Button
+                android:id="@+id/btTestAgain"
                 android:layout_width="@dimen/dp_80"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_16"

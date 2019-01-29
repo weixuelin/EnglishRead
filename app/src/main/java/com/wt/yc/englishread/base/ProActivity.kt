@@ -36,6 +36,7 @@ import android.widget.ImageView
 import com.google.gson.Gson
 import com.wt.yc.englishread.App
 import com.wt.yc.englishread.R
+import com.wt.yc.englishread.user.LoginActivity
 import com.wt.yc.englishread.view.CustomPop
 import com.xin.lv.yang.utils.utils.ImageUtil
 import com.xin.lv.yang.utils.utils.StatusBarUtil
@@ -509,10 +510,17 @@ abstract class ProActivity : AppCompatActivity() {
                     }
 
                     else -> {
-                        a.handler(msg)
+                        val json = JSONObject(msg.obj as String)
+                        val message = json.optString("msg")
 
+                        if (message.contains("请登录")) {
+
+                            a.startActivity(Intent(a, LoginActivity::class.java))
+
+                        } else {
+                            a.handler(msg)
+                        }
                     }
-
                 }
 
             }
@@ -520,7 +528,7 @@ abstract class ProActivity : AppCompatActivity() {
     }
 
 
-    fun openApp(){
+    fun openApp() {
         val i: Intent = packageManager.getLaunchIntentForPackage(packageName)
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(i)
@@ -545,7 +553,12 @@ abstract class ProActivity : AppCompatActivity() {
                 transaction.hide(indexFragment).show(to).commit()     // 隐藏当前的fragment，显示下一个
             }
         } else {
-            transaction.add(resId, to, to.javaClass.name).commit()
+            if (to.isAdded) {
+                transaction.hide(indexFragment).replace(resId, to, to.javaClass.name).commit()
+            } else {
+                transaction.add(resId, to, to.javaClass.name).commit()
+            }
+
         }
 
         return to

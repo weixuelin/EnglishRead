@@ -1,5 +1,6 @@
 package com.wt.yc.englishread.user
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Message
 import com.wt.yc.englishread.R
@@ -7,6 +8,7 @@ import com.wt.yc.englishread.base.Config
 import com.wt.yc.englishread.base.ProActivity
 import com.wt.yc.englishread.base.Share
 import com.wt.yc.englishread.info.UserInfo
+import com.wt.yc.englishread.main.activity.MainPageActivity
 import com.xin.lv.yang.utils.utils.HttpUtils
 import com.xin.lv.yang.utils.utils.ImageCode
 import kotlinx.android.synthetic.main.login_layout.*
@@ -36,6 +38,8 @@ class LoginActivity : ProActivity() {
 
                     Share.saveTokenAndUid(this, userInfo)
 
+                    startActivity(Intent(this, MainPageActivity::class.java))
+
                     finish()
 
                 }
@@ -51,28 +55,38 @@ class LoginActivity : ProActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.login_layout)
 
-        val account = Share.getAccount(this)
-        etAccount.setText(account)
+        if (Share.getUid(this) != 0) {
 
-        val bitmap = ImageCode.getInstance().createBitmap()
-        code = ImageCode.getInstance().code
-        imageCode.setImageBitmap(bitmap)
-
-        imageCode.setOnClickListener {
-            val bb = ImageCode.getInstance().createBitmap()
-            code = ImageCode.getInstance().code
-            imageCode.setImageBitmap(bb)
-
-        }
-
-        imageBack.setOnClickListener {
+            startActivity(Intent(this, MainPageActivity::class.java))
             finish()
-        }
 
-        btLogin.setOnClickListener {
-            login()
+        } else {
+
+
+            setContentView(R.layout.login_layout)
+
+            val account = Share.getAccount(this)
+            etAccount.setText(account)
+
+            val bitmap = ImageCode.getInstance().createBitmap()
+            code = ImageCode.getInstance().code
+            imageCode.setImageBitmap(bitmap)
+
+            imageCode.setOnClickListener {
+                val bb = ImageCode.getInstance().createBitmap()
+                code = ImageCode.getInstance().code
+                imageCode.setImageBitmap(bb)
+
+            }
+
+            imageBack.setOnClickListener {
+                finish()
+            }
+
+            btLogin.setOnClickListener {
+                login()
+            }
         }
     }
 

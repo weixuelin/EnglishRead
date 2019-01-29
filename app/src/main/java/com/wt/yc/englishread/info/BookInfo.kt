@@ -33,6 +33,11 @@ class BookInfo() : Parcelable {
     var ipa: String = ""
     var english_example: String = ""
     var chinese_example: String = ""
+    var userName=""
+    var testTime=""
+    var score=""
+
+
 
     constructor(parcel: Parcel) : this() {
         book_id = parcel.readInt()

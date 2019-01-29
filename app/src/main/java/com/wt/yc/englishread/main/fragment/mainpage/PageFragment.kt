@@ -274,7 +274,7 @@ class PageFragment : ProV4Fragment() {
         buttonContinue.setOnClickListener {
             /// 继续学习
             startBookInfo!!.code = 1
-            (activity as MainPageActivity).toWhere(Constant.STUDY_REVIEW, startBookInfo)
+            (activity as MainPageActivity).toWhere(Constant.MAIN_STADUY_CODE, startBookInfo)
 
         }
 

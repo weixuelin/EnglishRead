@@ -142,6 +142,7 @@ abstract class ProV4Fragment : Fragment() {
         player = MediaPlayer()
         player!!.setDataSource(context, Uri.parse(voiceUrl))
         player!!.prepareAsync()
+
         player!!.setOnPreparedListener { mp ->
             mp.start()
         }

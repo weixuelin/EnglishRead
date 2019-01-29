@@ -21,8 +21,8 @@
             android:groupIndicator="@null"
             android:scrollbars="none" />
 
-        <com.wt.yc.englishread.view.CustomViewPager
-            android:id="@+id/customViewPager"
+        <FrameLayout
+            android:id="@+id/mainPageFrame"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/line" />

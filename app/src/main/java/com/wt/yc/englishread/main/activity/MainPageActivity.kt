@@ -5,8 +5,6 @@ import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Message
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentPagerAdapter
 import android.util.Log
 import android.view.KeyEvent
 import android.widget.LinearLayout
@@ -27,7 +25,6 @@ import com.wt.yc.englishread.main.fragment.study.*
 import com.wt.yc.englishread.user.LoginActivity
 import com.wt.yc.englishread.user.fragment.UserFragment
 import com.xin.lv.yang.utils.utils.HttpUtils
-import com.xin.lv.yang.utils.utils.ImageUtil
 import kotlinx.android.synthetic.main.main_page_layout.*
 import kotlinx.android.synthetic.main.main_top.*
 import kotlinx.android.synthetic.main.open_door.view.*
@@ -105,16 +102,14 @@ class MainPageActivity : ProActivity() {
 
         if (!isFinishing) {
 
-//            ImageUtil.getInstance().loadCircleImage(this, userPicHead, "", R.drawable.head_pic)
+////            ImageUtil.getInstance().loadCircleImage(this, userPicHead, "", R.drawable.head_pic)
 
             tvUserName.text = user!!.username
             tvAllMoney.text = user.gold
         }
 
-
     }
 
-    var lastIndexPosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,36 +137,19 @@ class MainPageActivity : ProActivity() {
     }
 
 
-    val testList = arrayListOf<ProV4Fragment>(StudyFragment())
-
-    /**
-     * 一级页面
-     */
-    val oneFragmentList = arrayListOf<ProV4Fragment>(
-            PageFragment(), StudyFragment(),
-            NewWordFragment(), BookRackFragment(),
-            UserFragment(), ReviewFragment(),
-            UnitTestFragment(), ListenChooseFragment(),
-            ListenWriteFragment(), ListenReadFragment(),
-            TestDetailsFragment(), AnswerFinishFragment(),
-            MainChallengeFragment(), MyGroupUpFragment(),
-            MyGroupUpFragment(), StudyFragment(),
-            AllTestGradeFragment(), StudyTimeFragment(),
-            WrongWordFragment(), IntelligenceTestFragment(),
-            KeyExerciseFragment(), LetterExerciseFragment(),
-            SoundmarkExerciseFragment(), HearingExerciseFragment(),
-            ReadExerciseFragment(), WritingExerciseFragment())
-
+    var indexFragment: ProV4Fragment? = null
 
     private fun initCustomViewPager() {
 
-        customViewPager.adapter = object : FragmentPagerAdapter(supportFragmentManager) {
-            override fun getItem(position: Int): Fragment = oneFragmentList[position]
+        val ttt = supportFragmentManager.beginTransaction()
 
-            override fun getCount(): Int = oneFragmentList.size
+        indexFragment = PageFragment()
 
-        }
-        customViewPager.currentItem = 0
+        ttt.addToBackStack("PageFragment")
+
+        indexFragment = switchContent(indexFragment!!, indexFragment!!, R.id.mainPageFrame, ttt)
+
+
     }
 
 
@@ -179,12 +157,25 @@ class MainPageActivity : ProActivity() {
      * 返回上一个界面
      */
     fun backTo() {
-        val pp = customViewPager.currentItem
-        val ff = oneFragmentList[pp]
-        if (ff is PageFragment || ff is StudyFragment || ff is NewWordFragment || ff is BookRackFragment) {
-            finish()
+
+        val fragmentNum = fragmentManager.backStackEntryCount
+
+        if (fragmentNum != 0) {
+            val backStack = supportFragmentManager.getBackStackEntryAt(fragmentNum - 1)
+            // 获取当前栈顶的Fragment的标记值
+            val tag = backStack.name
+
+            when (tag) {
+
+                "PageFragment", "StudyFragment", "TestDetailsFragment" -> finish()
+
+                else -> {
+                    supportFragmentManager.popBackStack()
+                }
+            }
+
         } else {
-            customViewPager.currentItem = lastIndexPosition
+            finish()
         }
 
     }
@@ -201,16 +192,24 @@ class MainPageActivity : ProActivity() {
         }
 
         tvUserName.setOnClickListener {
-            lastIndexPosition = customViewPager.currentItem
+            val tttt = supportFragmentManager.beginTransaction()
 
-            customViewPager.currentItem = 4
+            val fff = UserFragment()
+            tttt.addToBackStack("UserFragment")
+
+            indexFragment = switchContent(indexFragment!!, fff, R.id.mainPageFrame, tttt)
+
+
         }
 
         userPicHead.setOnClickListener {
 
-            lastIndexPosition = customViewPager.currentItem
+            val tttt = supportFragmentManager.beginTransaction()
 
-            customViewPager.currentItem = 4
+            val fff = UserFragment()
+            tttt.addToBackStack("UserFragment")
+
+            indexFragment = switchContent(indexFragment!!, fff, R.id.mainPageFrame, tttt)
 
         }
 
@@ -463,35 +462,52 @@ class MainPageActivity : ProActivity() {
 
         when (personId) {
             2 -> {
+                val tttt = supportFragmentManager.beginTransaction()
+
                 when (p3) {
                     0 -> {
 
-                        val fragment = oneFragmentList[13] as MyGroupUpFragment
+                        val fragment = MyGroupUpFragment()
                         fragment.code = 1
 
-                        customViewPager.currentItem = 13
+                        tttt.addToBackStack("MyGroupUpFragment")
+
+                        indexFragment = switchContent(indexFragment!!, fragment, R.id.mainPageFrame, tttt)
 
                     }
                     1 -> {
 
-                        val fragment = oneFragmentList[13] as MyGroupUpFragment
+                        tttt.addToBackStack("MyGroupUpFragment")
+                        val fragment = MyGroupUpFragment()
                         fragment.code = 2
-                        customViewPager.currentItem = 14
+                        indexFragment = switchContent(indexFragment!!, fragment, R.id.mainPageFrame, tttt)
+
                     }
+
                     2 -> {
 
-                        customViewPager.currentItem = 16
+                        tttt.addToBackStack("AllTestGradeFragment")
+                        val fragment = AllTestGradeFragment()
+
+                        indexFragment = switchContent(indexFragment!!, fragment, R.id.mainPageFrame, tttt)
+
                     }
+
                     3 -> {
 
-                        customViewPager.currentItem = 17
+                        tttt.addToBackStack("StudyTimeFragment")
+                        val fragment = StudyTimeFragment()
+
+                        indexFragment = switchContent(indexFragment!!, fragment, R.id.mainPageFrame, tttt)
 
 
                     }
                     4 -> {
+                        tttt.addToBackStack("WrongWordFragment")
 
-                        customViewPager.currentItem = 18
+                        val fragment = WrongWordFragment()
 
+                        indexFragment = switchContent(indexFragment!!, fragment, R.id.mainPageFrame, tttt)
                     }
                 }
             }
@@ -500,37 +516,47 @@ class MainPageActivity : ProActivity() {
 
                 isTestCode = true
 
+                val tttt = supportFragmentManager.beginTransaction()
+
                 when (p3) {
                     0 -> {
                         ///  智能测试  生词测试
-                        val f1 = oneFragmentList[10] as TestDetailsFragment
+                        val f1 = TestDetailsFragment()
+                        tttt.addToBackStack("TestDetailsFragment")
 
                         f1.testCode = 1
 
-                        customViewPager.currentItem = 10
+                        indexFragment = switchContent(indexFragment!!, f1, R.id.mainPageFrame, tttt)
 
                     }
 
                     1 -> {
                         ///  智能测试 熟词测试
-                        val f2 = oneFragmentList[10] as TestDetailsFragment
+                        val f2 = TestDetailsFragment()
                         f2.testCode = 3
 
-                        customViewPager.currentItem = 10
+                        tttt.addToBackStack("TestDetailsFragment")
+
+                        indexFragment = switchContent(indexFragment!!, f2, R.id.mainPageFrame, tttt)
 
                     }
 
                     2 -> {
                         ///  智能测试 综合测试
-                        val f3 = oneFragmentList[10] as TestDetailsFragment
+                        val f3 = TestDetailsFragment()
                         f3.testCode = 2
-                        customViewPager.currentItem = 10
+
+                        tttt.addToBackStack("TestDetailsFragment")
+
+                        indexFragment = switchContent(indexFragment!!, f3, R.id.mainPageFrame, tttt)
                     }
 
                     3 -> {
                         ///  智能测试 一测到底界面
 
-                        customViewPager.currentItem = 19
+                        val fff = IntelligenceTestFragment()
+                        tttt.addToBackStack("IntelligenceTestFragment")
+                        indexFragment = switchContent(indexFragment!!, fff, R.id.mainPageFrame, tttt)
 
                     }
                 }
@@ -548,34 +574,55 @@ class MainPageActivity : ProActivity() {
             }
 
             7 -> {
+
+
+                val tttt = supportFragmentManager.beginTransaction()
+
                 when (p3) {
                     0 -> {
 
-                        customViewPager.currentItem = 20
+                        val fff = KeyExerciseFragment()
+                        tttt.addToBackStack("KeyExerciseFragment")
+                        indexFragment = switchContent(indexFragment!!, fff, R.id.mainPageFrame, tttt)
 
                     }
 
                     1 -> {
-                        customViewPager.currentItem = 21
+
+                        val fff = LetterExerciseFragment()
+                        tttt.addToBackStack("LetterExerciseFragment")
+                        indexFragment = switchContent(indexFragment!!, fff, R.id.mainPageFrame, tttt)
 
                     }
 
                     2 -> {
-                        customViewPager.currentItem = 22
+
+                        val fff = SoundmarkExerciseFragment()
+                        tttt.addToBackStack("SoundmarkExerciseFragment")
+                        indexFragment = switchContent(indexFragment!!, fff, R.id.mainPageFrame, tttt)
                     }
 
                     3 -> {
-                        customViewPager.currentItem = 23
+
+                        val fff = HearingExerciseFragment()
+                        tttt.addToBackStack("HearingExerciseFragment")
+                        indexFragment = switchContent(indexFragment!!, fff, R.id.mainPageFrame, tttt)
 
                     }
 
                     4 -> {
-                        customViewPager.currentItem = 24
+
+                        val fff = ReadExerciseFragment()
+                        tttt.addToBackStack("ReadExerciseFragment")
+                        indexFragment = switchContent(indexFragment!!, fff, R.id.mainPageFrame, tttt)
 
                     }
 
                     5 -> {
-                        customViewPager.currentItem = 25
+
+                        val fff = WritingExerciseFragment()
+                        tttt.addToBackStack("WritingExerciseFragment")
+                        indexFragment = switchContent(indexFragment!!, fff, R.id.mainPageFrame, tttt)
 
 
                     }
@@ -627,16 +674,35 @@ class MainPageActivity : ProActivity() {
     fun mainJoup(position: Int) {
 
         adapter!!.updateClick(position)
+        val tttt = supportFragmentManager.beginTransaction()
 
         when (position) {
-            0 -> customViewPager.currentItem = 0   // 首页  PageFragment
-            1 -> customViewPager.currentItem = 1   // 学习  StudyFragment
+            0 -> {
+                val fff = PageFragment()
+                tttt.addToBackStack("PageFragment")
+                indexFragment = switchContent(indexFragment!!, fff, R.id.mainPageFrame, tttt)
+            }
+
+            1 -> {
+                val fff = StudyFragment()
+                tttt.addToBackStack("StudyFragment")
+                indexFragment = switchContent(indexFragment!!, fff, R.id.mainPageFrame, tttt)
+            }
 
             3 -> {
             }
 
-            4 -> customViewPager.currentItem = 2  // 生词本  NewWordFragment
-            5 -> customViewPager.currentItem = 3  // 书架    BookRackFragment
+            4 -> {
+                val fff = NewWordFragment()
+                tttt.addToBackStack("NewWordFragment")
+                indexFragment = switchContent(indexFragment!!, fff, R.id.mainPageFrame, tttt)
+            }
+
+            5 -> {
+                val fff = BookRackFragment()
+                tttt.addToBackStack("BookRackFragment")
+                indexFragment = switchContent(indexFragment!!, fff, R.id.mainPageFrame, tttt)
+            }
 
         }
     }
@@ -648,7 +714,7 @@ class MainPageActivity : ProActivity() {
      */
     fun toWhere(code: Int, info: BookInfo?) {
 
-        lastIndexPosition = customViewPager.currentItem
+        val tttt = supportFragmentManager.beginTransaction()
 
         when (code) {
 
@@ -656,9 +722,11 @@ class MainPageActivity : ProActivity() {
 
                 /// 复习界面
                 ///  ReviewFragment
-                val rf = oneFragmentList[5] as ReviewFragment
+                val rf = ReviewFragment()
                 rf.rfInfo = info
-                customViewPager.currentItem = 5
+
+                tttt.addToBackStack("ReviewFragment")
+                indexFragment = switchContent(indexFragment!!, rf, R.id.mainPageFrame, tttt)
 
             }
 
@@ -667,37 +735,39 @@ class MainPageActivity : ProActivity() {
                 /// 测试内容选择
                 isTestCode = true
 
-                val ff = oneFragmentList[10] as TestDetailsFragment
+                val ff = TestDetailsFragment()
                 ff.unitInfo = info
-                customViewPager.currentItem = 10
 
+                tttt.addToBackStack("TestDetailsFragment")
+                indexFragment = switchContent(indexFragment!!, ff, R.id.mainPageFrame, tttt)
             }
 
             Constant.LISTEN_CHOOSE_CODE -> {
+
                 // 听写  汉译英  英译汉
-                val listen = oneFragmentList[7] as ListenChooseFragment
+                val listen = ListenChooseFragment()
                 listen.code = info!!.code
 
-                customViewPager.currentItem = 7
+                tttt.addToBackStack("ListenChooseFragment")
+                indexFragment = switchContent(indexFragment!!, listen, R.id.mainPageFrame, tttt)
+
 
             }
 
             Constant.LISTEN_WRITE_CODE -> {
                 // 听写
-                customViewPager.currentItem = 8
+
 
             }
 
             Constant.LISTEN_READ_CODE -> {
                 // 听读训练
-                customViewPager.currentItem = 9
 
 
             }
 
             Constant.TEST_DETAILS_CODE -> {
 
-                customViewPager.currentItem = 10
 
             }
 
@@ -706,40 +776,45 @@ class MainPageActivity : ProActivity() {
                 /// 答题完成后的成绩
                 isTestCode = false
 
-                backTo()
+                val fff = AnswerFinishFragment()
 
-///                customViewPager.currentItem = 11
+                fff.bookInfo = info
+
+                tttt.addToBackStack("AnswerFinishFragment")
+
+                indexFragment = switchContent(indexFragment!!, fff, R.id.mainPageFrame, tttt)
+
 
             }
 
             Constant.MAIN_TIAO_ZHAN -> {
                 // 首页挑战
-                customViewPager.currentItem = 12
+
             }
 
             Constant.MY_GROUP_UP_CODE -> {
 
-                val fragment = oneFragmentList[13] as MyGroupUpFragment
+                val fragment = MyGroupUpFragment()
                 fragment.code = 1
 
-                customViewPager.currentItem = 13
 
             }
 
             Constant.MY_WEEK_CODE -> {
                 ///  MyGroupUpFragment
-                val fragment = oneFragmentList[14] as MyGroupUpFragment
+                val fragment = MyGroupUpFragment()
                 fragment.code = 2
-                customViewPager.currentItem = 14
+
 
             }
 
             Constant.MAIN_STADUY_CODE -> {
-                val studyFragment = oneFragmentList[15] as StudyFragment
+
+                val studyFragment = StudyFragment()
                 studyFragment.bookInfo = info
 
-                ///  StudyFragment
-                customViewPager.currentItem = 15
+                tttt.addToBackStack("StudyFragment")
+                indexFragment = switchContent(indexFragment!!, studyFragment, R.id.mainPageFrame, tttt)
 
             }
         }
@@ -752,13 +827,11 @@ class MainPageActivity : ProActivity() {
     var isTestCode = false
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+
         if (keyCode == KeyEvent.KEYCODE_BACK &&
                 event!!.action == KeyEvent.ACTION_DOWN) {
 
-            val pp = customViewPager.currentItem
-            val ff = oneFragmentList[pp]
-
-            return if (ff is TestDetailsFragment) {
+            return if (indexFragment is TestDetailsFragment) {
 
                 Log.i("result", "不能退出---")
 
@@ -769,7 +842,7 @@ class MainPageActivity : ProActivity() {
                     true
 
                 } else {
-
+                    backTo()
                     false
                 }
 

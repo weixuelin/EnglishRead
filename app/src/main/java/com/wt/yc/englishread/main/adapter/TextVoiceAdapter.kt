@@ -11,8 +11,11 @@ import kotlinx.android.synthetic.main.text_voice_item.view.*
 
 class TextVoiceAdapter(context: Context, list: ArrayList<BookInfo>) : ProBaseAdapter<BookInfo>(context, list) {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
         val vh = holder as VH
-        val info=list[position]
+        val info = list[position]
+
+        vh.textVoiceText.text = info.english
 
         vh.imageViewVoice.setOnClickListener {
             if (onVoiceListener != null) {
@@ -20,9 +23,8 @@ class TextVoiceAdapter(context: Context, list: ArrayList<BookInfo>) : ProBaseAda
             }
 
         }
-
-
     }
+
 
     override fun onCreateView(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = inflater.inflate(R.layout.text_voice_item, parent, false)
@@ -35,6 +37,7 @@ class TextVoiceAdapter(context: Context, list: ArrayList<BookInfo>) : ProBaseAda
 
     inner class VH(view: View) : RecyclerView.ViewHolder(view) {
         val imageViewVoice = view.imageViewVoice
+        val textVoiceText = view.textVoiceText
     }
 
     var onVoiceListener: OnVoiceListener? = null

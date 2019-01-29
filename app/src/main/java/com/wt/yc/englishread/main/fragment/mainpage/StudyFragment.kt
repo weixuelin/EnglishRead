@@ -264,9 +264,11 @@ class StudyFragment : ProV4Fragment() {
         jsOrMsAdapter = TextVoiceAdapter(activity!!, jsOrMsList)
         msRecyclerView.adapter = jsOrMsAdapter
         jsOrMsAdapter!!.onVoiceListener = object : TextVoiceAdapter.OnVoiceListener {
+
             override fun onVoice(position: Int) {
                 val info = jsOrMsList[position]
                 playVoice(activity!!, Config.IP + info.video!!)
+                showLoadDialog(activity!!, "播放中")
 
             }
 

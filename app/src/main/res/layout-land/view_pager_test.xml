@@ -47,6 +47,7 @@
             android:layout_marginRight="@dimen/dp_10"
             android:background="@color/gray_tou"
             android:text="求助"
+            android:visibility="gone"
             android:textColor="@color/write"
             android:textSize="@dimen/sp_10" />
 
@@ -69,7 +70,6 @@
             android:id="@+id/rb1"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_30"
-            android:text="人类，男人"
             android:textSize="@dimen/sp_8" />
 
 
@@ -83,7 +83,6 @@
             android:id="@+id/rb2"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_30"
-            android:text="人类，男人"
             android:textSize="@dimen/sp_8" />
 
 
@@ -97,7 +96,6 @@
             android:id="@+id/rb3"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_30"
-            android:text="人类，男人"
             android:textSize="@dimen/sp_8" />
 
         <View
@@ -109,7 +107,6 @@
             android:id="@+id/rb4"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_30"
-            android:text="人类，男人"
             android:textSize="@dimen/sp_8" />
 
     </RadioGroup>

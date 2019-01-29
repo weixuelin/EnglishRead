@@ -1,5 +1,6 @@
 package com.wt.yc.englishread.main.fragment.study
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.os.Message
 import android.support.v4.view.PagerAdapter
@@ -43,6 +44,7 @@ class TestDetailsFragment : ProV4Fragment() {
         val str = msg.obj as String
 
         when (msg.what) {
+
             Config.GET_TEST_CODE -> {
                 val json = JSONObject(str)
                 val status = json.optBoolean(Config.STATUS)
@@ -94,9 +96,21 @@ class TestDetailsFragment : ProV4Fragment() {
                 showShortToast(activity!!, json.optString(Config.MSG))
 
                 if (status) {
+                    val data = json.optJSONObject("data")
+                    val userName = data.optString("username")
+                    val testTime = data.optString("test_time")
+                    val time = data.optString("time")
+                    val fs = data.optString("fs")
+
+                    val bookInfo = BookInfo()
+                    bookInfo.userName = userName
+                    bookInfo.testTime = testTime
+                    bookInfo.time = time
+                    bookInfo.score = fs
+                    bookInfo.book_name=tvTitle.text.toString()
 
                     fragmentManager!!.popBackStackImmediate("TestDetailsFragment", 0)
-                    (activity as MainPageActivity).toWhere(Constant.ANSWER_RESULT, null)
+                    (activity as MainPageActivity).toWhere(Constant.ANSWER_RESULT, bookInfo)
 
                 }
 
@@ -123,7 +137,7 @@ class TestDetailsFragment : ProV4Fragment() {
     private fun showMuLuAdapter(unitResultArr: ArrayList<BookInfo>?) {
         this.muLuArr = unitResultArr!!
         val arr = arrayListOf<String>()
-        for (temp in unitResultArr!!) {
+        for (temp in unitResultArr) {
             arr.add(temp.unit_name)
 
         }
@@ -310,28 +324,56 @@ class TestDetailsFragment : ProV4Fragment() {
         }
 
         btPost.setOnClickListener {
-            timer.cancel()
 
-            val str = buildArr(answerMap)
-
-            val json = JSONObject()
-            json.put("uid", uid)
-            json.put("token", token)
-            json.put("arr", str)
-
-            json.put("time", 6 * 60 - indexTime)
-
-            HttpUtils.getInstance().postJson(Config.FINISH_TEST_URL, json.toString(), Config.FINISH_CODE, handler)
-            showLoadDialog(activity!!, "交卷中")
-
-            log("wwwwwww------$str")
+            save()
 
         }
 
         btNext.setOnClickListener {
             indexNum++
-            testViewPager.currentItem = indexNum
+            if (indexNum != questionArr.size - 1) {
+                testViewPager.currentItem = indexNum
+            } else {
+                showTiSave()
+            }
+
         }
+    }
+
+    private fun save() {
+        timer.cancel()
+
+        val str = buildArr(answerMap)
+
+        val json = JSONObject()
+        json.put("uid", uid)
+        json.put("token", token)
+        json.put("arr", str)
+
+        json.put("time", 6 * 60 - indexTime)
+
+        HttpUtils.getInstance().postJson(Config.FINISH_TEST_URL, json.toString(), Config.FINISH_CODE, handler)
+        showLoadDialog(activity!!, "交卷中")
+
+        log("wwwwwww------$str")
+    }
+
+
+    /**
+     * 提示交卷
+     */
+    private fun showTiSave() {
+        val builder = AlertDialog.Builder(activity)
+        builder.setMessage("已是最后一题，是否交卷?")
+                .setTitle("提示")
+                .setPositiveButton("交卷") { dialog, _ ->
+                    save()
+                    dialog.dismiss()
+
+                }.setNegativeButton("取消") { _, _ ->
+
+                }.show()
+
     }
 
     private fun buildArr(answerArr: HashMap<Int, String>): String {
@@ -359,6 +401,8 @@ class TestDetailsFragment : ProV4Fragment() {
     var questionArr: ArrayList<QuestionInfo> = arrayListOf()
 
     private fun initTestViewPager() {
+
+        tvTestTime.visibility = View.VISIBLE
 
         for (temp in questionArr) {
 
