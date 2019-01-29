@@ -82,7 +82,6 @@ class TestDetailsFragment : ProV4Fragment() {
                     tvTestTime.text = "${indexTime / 60}分 ${indexTime % 60}秒"
                 }
 
-
             }
 
             Config.FINISH_CODE -> {
@@ -107,7 +106,7 @@ class TestDetailsFragment : ProV4Fragment() {
                     bookInfo.testTime = testTime
                     bookInfo.time = time
                     bookInfo.score = fs
-                    bookInfo.book_name=tvTitle.text.toString()
+                    bookInfo.book_name = tvTitle.text.toString()
 
                     fragmentManager!!.popBackStackImmediate("TestDetailsFragment", 0)
                     (activity as MainPageActivity).toWhere(Constant.ANSWER_RESULT, bookInfo)
@@ -125,6 +124,7 @@ class TestDetailsFragment : ProV4Fragment() {
                     val resultData = json.optJSONObject(Config.DATA)
 
                     val bookUnit = resultData.optString("unit")
+
                     val unitResultArr = gson!!.fromJson<ArrayList<BookInfo>>(bookUnit, object : TypeToken<ArrayList<BookInfo>>() {}.type)
 
                     showMuLuAdapter(unitResultArr)
@@ -135,8 +135,10 @@ class TestDetailsFragment : ProV4Fragment() {
     }
 
     private fun showMuLuAdapter(unitResultArr: ArrayList<BookInfo>?) {
+
         this.muLuArr = unitResultArr!!
         val arr = arrayListOf<String>()
+
         for (temp in unitResultArr) {
             arr.add(temp.unit_name)
 
@@ -216,6 +218,8 @@ class TestDetailsFragment : ProV4Fragment() {
 
         getQuestList()
 
+        get()
+
 
     }
 
@@ -279,14 +283,18 @@ class TestDetailsFragment : ProV4Fragment() {
      * 初始化目录信息
      */
     private fun initRightMuLu() {
+
         muLuRecyclerView.layoutManager = LinearLayoutManager(activity)
         muLuRecyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
         muLuAdapter = MuLuAdapter(activity!!, arrayListOf())
+
         muLuRecyclerView.adapter = muLuAdapter
         muLuAdapter!!.itemClickListener = object : ItemClickListener {
             override fun onItemClick(position: Int) {
+
                 drawerLayout.closeDrawer(Gravity.END)
-                testCode = 1
+
+                testCode = 0
                 unitInfo = muLuArr[position]
 
                 questionArr.clear()
@@ -306,7 +314,36 @@ class TestDetailsFragment : ProV4Fragment() {
     var indexNum = 0
 
     private fun initClick() {
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+
+        imageViewMuLu.setOnClickListener {
+            if (drawerLayout.isDrawerOpen(Gravity.END)) {
+                drawerLayout.closeDrawer(Gravity.END)
+            } else {
+                drawerLayout.openDrawer(Gravity.END)
+            }
+
+        }
+
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.END)
+
+        drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
+            override fun onDrawerStateChanged(newState: Int) {
+
+            }
+
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+
+            }
+
+            override fun onDrawerClosed(drawerView: View) {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED, Gravity.END)
+            }
+
+            override fun onDrawerOpened(drawerView: View) {
+
+            }
+
+        })
 
         tvFinishBack.setOnClickListener {
             fragmentManager!!.popBackStack()
