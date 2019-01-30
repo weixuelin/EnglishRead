@@ -100,6 +100,24 @@ class Config {
          */
         val FINISH_TEST_URL = "$IP/app/student/post_paper"
 
+        /**
+         * 获取测试数据
+         */
+        val GET_SCORE_LIST="$IP/App/Student/all_test"
+        val GET_SCORE_LIST_CODE=14
+
+        /**
+         * 一周学习图片
+         */
+        val GET_WEEK_URL="$IP/App/Student/tk_weak"
+        val GET_WEEK_CODE=15
+
+        /**
+         * 学习时间统计
+         */
+        val GET_STUDY_TIME_URL="$IP/App/Student/study_time"
+        val GET_STUDY_TIME_CODE=16
+
 
     }
 }

@@ -47,13 +47,14 @@
             android:orientation="vertical"
             android:padding="@dimen/dp_10">
 
-            <EditText
+            <com.xin.lv.yang.utils.view.PasswordEditText
                 android:id="@+id/inPutEditText"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_32"
-                android:background="@null"
                 android:gravity="center_horizontal"
+                android:background="@drawable/kuang"
+                android:textColor="@color/black"
                 android:hint="请输入单词"
                 android:textSize="@dimen/sp_16" />
 

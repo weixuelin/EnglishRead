@@ -14,14 +14,17 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
+import com.google.gson.reflect.TypeToken
 import com.wt.yc.englishread.R
+import com.wt.yc.englishread.base.Config
 import com.wt.yc.englishread.base.ProV4Fragment
+import com.wt.yc.englishread.info.BookInfo
+import com.wt.yc.englishread.info.MainInfo
 import com.wt.yc.englishread.view.CustomDateChoose
-import com.xin.lv.yang.utils.utils.BitmapUtil
 import com.xin.lv.yang.utils.utils.DataUtil
-import com.xin.lv.yang.utils.utils.TextUtils
-import com.xin.lv.yang.utils.zxing.utils.Util
+import com.xin.lv.yang.utils.utils.HttpUtils
 import kotlinx.android.synthetic.main.study_time_layout.*
+import org.json.JSONObject
 
 /**
  * 学习时间统计
@@ -30,6 +33,19 @@ class StudyTimeFragment : ProV4Fragment() {
     override fun handler(msg: Message) {
         val str = msg.obj as String
         when (msg.what) {
+            Config.GET_STUDY_TIME_CODE->{
+                removeLoadDialog()
+                val json=JSONObject(str)
+                val code=json.optInt(Config.CODE)
+
+                if(code==Config.SUCCESS){
+                    val data=json.optString(Config.DATA)
+                    val arr=gson!!.fromJson<ArrayList<MainInfo>>(data,object :TypeToken<ArrayList<MainInfo>>(){}.type)
+
+                    bindData(studyPieChart, 1,arr)
+
+                }
+            }
 
         }
     }
@@ -44,11 +60,18 @@ class StudyTimeFragment : ProV4Fragment() {
         initPieBar(studyPieChart)
         initPieBar(rememberPieChart)
 
-        bindData(studyPieChart, 1)
-        bindData(rememberPieChart, 2)
-
         initClick()
 
+        getTime()
+
+    }
+
+    private fun getTime() {
+        val json = JSONObject()
+        json.put("token", token)
+        json.put("uid",uid)
+        HttpUtils.getInstance().postJson(Config.GET_STUDY_TIME_URL, json.toString(), Config.GET_STUDY_TIME_CODE, handler!!)
+        showLoadDialog(activity!!, "获取中")
     }
 
     private fun initClick() {
@@ -136,12 +159,18 @@ class StudyTimeFragment : ProV4Fragment() {
     /**
      *  显示饼状图数据
      */
-    private fun bindData(cxPieChart: PieChart, code: Int) {
+    private fun bindData(cxPieChart: PieChart, code: Int,arr:ArrayList<MainInfo>) {
         val valueList: ArrayList<PieEntry> = arrayListOf()
+
         when (code) {
             1 -> {
-                valueList.add(PieEntry(2f, "学习时间"))
-                valueList.add(PieEntry(8f, "复习时间"))
+                val info0=arr[0]
+                val info2=arr[1]
+
+                val all=info0.value.toFloat()+info2.value.toFloat()
+
+                valueList.add(PieEntry(info0.value.toFloat()/all, info0.name))
+                valueList.add(PieEntry(info2.value.toFloat()/all, info2.name))
             }
 
             2 -> {

@@ -47,7 +47,7 @@
             android:orientation="vertical"
             android:padding="@dimen/dp_10">
 
-            <EditText
+            <com.xin.lv.yang.utils.view.PasswordEditText
                 android:id="@+id/inPutEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

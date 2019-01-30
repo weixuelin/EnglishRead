@@ -808,6 +808,7 @@ class MainPageActivity : ProActivity() {
             }
 
             Constant.MY_GROUP_UP_CODE -> {
+
                 tttt.addToBackStack("MyGroupUpFragment")
                 val fragment = MyGroupUpFragment()
                 fragment.code = 1
@@ -816,6 +817,7 @@ class MainPageActivity : ProActivity() {
             }
 
             Constant.MY_WEEK_CODE -> {
+
                 ///  MyGroupUpFragment
                 tttt.addToBackStack("MyGroupUpFragment")
                 val fragment = MyGroupUpFragment()

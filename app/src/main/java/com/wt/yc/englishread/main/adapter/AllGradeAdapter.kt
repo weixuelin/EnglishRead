@@ -6,16 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import com.wt.yc.englishread.R
 import com.wt.yc.englishread.base.ProBaseAdapter
+import com.wt.yc.englishread.info.BookInfo
 import kotlinx.android.synthetic.main.all_grade_item.view.*
 
-class AllGradeAdapter(context: Context, list: ArrayList<String>) : ProBaseAdapter<String>(context, list) {
+class AllGradeAdapter(context: Context, list: ArrayList<BookInfo>) : ProBaseAdapter<BookInfo>(context, list) {
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val vh = holder as VH
-        vh.gradeTv1.text = "1234"
-        vh.gradeTv2.text = "1234"
-        vh.gradeTv3.text = "1234"
-        vh.gradeTv4.text = "1234"
-        vh.gradeTv5.text = "1234"
+        val info=list[position]
+
+        vh.gradeTv1.text = info.type
+        vh.gradeTv2.text = info.test_cj
+        vh.gradeTv3.text = info.time
+        vh.gradeTv4.text = info.test_time
+        vh.gradeTv5.text = info.type
 
     }
 

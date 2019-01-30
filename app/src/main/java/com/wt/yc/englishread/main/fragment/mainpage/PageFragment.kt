@@ -180,7 +180,11 @@ class PageFragment : ProV4Fragment() {
         studyArr2 = gson!!.fromJson<Array<String>>(wordShuXi, object : TypeToken<Array<String>>() {}.type)
 
         if (studyLineChart != null) {
-            setTextData(studyLineChart, 2, 2)
+
+            if(studyArr1!=null&&studyArr2!=null){
+                setTextData(studyLineChart, 2, 2)
+            }
+
         }
     }
 
@@ -492,6 +496,7 @@ class PageFragment : ProV4Fragment() {
         studyLineChart.setDrawBorders(false)
         // 曲线描述 -标题
         val des = Description()
+        studyLineChart.setNoDataText("没有数据")
         des.text = ""
         studyLineChart.description = des
         // 是否显示表格颜色
@@ -510,7 +515,7 @@ class PageFragment : ProV4Fragment() {
 
         // 图例对象
         val mLegend: Legend = studyLineChart.legend
-        mLegend.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
+        mLegend.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT)
         // 图例样式 (CIRCLE圆形；LINE线性；SQUARE是方块）
         mLegend.form = Legend.LegendForm.CIRCLE
 

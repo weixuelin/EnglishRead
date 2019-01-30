@@ -21,10 +21,15 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
+import com.google.gson.reflect.TypeToken
 import com.wt.yc.englishread.R
+import com.wt.yc.englishread.base.Config
 import com.wt.yc.englishread.base.ProV4Fragment
+import com.wt.yc.englishread.info.BookInfo
 import com.wt.yc.englishread.view.CustomDateChoose
+import com.xin.lv.yang.utils.utils.HttpUtils
 import kotlinx.android.synthetic.main.group_up_fragment.*
+import org.json.JSONObject
 
 /**
  * 我的成长经历
@@ -34,7 +39,26 @@ class MyGroupUpFragment : ProV4Fragment() {
     override fun handler(msg: Message) {
         val str = msg.obj as String
         when (msg.what) {
+            Config.GET_WEEK_CODE->{
 
+                removeLoadDialog()
+                val json=JSONObject(str)
+                val code=json.optInt(Config.CODE)
+
+                if(code==Config.SUCCESS){
+
+                    val data=json.optString(Config.DATA)
+
+                    val  arr=gson!!.fromJson<ArrayList<String>>(data,object : TypeToken<ArrayList<String>>(){}.type)
+
+                    if(arr!=null&&arr.size!=0){
+
+                        setDate(arr)
+
+                    }
+
+                }
+            }
         }
 
     }
@@ -68,6 +92,18 @@ class MyGroupUpFragment : ProV4Fragment() {
     }
 
     private fun getStudyList() {
+
+        if(code==1){
+
+        }else if(code==2){
+            val json = JSONObject()
+            json.put("token", token)
+            json.put("uid",uid)
+            HttpUtils.getInstance().postJson(Config.GET_WEEK_URL, json.toString(), Config.GET_WEEK_CODE, handler!!)
+            showLoadDialog(activity!!, "获取中")
+
+
+        }
 
     }
 
@@ -112,6 +148,8 @@ class MyGroupUpFragment : ProV4Fragment() {
 
     val textArr: ArrayList<String> = arrayListOf("", "初次记忆", "第一周期", "第二周期", "第三周期", "第四周期", "第五周期", "第六周期", "第七周期")
 
+    val weekArr= arrayListOf<String>("","星期一","星期二","星期三","星期四","星期五","星期六","星期日","")
+
     private fun initChart() {
         // 是否在折线图上添加边框
         groupUpChart.setDrawBorders(false)
@@ -124,9 +162,11 @@ class MyGroupUpFragment : ProV4Fragment() {
         // 禁止绘制图表边框的线
         groupUpChart.setDrawBorders(false)
 
-        val markerView = MarkerView(activity!!, R.layout.group_up_pop_text)
-        markerView.chartView = groupUpChart
-        groupUpChart.markerView = markerView
+        groupUpChart.setNoDataText("没有数据")
+
+//        val markerView = MarkerView(activity!!, R.layout.group_up_pop_text)
+//        markerView.chartView = groupUpChart
+//        groupUpChart.markerView = markerView
 
         // 设置是否启动触摸响应
         groupUpChart.setTouchEnabled(true)
@@ -142,6 +182,43 @@ class MyGroupUpFragment : ProV4Fragment() {
         val yyy = groupUpChart.axisLeft
         yyy.setDrawZeroLine(false)
         yyy.setDrawGridLines(false)
+
+        // 执行的动画,x轴（动画持续时间）
+        groupUpChart.animateX(1500)
+
+//        groupUpChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+//            override fun onNothingSelected() {
+//
+//            }
+//
+//            override fun onValueSelected(e: Entry?, h: Highlight?) {
+//                markerView.refreshContent(e, h)
+//            }
+//
+//        })
+
+
+
+    }
+
+    val colorList = arrayListOf(R.color.zi, R.color.blue1,
+            R.color.aF0AD4E, R.color.a4EBBF3,
+            R.color.a00C9B0, R.color.aF46A80)
+
+
+    private fun setDate(arr:ArrayList<String>) {
+
+        arr.add(0,"0")
+
+        val y = arrayListOf<Entry>()
+
+
+//        val y2 = arrayListOf<Entry>()
+//        val y3 = arrayListOf<Entry>()
+//        val y4 = arrayListOf<Entry>()
+//        val y5 = arrayListOf<Entry>()
+//        val y6 = arrayListOf<Entry>()
+
         val xAxis = groupUpChart.xAxis
         // 显示X轴上的刻度值
         xAxis.setDrawLabels(true)
@@ -153,15 +230,19 @@ class MyGroupUpFragment : ProV4Fragment() {
         // 设置不从X轴发出纵向直线
         xAxis.setDrawGridLines(false)
 
+        val mLegend: Legend = groupUpChart.legend
+        mLegend.setPosition(Legend.LegendPosition.BELOW_CHART_CENTER)
+        // 图例样式 (CIRCLE圆形；LINE线性；SQUARE是方块）
+        mLegend.form = Legend.LegendForm.CIRCLE
+
         xAxis.valueFormatter = IAxisValueFormatter { value, axis ->
 
             val num = value.toInt()
-            log("--------$num")
 
-            val str = if (num <= 0 || num >= textArr.size) {
-                ""
-            } else {
-                textArr[num]
+            val str = when (code) {
+                1 -> textArr[num]
+                2 -> weekArr[num]
+                else -> ""
             }
 
             axis.textSize = 10f
@@ -170,69 +251,26 @@ class MyGroupUpFragment : ProV4Fragment() {
 
         }
 
-        // 执行的动画,x轴（动画持续时间）
-        groupUpChart.animateX(2500)
-
-        groupUpChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
-            override fun onNothingSelected() {
-
-            }
-
-            override fun onValueSelected(e: Entry?, h: Highlight?) {
-                markerView.refreshContent(e, h)
-            }
-
-        })
-
-        setDate()
-    }
-
-    val colorList = arrayListOf(R.color.zi, R.color.blue1,
-            R.color.aF0AD4E, R.color.a4EBBF3,
-            R.color.a00C9B0, R.color.aF46A80)
-
-    private fun setDate() {
-        val y = arrayListOf<Entry>()
-        val y2 = arrayListOf<Entry>()
-        val y3 = arrayListOf<Entry>()
-        val y4 = arrayListOf<Entry>()
-        val y5 = arrayListOf<Entry>()
-        val y6 = arrayListOf<Entry>()
-
-        for (i in textArr.indices) {
-            when (i) {
-                0, 1 -> {
-                    // 图例对象
-                    val mLegend: Legend = groupUpChart.legend
-                    // mLegend.setPosition(LegendPosition.BELOW_CHART_CENTER);
-                    // 图例样式 (CIRCLE圆形；LINE线性；SQUARE是方块）
-                    mLegend.form = Legend.LegendForm.CIRCLE
-                }
-
-                else -> {
-                    // 图例对象
-                    val mLegend: Legend = groupUpChart.legend
-                    // mLegend.setPosition(LegendPosition.BELOW_CHART_CENTER);
-                    // 图例样式 (CIRCLE圆形；LINE线性；SQUARE是方块）
-                    mLegend.form = Legend.LegendForm.NONE
-                }
-            }
+        for (i in arr.indices) {
 
             if (i == 0) {
-                y.add(Entry(i.toFloat(), 0f, ""))
-                y2.add(Entry(i.toFloat(), 0f, ""))
-                y3.add(Entry(i.toFloat(), 0f, ""))
-                y4.add(Entry(i.toFloat(), 0f, ""))
-                y5.add(Entry(i.toFloat(), 0f, ""))
-                y6.add(Entry(i.toFloat(), 0f, ""))
+                y.add(Entry(0f, 0f))
+
+//                y2.add(Entry(i.toFloat(), 0f))
+//                y3.add(Entry(i.toFloat(), 0f))
+//                y4.add(Entry(i.toFloat(), 0f))
+//                y5.add(Entry(i.toFloat(), 0f))
+//                y6.add(Entry(i.toFloat(), 0f))
 
             } else {
-                y.add(Entry(i.toFloat(), (Math.random() * 50).toFloat(), ""))
-                y2.add(Entry(i.toFloat(), (Math.random() * 50).toFloat(), ""))
-                y3.add(Entry(i.toFloat(), (Math.random() * 50).toFloat(), ""))
-                y4.add(Entry(i.toFloat(), (Math.random() * 50).toFloat(), ""))
-                y5.add(Entry(i.toFloat(), (Math.random() * 50).toFloat(), ""))
-                y6.add(Entry(i.toFloat(), (Math.random() * 50).toFloat(), ""))
+                y.add(Entry(i.toFloat(), arr[i].toFloat()))
+
+//                y2.add(Entry(i.toFloat(), arr[1].toFloat()))
+//                y3.add(Entry(i.toFloat(), arr[2].toFloat()))
+//                y4.add(Entry(i.toFloat(), arr[3].toFloat()))
+//                y5.add(Entry(i.toFloat(), arr[4].toFloat()))
+//                y6.add(Entry(i.toFloat(), arr[5].toFloat()))
+
             }
 
 
@@ -240,25 +278,27 @@ class MyGroupUpFragment : ProV4Fragment() {
 
         val lineDataSet = arrayListOf<ILineDataSet>()
 
-        lineDataSet.add(setDataSer(y, 0))
-        lineDataSet.add(setDataSer(y2, 1))
-        lineDataSet.add(setDataSer(y3, 2))
-        lineDataSet.add(setDataSer(y4, 3))
-        lineDataSet.add(setDataSer(y5, 4))
-        lineDataSet.add(setDataSer(y6, 5))
+        lineDataSet.add(setDataSer(y, "学习量",R.color.red))
+
+//        lineDataSet.add(setDataSer(y2, 1))
+//        lineDataSet.add(setDataSer(y3, 2))
+//        lineDataSet.add(setDataSer(y4, 3))
+//        lineDataSet.add(setDataSer(y5, 4))
+//        lineDataSet.add(setDataSer(y6, 5))
 
         val data = LineData(lineDataSet)
 
         groupUpChart.data = data
+
     }
 
-    private fun setDataSer(y: ArrayList<Entry>, indexCode: Int): LineDataSet {
-        val set1 = LineDataSet(y, "")
-        set1.setCircleColor(resources.getColor(R.color.red))
+    private fun setDataSer(y: ArrayList<Entry>,str:String,color:Int): LineDataSet {
+        val set1 = LineDataSet(y, str)
+        set1.setCircleColor(resources.getColor(color))
+        set1.color=resources.getColor(color)
         set1.setDrawCircles(false)
-        set1.color = resources.getColor(colorList[indexCode])
         set1.mode = LineDataSet.Mode.CUBIC_BEZIER
-        set1.valueTextColor = resources.getColor(colorList[indexCode])
+        set1.valueTextColor = resources.getColor(color)
         return set1
 
     }

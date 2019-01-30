@@ -74,10 +74,24 @@
     </declare-styleable>
 
     <declare-styleable name="writingStyle">
+
         <attr name="w" format="dimension" />
         <attr name="h" format="dimension" />
 
     </declare-styleable>
+
+
+    <declare-styleable name="PasswordInputView">
+        <attr name="pwdBorderWidth" format="dimension"/>
+        <attr name="pwdBorderColor" format="color"/>
+        <attr name="pwdBorderRadius" format="dimension"/>
+        <attr name="pwdPasswordLength" format="integer"/>
+        <attr name="pwdPasswordWidth" format="dimension"/>
+        <attr name="pwdPasswordColor" format="color"/>
+        <attr name="pwdPasswordRadius" format="dimension"/>
+
+    </declare-styleable>
+
 
 
 </resources>

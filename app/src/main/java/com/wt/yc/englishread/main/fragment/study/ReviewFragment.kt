@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.os.Message
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
@@ -71,6 +72,7 @@ class ReviewFragment : ProV4Fragment() {
             }
 
             Config.REVIRE_CODE -> {
+                removeLoadDialog()
 
                 val json = JSONObject(str)
                 val code = json.optInt(Config.CODE)
@@ -646,6 +648,9 @@ class ReviewFragment : ProV4Fragment() {
 
     }
 
+    /**
+     * 添加第二阶段的数据
+     */
     fun addTwo(info: BookInfo) {
 
         reviewLinearLayout.removeAllViews()
@@ -679,13 +684,12 @@ class ReviewFragment : ProV4Fragment() {
         }
 
         twoView.linearTwoSure.setOnClickListener {
+
+            Log.i("result","点击到此--------")
+
             twoView.reviewTwoImageView.setImageResource(R.drawable.icon_true)
 
-            if (oneIndexNum == twoArr.size) {
-                showThreeDialog()
-            } else {
-                addTwo(twoArr[oneIndexNum])
-            }
+
         }
 
 
@@ -693,16 +697,12 @@ class ReviewFragment : ProV4Fragment() {
 
             twoView.reviewTwoImageView.setImageResource(R.drawable.icon_onremenber)
 
-            if (oneIndexNum == twoArr.size) {
-                showThreeDialog()
-            } else {
-                addTwo(twoArr[oneIndexNum])
-            }
         }
 
         twoView.linearTwoAgain.setOnClickListener {
             playVoice(activity!!, Config.IP + info.video)
         }
+
 
         reviewLinearLayout.addView(twoView)
 
@@ -732,9 +732,16 @@ class ReviewFragment : ProV4Fragment() {
         inputStr = ""
 
         initTime()
+
         reviewLinearLayout.removeAllViews()
 
         val threeView = layoutInflater.inflate(R.layout.review_three_view, null)
+
+        val english=info.english
+
+        threeView.inPutEditText.textLength = english.length
+
+        threeView.inPutEditText.filters = arrayOf(InputFilter.LengthFilter(english.length))
 
         threeView.tvThreeYuTi.text = "[${info.ipa}]"
         threeView.tvThreeWordYiSi.text = info.chinese
