@@ -3,7 +3,7 @@
     style="@style/margin10"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/write_kuang_line"
+    android:background="@color/write"
     android:orientation="vertical">
 
     <LinearLayout

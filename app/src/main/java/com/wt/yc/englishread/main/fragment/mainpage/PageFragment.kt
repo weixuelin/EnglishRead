@@ -24,6 +24,7 @@ import com.wt.yc.englishread.main.adapter.GrowUpRecordAdapter
 import com.wt.yc.englishread.main.adapter.TestListAdapter
 import kotlinx.android.synthetic.main.page_fragment.*
 import android.text.SpannableString
+import android.util.Log
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -34,7 +35,6 @@ import com.wt.yc.englishread.base.ItemClickListener
 import com.wt.yc.englishread.info.BookInfo
 import com.wt.yc.englishread.info.Info
 import com.wt.yc.englishread.main.activity.MainPageActivity
-import com.xin.lv.yang.utils.utils.BitmapUtil
 import com.xin.lv.yang.utils.utils.DataUtil
 import com.xin.lv.yang.utils.utils.HttpUtils
 import com.xin.lv.yang.utils.utils.TextUtils
@@ -53,6 +53,8 @@ class PageFragment : ProV4Fragment() {
         when (msg.what) {
 
             Config.MAIN_PAGE_CODE -> {
+
+                removeLoadDialog()
 
                 val json = JSONObject(str)
                 val status = json.optBoolean(Config.STATUS)
@@ -75,6 +77,7 @@ class PageFragment : ProV4Fragment() {
 
                     val weekStr = jsonObject.optString("weak")
                     val weekInfo = gson!!.fromJson<BookInfo>(weekStr, BookInfo::class.java)
+
                     showWeekStr(weekInfo)
 
                     val testResult = jsonObject.optString("test")
@@ -88,6 +91,7 @@ class PageFragment : ProV4Fragment() {
                      */
                     val study = jsonObject.optString("xfl")
                     val studyBook = gson!!.fromJson<BookInfo>(study, BookInfo::class.java)
+
                     showBook(studyBook)
 
                     val level = jsonObject.optString("level")
@@ -113,12 +117,50 @@ class PageFragment : ProV4Fragment() {
      * 学习转化量
      */
     fun showBook(info: BookInfo) {
+
         if (tvStudyNum != null) {
             tvStudyNum.text = info.xx
         }
 
         if (tvFuXiStudyNum != null) {
             tvFuXiStudyNum.text = info.fx
+        }
+
+        showZhlData(info.xx, info.fx)
+
+
+    }
+
+    /**
+     * 显示需要转换量
+     */
+    private fun showZhlData(xx: String, fx: String) {
+
+        // 设置每个矩形在y轴上的值
+        val set0 = BarDataSet(arrayListOf(BarEntry(0f, 0f)), "")
+
+        val set1 = BarDataSet(arrayListOf<BarEntry>(BarEntry(1f, xx.toFloat())), "学习量")
+        val set2 = BarDataSet(arrayListOf<BarEntry>(BarEntry(2f, fx.toFloat())), "需要学习")
+
+        set0.color = activity!!.resources.getColor(android.R.color.transparent)
+        set1.color = activity!!.resources.getColor(R.color.red)
+        set2.color = activity!!.resources.getColor(R.color.blue_login)
+
+        val dataSets: ArrayList<IBarDataSet> = arrayListOf()
+
+        dataSets.add(set0)
+        dataSets.add(set1)
+        dataSets.add(set2)
+
+        // 设置柱形图的数据
+        val data = BarData(dataSets)
+
+        data.setValueTextSize(10f)
+        data.setValueTypeface(Typeface.DEFAULT)
+
+        if (zhlBarChart != null) {
+            Log.i("result", "----执行到此----")
+            zhlBarChart.data = data
         }
 
     }
@@ -192,8 +234,11 @@ class PageFragment : ProV4Fragment() {
         initWOrH()
 
         initCXpieChart()
+
         initGfzChart()
+
         initZhLChart()
+
         initStudyChart()
 
         initAdapter()
@@ -218,6 +263,7 @@ class PageFragment : ProV4Fragment() {
         json.put("uid", uid)
         json.put("token", token)
         HttpUtils.getInstance().postJson(Config.GET_MAIN_PAGE_URL, json.toString(), Config.MAIN_PAGE_CODE, handler)
+        showLoadDialog(activity!!, "获取中")
 
     }
 
@@ -237,7 +283,11 @@ class PageFragment : ProV4Fragment() {
         linear2.layoutParams = LinearLayout.LayoutParams(w - 8, h)
         setMargen(linear2, 8)
 
-        cxPieChart.layoutParams = FrameLayout.LayoutParams(w - 20, h - 20)
+        picChartFrame.layoutParams = LinearLayout.LayoutParams(w, h)
+        setMargen(picChartFrame, 8)
+
+        val www = activity!!.resources.getDimension(R.dimen.dp_30).toInt()
+        cxPieChart.layoutParams = LinearLayout.LayoutParams(w - www, h - www)
 
         val paddingW = resources.getDimension(R.dimen.dp_20).toInt()
 
@@ -334,6 +384,7 @@ class PageFragment : ProV4Fragment() {
         val sp = SpannableString(paiText)
 
         TextUtils.getInstance().setColor(activity, sp, 3, paiText.length - 1, R.color.blue_login, TextUtils.COLOR)
+
         view.tvPaiMing.setText(sp, TextView.BufferType.SPANNABLE)
 
         val dialog = Dialog(activity, R.style.style)
@@ -375,8 +426,6 @@ class PageFragment : ProV4Fragment() {
 
                 val picw = p * pw / 100
 
-                log("wwww--------$pw-------$picw")
-
                 val params = imagePic.layoutParams as FrameLayout.LayoutParams
                 params.setMargins(picw, 0, 0, 0)
                 imagePic.layoutParams = params
@@ -412,6 +461,8 @@ class PageFragment : ProV4Fragment() {
                 when (position) {
                     0 -> (activity as MainPageActivity).toWhere(Constant.MY_GROUP_UP_CODE, null)
                     1 -> (activity as MainPageActivity).toWhere(Constant.MY_WEEK_CODE, null)
+                    2 -> (activity as MainPageActivity).toWhere(Constant.ALL_TEST_SCORE, null)
+                    3 -> (activity as MainPageActivity).toWhere(Constant.STUDY_TIME, null)
                 }
             }
 
@@ -459,9 +510,9 @@ class PageFragment : ProV4Fragment() {
 
         // 图例对象
         val mLegend: Legend = studyLineChart.legend
-        // mLegend.setPosition(LegendPosition.BELOW_CHART_CENTER);
+        mLegend.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
         // 图例样式 (CIRCLE圆形；LINE线性；SQUARE是方块）
-        mLegend.form = Legend.LegendForm.NONE
+        mLegend.form = Legend.LegendForm.CIRCLE
 
         studyLineChart.axisRight.isEnabled = false
 
@@ -482,7 +533,6 @@ class PageFragment : ProV4Fragment() {
         xAxis.valueFormatter = IAxisValueFormatter { value, axis ->
 
             val num = value.toInt()
-            log("--------$num")
 
             val str = if (num < 0 || num >= lineStr.size) {
                 ""
@@ -496,8 +546,8 @@ class PageFragment : ProV4Fragment() {
 
         }
 
-        // 执行的动画,x轴（动画持续时间）
-        studyLineChart.animateX(2500)
+        /// 执行的动画,x轴（动画持续时间）
+        studyLineChart.animateX(1500)
 
 
     }
@@ -506,64 +556,91 @@ class PageFragment : ProV4Fragment() {
      * 转换量初始化
      */
     private fun initZhLChart() {
-        // 是否在折线图上添加边框
-        zhlLineChart.setDrawBorders(false)
-        // 曲线描述 -标题
+
+        //设置矩形阴影是否显示
+        zhlBarChart.setDrawBarShadow(false)
+        //设置值是否在矩形的上方显示
+        zhlBarChart.setDrawValueAboveBar(true)
+        //设置右下角描述
         val des = Description()
         des.text = ""
-        zhlLineChart.description = des
-        // 是否显示表格颜色
-        zhlLineChart.setDrawGridBackground(false)
-        // 禁止绘制图表边框的线
-        zhlLineChart.setDrawBorders(false)
-        // 表格的的颜色，在这里是是给颜色设置一个透明度
-        // lineChart.setGridBackgroundColor(Color.WHITE & 0x70FFFFFF);
-        // 设置是否启动触摸响应
-        zhlLineChart.setTouchEnabled(true)
+        zhlBarChart.description = des
+        //没用数据时显示
+        zhlBarChart.setNoDataText("没有数据")
+
+        // 设置是否可以触摸
+        zhlBarChart.setTouchEnabled(false)
         // 是否可以拖拽
-        zhlLineChart.isDragEnabled = true
+        zhlBarChart.isDragEnabled = false
         // 是否可以缩放
-        zhlLineChart.setScaleEnabled(true)
-        // 如果禁用，可以在x和y轴上分别进行缩放
-        zhlLineChart.setPinchZoom(false)
-        // lineChart.setMarkerView(mv)
-        // 设置背景色
-        // lineChart.setBackgroundColor(getResources().getColor(R.color.bg_white));
-        // 图例对象
-        val mLegend: Legend = zhlLineChart.legend
-        // mLegend.setPosition(LegendPosition.BELOW_CHART_CENTER);
-        // 图例样式 (CIRCLE圆形；LINE线性；SQUARE是方块）
-        mLegend.form = Legend.LegendForm.NONE
+        zhlBarChart.setScaleEnabled(false)
+        // 集双指缩放
+        zhlBarChart.setPinchZoom(false)
+        // 设置是否显示表格颜色,矩形之间的空隙
+        zhlBarChart.setDrawGridBackground(false)
+        // 设置表格的的颜色，矩形之间的空隙颜色
+        zhlBarChart.setGridBackgroundColor(Color.GRAY)
+        //设置比例显示
+        val l: Legend = zhlBarChart.legend
+        //设置比例显示在柱形图哪个位置
+        l.position = Legend.LegendPosition.BELOW_CHART_LEFT
+        //设置比例显示形状，方形，圆形，线性
+        l.form = Legend.LegendForm.CIRCLE
+        //设置比例显示形状的大小
+        l.formSize = 10f
+        //设置比例显示文字的大小
+        l.textSize = 10f
+        l.xEntrySpace = 4f
 
-        zhlLineChart.axisRight.isEnabled = false
-
-        val yyy = zhlLineChart.axisLeft
-        yyy.setDrawZeroLine(false)
-        yyy.setDrawGridLines(false)
-        val xAxis = zhlLineChart.xAxis
-        // 显示X轴上的刻度值
-        xAxis.setDrawLabels(true)
-        // 设置X轴的数据显示在报表的下方
+        //设置X轴方向上的属性
+        val xAxis: XAxis = zhlBarChart.xAxis
+        //设置标签显示在柱形图的上方还是下方
         xAxis.position = XAxis.XAxisPosition.BOTTOM
-        // 轴线
-        xAxis.setDrawAxisLine(true)
+        xAxis.typeface = Typeface.DEFAULT
+        //设置是否绘制表格
         xAxis.setDrawGridLines(false)
-        // 设置不从X轴发出纵向直线
-        xAxis.setDrawGridLines(false)
+
+        xAxis.axisMinimum = 0f
+        xAxis.granularity = 1f
+
         xAxis.valueFormatter = IAxisValueFormatter { value, axis ->
             val num = value.toInt()
-            log("--------$num")
-            val str = if (num < 0 || num >= lineStr.size) {
-                ""
-            } else {
-                lineStr[num]
+            val str = when (num) {
+                0 -> ""
+                1 -> "学习量"
+                else -> "需要复习"
             }
+
             axis.textSize = 10f
+
             str
+
         }
 
-        // 执行的动画,x轴（动画持续时间）
-        zhlLineChart.animateX(2500)
+        //设置柱形图左边y轴方向上的属性
+        val leftAxis: YAxis = zhlBarChart.axisLeft
+        leftAxis.typeface = Typeface.DEFAULT
+        //设置y轴上的标签数,boolean值为true代表必须8个
+        leftAxis.setLabelCount(8, false)
+        leftAxis.setDrawZeroLine(false)
+        leftAxis.setDrawGridLines(false)
+
+        //设置标签在柱形图的哪个位置
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
+        //设置y轴标签之间的间距
+        leftAxis.spaceTop = 10f
+        leftAxis.setAxisMinValue(0f)
+
+        //设置柱形图右边y轴方向上的属性,属性含义与上面相同
+        val rightAxis: YAxis = zhlBarChart.axisRight
+        rightAxis.setDrawGridLines(false)
+        rightAxis.typeface = Typeface.DEFAULT
+        rightAxis.setLabelCount(6, true)
+        rightAxis.spaceTop = 15f
+        rightAxis.setAxisMinValue(0f)
+
+        /// 隐藏右边的坐标轴
+        zhlBarChart.axisRight.isEnabled = false
 
 
     }
@@ -577,48 +654,44 @@ class PageFragment : ProV4Fragment() {
      * 显示线性数据
      */
     private fun setTextData(chart: LineChart, code: Int, countLen: Int) {
+
         val y = arrayListOf<Entry>()
         val y2 = arrayListOf<Entry>()
-
         val y3 = arrayListOf<Entry>()
 
-        for (i in 0 until lineStr.size) {
+        for (i in lineStr.indices) {
             when (i) {
                 0 -> {
                     when (countLen) {
                         2 -> {
-                            y.add(Entry(i.toFloat(), 0f, ""))
-                            y2.add(Entry(i.toFloat(), 0f, "熟悉的单词"))
+                            y.add(Entry(i.toFloat(), 0f))
+                            y2.add(Entry(i.toFloat(), 0f))
                         }
                         3 -> {
-                            y.add(Entry(i.toFloat(), 0f, ""))
-                            y2.add(Entry(i.toFloat(), 0f, ""))
-                            y3.add(Entry(i.toFloat(), 0f, ""))
+                            y.add(Entry(i.toFloat(), 0f))
+                            y2.add(Entry(i.toFloat(), 0f))
+                            y3.add(Entry(i.toFloat(), 0f))
                         }
                     }
-
                 }
 
                 else -> {
-
                     when (countLen) {
                         2 -> {
-                            y.add(Entry(i.toFloat(), studyArr1!![i - 1].toFloat(), ""))
-                            y2.add(Entry(i.toFloat(), studyArr2!![i - 1].toFloat(), ""))
+                            y.add(Entry(i.toFloat(), studyArr1!![i - 1].toFloat()))
+                            y2.add(Entry(i.toFloat(), studyArr2!![i - 1].toFloat()))
                         }
 
                         3 -> {
 
-//                            y.add(Entry(i.toFloat(), num1.toFloat(), ""))
-//                            y2.add(Entry(i.toFloat(), num2.toFloat(), ""))
-//                            y3.add(Entry(i.toFloat(), num3.toFloat(), ""))
+//                            y.add(Entry(i.toFloat(), num1.toFloat()))
+//                            y2.add(Entry(i.toFloat(), num2.toFloat()))
+//                            y3.add(Entry(i.toFloat(), num3.toFloat()))
 
                         }
                     }
-
                 }
             }
-
         }
 
         val lineDataSet = arrayListOf<ILineDataSet>()
@@ -628,6 +701,7 @@ class PageFragment : ProV4Fragment() {
         set1.color = activity!!.resources.getColor(R.color.red)
         set1.mode = LineDataSet.Mode.CUBIC_BEZIER
         set1.valueTextColor = activity!!.resources.getColor(R.color.red)
+
         if (code == 2) {
             set1.setDrawFilled(true)
             // 填充颜色
@@ -640,6 +714,9 @@ class PageFragment : ProV4Fragment() {
         set2.color = activity!!.resources.getColor(R.color.blue_login)
         set2.mode = LineDataSet.Mode.CUBIC_BEZIER
         set2.valueTextColor = activity!!.resources.getColor(R.color.blue_login)
+
+        lineDataSet.add(set1)
+        lineDataSet.add(set2)
 
         if (code == 2) {
             set2.setDrawFilled(true)
@@ -663,9 +740,6 @@ class PageFragment : ProV4Fragment() {
 
             lineDataSet.add(set3)
         }
-
-        lineDataSet.add(set1)
-        lineDataSet.add(set2)
 
         val data = LineData(lineDataSet)
 
@@ -723,7 +797,6 @@ class PageFragment : ProV4Fragment() {
         xAxis.valueFormatter = IAxisValueFormatter { value, axis ->
 
             val num = value.toInt()
-            log("--------$num")
 
             val str = if (num < 0 || num >= gfzText.size) {
                 ""
@@ -768,30 +841,26 @@ class PageFragment : ProV4Fragment() {
 
     val gfzText = arrayListOf("", "攻击力", "防御力", "可挑战次数", "成就")
 
+    val colorArr = arrayListOf<Int>(android.R.color.transparent, R.color.green,
+            R.color.blue_login,
+            R.color.red,
+            R.color.green)
+
     /**
      * 设置攻防战数据
      */
     private fun setgfzChartData() {
+
         // 设置每个矩形在y轴上的值
-        val yVals1: ArrayList<BarEntry> = arrayListOf()
-
-        for (i in 0 until gfzText.size) {
-            yVals1.add(BarEntry(i.toFloat(), i * 10.toFloat()))
-        }
-
-        // 第一个参数是各个矩形在y轴方向上的值得集合，第二个参数为比例的文字说明
-        val set1 = BarDataSet(yVals1, "")
-
-        val colors: ArrayList<Int> = arrayListOf(
-                activity!!.resources.getColor(R.color.green),
-                activity!!.resources.getColor(R.color.blue_login),
-                activity!!.resources.getColor(R.color.red))
-
-        set1.colors = colors
-
         val dataSets: ArrayList<IBarDataSet> = arrayListOf()
 
-        dataSets.add(set1)
+        for (i in gfzText.indices) {
+
+            val set = BarDataSet(arrayListOf(BarEntry(i.toFloat(), i * 10.toFloat())), gfzText[i])
+            set.color = activity!!.resources.getColor(colorArr[i])
+
+            dataSets.add(set)
+        }
 
         // 设置柱形图的数据
         val data = BarData(dataSets)
@@ -824,14 +893,20 @@ class PageFragment : ProV4Fragment() {
         //设置中间圆盘的颜色
         cxPieChart.setHoleColor(Color.TRANSPARENT)
         //设置中间圆盘的半径,值为所占饼图的百分比
-        cxPieChart.holeRadius = 65f
+        cxPieChart.holeRadius = 30f
         //是否显示饼图中间空白区域，默认显示
         cxPieChart.isDrawHoleEnabled = true
         //设置圆盘是否转动，默认转动
-        cxPieChart.isRotationEnabled = true
+        cxPieChart.isRotationEnabled = false
         //设置初始旋转角度
         cxPieChart.rotationAngle = 0f
 
+        //设置比例图
+        val mLegend = cxPieChart.legend
+        //设置比例图显示在饼图的哪个位置
+        mLegend.position = Legend.LegendPosition.RIGHT_OF_CHART
+        //设置比例图的形状，默认是方形,可为方形、圆形、线性
+        mLegend.form = Legend.LegendForm.CIRCLE
 
     }
 
@@ -844,14 +919,17 @@ class PageFragment : ProV4Fragment() {
         val bb3 = countBookArr[2]  // 陌生词
 
         val all = bb1.sxc + bb2.jsc + bb3.msc
-        val num1 = bb1.sxc / all
-        val num2 = bb3.msc / all
-        val num3 = bb2.jsc / all
+
+        val num1 = bb1.sxc / all.toFloat()
+        val num2 = bb3.msc / all.toFloat()
+        val num3 = bb2.jsc / all.toFloat()
+
+        Log.i("result", "-----" + bb1.sxc + "-----" + bb3.msc + "-----" + bb2.jsc + "------" + all)
 
         val valueList: ArrayList<PieEntry> = arrayListOf()
-        valueList.add(PieEntry(num1.toFloat(), "熟悉词"))
-        valueList.add(PieEntry(num2.toFloat(), "陌生词"))
-        valueList.add(PieEntry(num3.toFloat(), "夹生词"))
+        valueList.add(PieEntry(num1, "熟悉词"))
+        valueList.add(PieEntry(num2, "陌生词"))
+        valueList.add(PieEntry(num3, "夹生词"))
 
         // 显示在比例图上
         val dataSet = PieDataSet(valueList, "")

@@ -17,10 +17,7 @@ import com.wt.yc.englishread.main.adapter.LoadAdapter
 import com.wt.yc.englishread.main.fragment.expandtest.*
 import com.wt.yc.englishread.main.fragment.intelligence.IntelligenceTestFragment
 import com.wt.yc.englishread.main.fragment.mainpage.*
-import com.wt.yc.englishread.main.fragment.statistics.AllTestGradeFragment
-import com.wt.yc.englishread.main.fragment.statistics.MyGroupUpFragment
-import com.wt.yc.englishread.main.fragment.statistics.StudyTimeFragment
-import com.wt.yc.englishread.main.fragment.statistics.WrongWordFragment
+import com.wt.yc.englishread.main.fragment.statistics.*
 import com.wt.yc.englishread.main.fragment.study.*
 import com.wt.yc.englishread.user.LoginActivity
 import com.wt.yc.englishread.user.fragment.UserFragment
@@ -158,12 +155,16 @@ class MainPageActivity : ProActivity() {
      */
     fun backTo() {
 
-        val fragmentNum = fragmentManager.backStackEntryCount
+        val fragmentNum = supportFragmentManager.backStackEntryCount
+
+        Log.i("result", "------$fragmentNum")
 
         if (fragmentNum != 0) {
             val backStack = supportFragmentManager.getBackStackEntryAt(fragmentNum - 1)
             // 获取当前栈顶的Fragment的标记值
             val tag = backStack.name
+
+            Log.i("result", "------$tag")
 
             when (tag) {
 
@@ -175,7 +176,9 @@ class MainPageActivity : ProActivity() {
             }
 
         } else {
+
             finish()
+
         }
 
     }
@@ -460,9 +463,12 @@ class MainPageActivity : ProActivity() {
      */
     private fun toSonJoup(personId: Int, p3: Int) {
 
+        val tttt = supportFragmentManager.beginTransaction()
+
+        supportFragmentManager.popBackStack()
+
         when (personId) {
             2 -> {
-                val tttt = supportFragmentManager.beginTransaction()
 
                 when (p3) {
                     0 -> {
@@ -475,6 +481,7 @@ class MainPageActivity : ProActivity() {
                         indexFragment = switchContent(indexFragment!!, fragment, R.id.mainPageFrame, tttt)
 
                     }
+
                     1 -> {
 
                         tttt.addToBackStack("MyGroupUpFragment")
@@ -757,12 +764,18 @@ class MainPageActivity : ProActivity() {
 
             Constant.LISTEN_WRITE_CODE -> {
                 // 听写
+                val listenWrite = ListenWriteFragment()
+                tttt.addToBackStack("ListenWriteFragment")
+                indexFragment = switchContent(indexFragment!!, listenWrite, R.id.mainPageFrame, tttt)
 
 
             }
 
             Constant.LISTEN_READ_CODE -> {
                 // 听读训练
+                val listenRead = ListenReadFragment()
+                tttt.addToBackStack("ListenReadFragment")
+                indexFragment = switchContent(indexFragment!!, listenRead, R.id.mainPageFrame, tttt)
 
 
             }
@@ -794,19 +807,35 @@ class MainPageActivity : ProActivity() {
             }
 
             Constant.MY_GROUP_UP_CODE -> {
-
+                tttt.addToBackStack("MyGroupUpFragment")
                 val fragment = MyGroupUpFragment()
                 fragment.code = 1
-
+                indexFragment = switchContent(indexFragment!!, fragment, R.id.mainPageFrame, tttt)
 
             }
 
             Constant.MY_WEEK_CODE -> {
                 ///  MyGroupUpFragment
+                tttt.addToBackStack("MyGroupUpFragment")
                 val fragment = MyGroupUpFragment()
+
                 fragment.code = 2
 
+                indexFragment = switchContent(indexFragment!!, fragment, R.id.mainPageFrame, tttt)
 
+
+            }
+
+            Constant.ALL_TEST_SCORE -> {
+                tttt.addToBackStack("AllTestGradeFragment")
+                val fragment = AllTestGradeFragment()
+                indexFragment = switchContent(indexFragment!!, fragment, R.id.mainPageFrame, tttt)
+            }
+
+            Constant.STUDY_TIME -> {
+                tttt.addToBackStack("StudyTimeFragment")
+                val fragment = StudyTimeFragment()
+                indexFragment = switchContent(indexFragment!!, fragment, R.id.mainPageFrame, tttt)
             }
 
             Constant.MAIN_STADUY_CODE -> {
@@ -840,12 +869,12 @@ class MainPageActivity : ProActivity() {
 
                     showToastShort("正在测试")
 
-                    true
-
                 } else {
                     backTo()
-                    false
+
                 }
+
+                true
 
             } else {
 
@@ -853,7 +882,7 @@ class MainPageActivity : ProActivity() {
 
                 backTo()
 
-                false
+                true
 
             }
         }

@@ -3,6 +3,7 @@ package com.wt.yc.englishread.user
 import android.content.Intent
 import android.os.Bundle
 import android.os.Message
+import com.wt.yc.englishread.MainActivity
 import com.wt.yc.englishread.R
 import com.wt.yc.englishread.base.Config
 import com.wt.yc.englishread.base.ProActivity
@@ -22,6 +23,7 @@ class LoginActivity : ProActivity() {
     override fun handler(msg: Message) {
 
         val str = msg.obj as String
+
         when (msg.what) {
             Config.LOGIN_CODE -> {
                 removeLoadDialog()
@@ -38,7 +40,7 @@ class LoginActivity : ProActivity() {
 
                     Share.saveTokenAndUid(this, userInfo)
 
-                    startActivity(Intent(this, MainPageActivity::class.java))
+                    startActivity(Intent(this, MainActivity::class.java))
 
                     finish()
 
@@ -58,11 +60,11 @@ class LoginActivity : ProActivity() {
 
         if (Share.getUid(this) != 0) {
 
-            startActivity(Intent(this, MainPageActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
+
             finish()
 
         } else {
-
 
             setContentView(R.layout.login_layout)
 

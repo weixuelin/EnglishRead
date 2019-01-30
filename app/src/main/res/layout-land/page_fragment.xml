@@ -94,7 +94,7 @@
                         android:layout_marginLeft="@dimen/dp_4"
                         android:text="单词基础"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/sp_8" />
+                        android:textSize="@dimen/sp_10" />
 
                 </LinearLayout>
 
@@ -110,7 +110,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="当前课程:"
-                        android:textSize="@dimen/sp_8" />
+                        android:textSize="@dimen/sp_10" />
 
                     <TextView
                         android:id="@+id/tvBookName"
@@ -133,7 +133,7 @@
                         android:id="@+id/tvUnitName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/sp_8" />
+                        android:textSize="@dimen/sp_10" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -141,7 +141,7 @@
                         android:gravity="end"
                         android:text="[正在学习]"
                         android:textColor="@color/black1"
-                        android:textSize="@dimen/sp_8" />
+                        android:textSize="@dimen/sp_10" />
 
                 </LinearLayout>
 
@@ -156,7 +156,7 @@
                         android:id="@+id/tvUnitWord"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/sp_8" />
+                        android:textSize="@dimen/sp_10" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -164,7 +164,7 @@
                         android:gravity="end"
                         android:text="[完成记忆]"
                         android:textColor="@color/orange"
-                        android:textSize="@dimen/sp_8" />
+                        android:textSize="@dimen/sp_10" />
 
                 </LinearLayout>
 
@@ -209,22 +209,22 @@
                         android:layout_marginLeft="@dimen/dp_8"
                         android:text="词性分布图"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/sp_8" />
+                        android:textSize="@dimen/sp_10" />
 
                 </LinearLayout>
 
-                <FrameLayout
+                <LinearLayout
+                    android:id="@+id/picChartFrame"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/dp_4">
+                    android:layout_height="wrap_content">
 
                     <com.github.mikephil.charting.charts.PieChart
                         android:id="@+id/cxPieChart"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal" />
 
-                </FrameLayout>
+                </LinearLayout>
 
 
             </LinearLayout>
@@ -250,7 +250,7 @@
                         android:layout_height="wrap_content"
                         android:text="单词基础"
                         android:textColor="@color/write"
-                        android:textSize="@dimen/sp_8" />
+                        android:textSize="@dimen/sp_10" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -483,8 +483,8 @@
 
                         <ImageView
                             android:id="@+id/imagePic"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
+                            android:layout_width="@dimen/dp_14"
+                            android:layout_height="@dimen/dp_14"
                             android:src="@drawable/location_icon" />
 
                     </FrameLayout>
@@ -536,7 +536,7 @@
                         android:layout_weight="1"
                         android:text="转换量趋势"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/sp_8" />
+                        android:textSize="@dimen/sp_10" />
 
                 </LinearLayout>
 
@@ -607,8 +607,8 @@
 
                 </LinearLayout>
 
-                <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/zhlLineChart"
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/zhlBarChart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
@@ -643,7 +643,7 @@
                         android:layout_weight="1"
                         android:text="攻防战"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/sp_8" />
+                        android:textSize="@dimen/sp_10" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -704,7 +704,7 @@
                         android:layout_weight="1"
                         android:text="智能测试"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/sp_8" />
+                        android:textSize="@dimen/sp_10" />
 
                 </LinearLayout>
 

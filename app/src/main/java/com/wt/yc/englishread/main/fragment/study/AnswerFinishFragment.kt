@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.study_head.*
  * 答题完成
  */
 class AnswerFinishFragment : ProV4Fragment() {
+
     override fun handler(msg: Message) {
 
     }
@@ -54,8 +55,8 @@ class AnswerFinishFragment : ProV4Fragment() {
             val startN44 = scoreTi.lastIndexOf(",")
 
             TextUtils.getInstance().setColor(activity!!, sp, startNum, endNum, R.color.red, TextUtils.COLOR)
-            TextUtils.getInstance().setColor(activity!!, sp, startN33, startN44 - 1, R.color.red, TextUtils.COLOR)
-            TextUtils.getInstance().setColor(activity!!, sp, startN11, startN22, R.color.red, TextUtils.COLOR)
+            TextUtils.getInstance().setColor(activity!!, sp, startN33 + 1, startN44 - 1, R.color.red, TextUtils.COLOR)
+            TextUtils.getInstance().setColor(activity!!, sp, startN11 + 1, startN22, R.color.red, TextUtils.COLOR)
 
             testUserScore.setText(sp, TextView.BufferType.SPANNABLE)
 

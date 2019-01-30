@@ -35,6 +35,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import com.google.gson.Gson
 import com.wt.yc.englishread.App
+import com.wt.yc.englishread.MainActivity
 import com.wt.yc.englishread.R
 import com.wt.yc.englishread.user.LoginActivity
 import com.wt.yc.englishread.view.CustomPop
@@ -515,7 +516,14 @@ abstract class ProActivity : AppCompatActivity() {
 
                         if (message.contains("请登录")) {
 
-                            a.startActivity(Intent(a, LoginActivity::class.java))
+                            Share.clearUser(a)
+
+                            val intent = Intent(a, LoginActivity::class.java)
+                            a.startActivity(intent)
+
+                            if (a is MainActivity) {
+                                a.finish()
+                            }
 
                         } else {
                             a.handler(msg)

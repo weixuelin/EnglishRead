@@ -37,8 +37,6 @@ class BookInfo() : Parcelable {
     var testTime=""
     var score=""
 
-
-
     constructor(parcel: Parcel) : this() {
         book_id = parcel.readInt()
         book_name = parcel.readString()
@@ -69,6 +67,9 @@ class BookInfo() : Parcelable {
         ipa = parcel.readString()
         english_example = parcel.readString()
         chinese_example = parcel.readString()
+        userName = parcel.readString()
+        testTime = parcel.readString()
+        score = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -101,6 +102,9 @@ class BookInfo() : Parcelable {
         parcel.writeString(ipa)
         parcel.writeString(english_example)
         parcel.writeString(chinese_example)
+        parcel.writeString(userName)
+        parcel.writeString(testTime)
+        parcel.writeString(score)
     }
 
     override fun describeContents(): Int {

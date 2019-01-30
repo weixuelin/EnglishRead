@@ -9,6 +9,7 @@ import com.wt.yc.englishread.R
 import com.wt.yc.englishread.base.ProV4Fragment
 
 class WeekFragment:ProV4Fragment() {
+
     override fun handler(msg: Message) {
 
     }

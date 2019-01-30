@@ -5,15 +5,18 @@ import android.os.Bundle
 import android.os.Message
 import android.support.design.widget.TabLayout
 import android.support.v4.app.FragmentManager
+import com.wt.yc.englishread.base.Config
 import com.wt.yc.englishread.base.ProActivity
 import com.wt.yc.englishread.base.ProV4Fragment
 import com.wt.yc.englishread.base.Share
+import com.wt.yc.englishread.info.UserInfo
 import com.wt.yc.englishread.main.fragment.main.AboutFragment
 import com.wt.yc.englishread.main.fragment.main.MainFragment
 import com.wt.yc.englishread.main.fragment.main.MapFragment
 import com.wt.yc.englishread.user.LoginActivity
-import com.xin.lv.yang.utils.utils.StatusBarUtil
+import com.xin.lv.yang.utils.utils.HttpUtils
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONObject
 
 /**
  * 首页
@@ -21,6 +24,32 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : ProActivity() {
 
     override fun handler(msg: Message) {
+        val str=msg.obj as String
+
+        when(msg.what){
+            Config.GET_USER_INFO_CODE -> {
+
+                removeLoadDialog()
+                val json = JSONObject(str)
+                val code = json.optInt(Config.CODE)
+                val status = json.optBoolean(Config.STATUS)
+
+                if (code == Config.SUCCESS && status) {
+
+                    val result = json.optString(Config.DATA)
+                    val user = gson!!.fromJson<UserInfo>(result, UserInfo::class.java)
+                    showUserInfo(user)
+                }
+            }
+        }
+
+    }
+
+    private fun showUserInfo(user: UserInfo?) {
+
+        indexFragment = fragmentList[0]
+
+        indexFragment = switchContent(indexFragment!!, indexFragment!!, R.id.linearLayout, manager!!.beginTransaction())
 
     }
 
@@ -39,7 +68,19 @@ class MainActivity : ProActivity() {
         }
 
         initClick()
+
+        getUserInfo()
+
     }
+
+
+    private fun getUserInfo() {
+        val json = JSONObject()
+        json.put("uid", uid)
+        json.put("token", token)
+        HttpUtils.getInstance().postJson(Config.GET_USER_INFO_URL, json.toString(), Config.GET_USER_INFO_CODE, handler)
+    }
+
 
     val fragmentList = arrayListOf<ProV4Fragment>(MainFragment(), AboutFragment(), MapFragment())
 
@@ -51,9 +92,6 @@ class MainActivity : ProActivity() {
             startActivityForResult(Intent(this, LoginActivity::class.java), 1234)
         }
 
-        indexFragment = fragmentList[0]
-
-        indexFragment = switchContent(indexFragment!!, indexFragment!!, R.id.linearLayout, manager!!.beginTransaction())
 
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
 

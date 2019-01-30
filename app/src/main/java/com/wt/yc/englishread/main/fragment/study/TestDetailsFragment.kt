@@ -46,6 +46,9 @@ class TestDetailsFragment : ProV4Fragment() {
         when (msg.what) {
 
             Config.GET_TEST_CODE -> {
+
+                removeLoadDialog()
+
                 val json = JSONObject(str)
                 val status = json.optBoolean(Config.STATUS)
 
@@ -61,11 +64,14 @@ class TestDetailsFragment : ProV4Fragment() {
                     } else {
                         indexTime = 0
                         (activity as MainPageActivity).isTestCode = false
+                        tvTestTime.visibility = View.GONE
 
                     }
 
                 } else {
 
+                    showShortToast(activity!!, json.optString("msg"))
+                    tvTestTime.visibility = View.GONE
                     indexTime = 0
                     (activity as MainPageActivity).isTestCode = false
 
@@ -252,6 +258,7 @@ class TestDetailsFragment : ProV4Fragment() {
         }
 
         HttpUtils.getInstance().postJson(Config.GET_TEST_URL, json.toString(), Config.GET_TEST_CODE, handler)
+        showLoadDialog(activity!!, "获取中")
 
 
     }

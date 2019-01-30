@@ -83,7 +83,7 @@
                     android:id="@+id/reviewTrue"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:src="@drawable/true_pic" />
+                    android:src="@drawable/icon_true" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -107,7 +107,7 @@
                     android:id="@+id/reviewError"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/forget" />
+                    android:src="@drawable/icon_onremenber" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -132,7 +132,7 @@
                     android:id="@+id/reviewAgain"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/ting_again" />
+                    android:src="@drawable/icon_listen_again" />
 
                 <TextView
                     android:layout_width="wrap_content"

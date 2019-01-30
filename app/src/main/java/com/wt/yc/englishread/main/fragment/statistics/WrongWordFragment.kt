@@ -16,9 +16,11 @@ import kotlinx.android.synthetic.main.wrong_word_fragment.*
  * 高频错词
  */
 class WrongWordFragment : ProV4Fragment() {
+
     override fun handler(msg: Message) {
 
     }
+
 
     override fun createView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.wrong_word_fragment, container, false)

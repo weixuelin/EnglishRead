@@ -51,8 +51,7 @@
                 android:id="@+id/reviewTwoImageView"
                 android:layout_width="@dimen/dp_50"
                 android:layout_height="@dimen/dp_50"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/forget" />
+                android:layout_gravity="center_horizontal" />
 
             <TextView
                 android:id="@+id/tvTwoWordYiSi"
@@ -85,7 +84,7 @@
                     android:layout_width="@dimen/dp_30"
                     android:layout_height="@dimen/dp_30"
                     android:clickable="true"
-                    android:src="@drawable/true_pic" />
+                    android:src="@drawable/icon_true" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -111,7 +110,7 @@
                     android:layout_width="@dimen/dp_30"
                     android:layout_height="@dimen/dp_30"
                     android:clickable="true"
-                    android:src="@drawable/forget" />
+                    android:src="@drawable/icon_onremenber" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -137,7 +136,7 @@
                     android:layout_width="@dimen/dp_30"
                     android:layout_height="@dimen/dp_30"
                     android:clickable="true"
-                    android:src="@drawable/ting_again" />
+                    android:src="@drawable/icon_listen_again" />
 
                 <TextView
                     android:layout_width="wrap_content"

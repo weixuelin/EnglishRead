@@ -216,6 +216,7 @@ class ReviewFragment : ProV4Fragment() {
         })
 
         HttpUtils.getInstance().postJson(Config.REVIEW_WORD_URL, json.toString(), Config.REVIRE_CODE, handler)
+        showLoadDialog(activity!!, "获取中")
     }
 
     /**
@@ -549,7 +550,7 @@ class ReviewFragment : ProV4Fragment() {
 
         vv.linearSure.setOnClickListener {
 
-            vv.reviewImageView.setImageResource(R.drawable.true_pic)
+            vv.reviewImageView.setImageResource(R.drawable.icon_true)
             vv.tvWordYiSi.text = info.chinese
 
             val endTime = 10 - indexTime
@@ -583,7 +584,7 @@ class ReviewFragment : ProV4Fragment() {
         }
 
         vv.linearError.setOnClickListener {
-            vv.reviewImageView.setImageResource(R.drawable.forget)
+            vv.reviewImageView.setImageResource(R.drawable.icon_onremenber)
             vv.tvWordYiSi.text = info.chinese
 
             isFirstClickError = true
@@ -678,16 +679,20 @@ class ReviewFragment : ProV4Fragment() {
         }
 
         twoView.linearTwoSure.setOnClickListener {
+            twoView.reviewTwoImageView.setImageResource(R.drawable.icon_true)
 
             if (oneIndexNum == twoArr.size) {
                 showThreeDialog()
             } else {
                 addTwo(twoArr[oneIndexNum])
             }
-
         }
 
+
         twoView.linearTwoError.setOnClickListener {
+
+            twoView.reviewTwoImageView.setImageResource(R.drawable.icon_onremenber)
+
             if (oneIndexNum == twoArr.size) {
                 showThreeDialog()
             } else {

@@ -63,6 +63,12 @@ class MyGroupUpFragment : ProV4Fragment() {
         initChart()
 
         initClick()
+
+        getStudyList()
+    }
+
+    private fun getStudyList() {
+
     }
 
 

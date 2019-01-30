@@ -63,5 +63,15 @@ class Constant {
          * 继续学习
          */
         val MAIN_STADUY_CODE: Int = 10
+
+        /**
+         * 所有的测试成绩
+         */
+        val ALL_TEST_SCORE=11
+
+        /**
+         * 测试时间统计
+         */
+        val STUDY_TIME=12
     }
 }

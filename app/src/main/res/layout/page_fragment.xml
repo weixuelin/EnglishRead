@@ -213,18 +213,18 @@
 
                 </LinearLayout>
 
-                <FrameLayout
+                <LinearLayout
+                    android:id="@+id/picChartFrame"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/dp_4">
+                    android:layout_height="wrap_content">
 
                     <com.github.mikephil.charting.charts.PieChart
                         android:id="@+id/cxPieChart"
-                        android:layout_width="@dimen/dp_80"
-                        android:layout_height="@dimen/dp_80"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal" />
 
-                </FrameLayout>
+                </LinearLayout>
 
 
             </LinearLayout>
@@ -607,8 +607,8 @@
 
                 </LinearLayout>
 
-                <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/zhlLineChart"
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/zhlBarChart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
