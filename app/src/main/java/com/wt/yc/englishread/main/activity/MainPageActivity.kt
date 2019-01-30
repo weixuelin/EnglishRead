@@ -22,6 +22,7 @@ import com.wt.yc.englishread.main.fragment.study.*
 import com.wt.yc.englishread.user.LoginActivity
 import com.wt.yc.englishread.user.fragment.UserFragment
 import com.xin.lv.yang.utils.utils.HttpUtils
+import com.xin.lv.yang.utils.utils.ImageUtil
 import kotlinx.android.synthetic.main.main_page_layout.*
 import kotlinx.android.synthetic.main.main_top.*
 import kotlinx.android.synthetic.main.open_door.view.*
@@ -99,7 +100,7 @@ class MainPageActivity : ProActivity() {
 
         if (!isFinishing) {
 
-////            ImageUtil.getInstance().loadCircleImage(this, userPicHead, "", R.drawable.head_pic)
+            ImageUtil.getInstance().loadCircleImage(this, userPicHead, "", R.drawable.head_pic)
 
             tvUserName.text = user!!.username
             tvAllMoney.text = user.gold
