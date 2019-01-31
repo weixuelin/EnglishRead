@@ -13,10 +13,7 @@ import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.SearchView
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewConfiguration
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
@@ -28,6 +25,7 @@ import com.wt.yc.englishread.R
 import com.wt.yc.englishread.tts.TTSForApi
 import com.xin.lv.yang.utils.utils.ImageUtil
 import com.xin.lv.yang.utils.view.CustomProgressDialog
+import com.xin.lv.yang.utils.view.CustomToast
 import org.json.JSONObject
 import java.io.File
 import java.io.FileInputStream
@@ -203,7 +201,11 @@ abstract class ProV4Fragment : Fragment() {
 
 
     fun showShortToast(activity: Activity, str: String, time: Int = Toast.LENGTH_SHORT) {
-        Toast.makeText(activity, str, time).show()
+
+        CustomToast.showToast(activity,Gravity.CENTER,0,str)
+
+///        Toast.makeText(activity, str, time).show()
+
     }
 
 
@@ -213,10 +215,11 @@ abstract class ProV4Fragment : Fragment() {
     fun setMargen(ceshiTv: LinearLayout, margen: Int) {
         val lp: LinearLayout.LayoutParams = ceshiTv.layoutParams as LinearLayout.LayoutParams
 
-        lp.setMargins(margen, 0, 0, 0)
+        lp.setMargins(margen, margen, margen, margen)
 
         ceshiTv.layoutParams = lp
     }
+
 
     fun setMargenTop(layout: RelativeLayout, margen: Int) {
         val lp: LinearLayout.LayoutParams = layout.layoutParams as LinearLayout.LayoutParams
@@ -233,7 +236,11 @@ abstract class ProV4Fragment : Fragment() {
     }
 
     fun showToastShort(context: Context, str: String) {
-        Toast.makeText(context, str, Toast.LENGTH_SHORT).show()
+
+        CustomToast.showToast(context,Gravity.CENTER,0,str)
+
+//        Toast.makeText(context, str, Toast.LENGTH_SHORT).show()
+
     }
 
     var customProgressDialog: CustomProgressDialog? = null

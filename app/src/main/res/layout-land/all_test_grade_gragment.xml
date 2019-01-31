@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/margin10"
+    android:padding="@dimen/dp_4"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/write"
@@ -20,14 +20,15 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_24"
             android:background="@drawable/blue_kuang_yuan"
+            android:visibility="gone"
             android:text="下一页"
             android:textColor="@color/write" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_8"
-            android:text="当前第一页，共两页"/>
+            android:visibility="gone"
+            android:layout_marginLeft="@dimen/dp_8" />
 
         <View
             android:layout_width="0dp"

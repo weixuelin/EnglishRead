@@ -29,6 +29,7 @@ import android.widget.LinearLayout
 import android.util.TypedValue
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
@@ -42,6 +43,7 @@ import com.wt.yc.englishread.view.CustomPop
 import com.xin.lv.yang.utils.utils.ImageUtil
 import com.xin.lv.yang.utils.utils.StatusBarUtil
 import com.xin.lv.yang.utils.view.CustomProgressDialog
+import com.xin.lv.yang.utils.view.CustomToast
 import org.json.JSONObject
 import java.lang.ref.WeakReference
 import java.math.BigDecimal
@@ -68,8 +70,7 @@ abstract class ProActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-
+//
 //        if (Build.VERSION.SDK_INT >= 21) {
 //            StatusBarUtil.transparencyBar(this)
 //            StatusBarUtil.setStatusBarLightMode(window, true)
@@ -184,7 +185,9 @@ abstract class ProActivity : AppCompatActivity() {
     }
 
     fun showToastShort(s: String) {
-        Toast.makeText(this, s, Toast.LENGTH_SHORT).show()
+        CustomToast.showToast(this,Gravity.CENTER,0,s)
+
+//        Toast.makeText(this, s, Toast.LENGTH_SHORT).show()
 
     }
 
@@ -397,7 +400,7 @@ abstract class ProActivity : AppCompatActivity() {
             return info != null;
 
         } catch (e: PackageManager.NameNotFoundException) {
-            return false;
+            return false
         }
     }
 

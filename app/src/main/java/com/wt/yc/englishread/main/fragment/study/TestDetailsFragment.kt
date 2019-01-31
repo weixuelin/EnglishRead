@@ -306,6 +306,8 @@ class TestDetailsFragment : ProV4Fragment() {
 
                 questionArr.clear()
 
+                testViewPager.removeAllViews()
+
                 getQuestList()
 
             }
@@ -479,6 +481,7 @@ class TestDetailsFragment : ProV4Fragment() {
 
 
             viewPagerList.add(view)
+
         }
 
         testViewPager.adapter = object : PagerAdapter() {

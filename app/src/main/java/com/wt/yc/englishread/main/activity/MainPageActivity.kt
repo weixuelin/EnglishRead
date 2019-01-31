@@ -114,7 +114,7 @@ class MainPageActivity : ProActivity() {
 
         setContentView(R.layout.main_page_layout)
 
-        val ww = resources.getDimension(R.dimen.dp_120).toInt()
+        val ww = getW()/5
         pageLeadRecyclerView.layoutParams = LinearLayout.LayoutParams(ww, LinearLayout.LayoutParams.WRAP_CONTENT)
 
         initLoadAdapter()
@@ -196,6 +196,7 @@ class MainPageActivity : ProActivity() {
         }
 
         tvUserName.setOnClickListener {
+
             val tttt = supportFragmentManager.beginTransaction()
 
             val fff = UserFragment()
@@ -766,6 +767,8 @@ class MainPageActivity : ProActivity() {
             Constant.LISTEN_WRITE_CODE -> {
                 // 听写
                 val listenWrite = ListenWriteFragment()
+                listenWrite.rfInfo = info
+
                 tttt.addToBackStack("ListenWriteFragment")
                 indexFragment = switchContent(indexFragment!!, listenWrite, R.id.mainPageFrame, tttt)
 
@@ -775,6 +778,7 @@ class MainPageActivity : ProActivity() {
             Constant.LISTEN_READ_CODE -> {
                 // 听读训练
                 val listenRead = ListenReadFragment()
+                listenRead.info=info
                 tttt.addToBackStack("ListenReadFragment")
                 indexFragment = switchContent(indexFragment!!, listenRead, R.id.mainPageFrame, tttt)
 

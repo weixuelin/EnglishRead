@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/write"
     android:orientation="vertical"
-    android:padding="@dimen/dp_4">
+    android:padding="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -123,22 +123,21 @@
                 android:id="@+id/studyRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/dp_4" />
+                android:padding="4dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_8"
                 android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="@dimen/dp_8">
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="夹生词/陌生词:"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/sp_10" />
+                    android:textSize="@dimen/sp_8" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/msRecyclerView"
@@ -160,12 +159,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="本册学习统计"
-                    android:textSize="@dimen/sp_10" />
+                    android:textSize="@dimen/sp_8" />
 
                 <com.github.mikephil.charting.charts.LineChart
                     android:id="@+id/studyChart"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_200" />
+                    android:layout_height="200dp" />
 
 
             </LinearLayout>
@@ -188,7 +187,7 @@
                     android:padding="@dimen/dp_8"
                     android:text="完成度"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12" />
+                    android:textSize="@dimen/sp_10" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/finishNumRecyclerView"

@@ -1,23 +1,21 @@
 package com.xin.lv.yang.utils.view;
 
-import android.annotation.SuppressLint;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
-import android.widget.EditText;
-
+import android.util.Log;
 import com.xin.lv.yang.utils.R;
 
 
 /**
- * 密码输入框
+ * 密码输入框 默认六位密码
  */
-
-@SuppressLint("AppCompatCustomView")
-public class PasswordEditText extends EditText {
+public class PasswordEditText extends AppCompatEditText {
 
     private int textLength = 6;
 
@@ -69,11 +67,13 @@ public class PasswordEditText extends EditText {
     public void init(Context context, AttributeSet attrs) {
         final Resources res = getResources();
 
-        final int defaultBorderColor = res.getColor(android.R.color.black);
+        final int defaultBorderColor = res.getColor(android.R.color.darker_gray);
+
         final float defaultBorderWidth = res.getDimension(R.dimen.dp_1);
         final float defaultBorderRadius = res.getDimension(R.dimen.dp_8);
 
-        final int defaultPasswordLength = 6;
+        final int defaultPasswordLength = textLength;
+
         final int defaultPasswordColor = res.getColor(android.R.color.black);
         final float defaultPasswordWidth = res.getDimension(R.dimen.dp_6);
         final float defaultPasswordRadius = res.getDimension(R.dimen.dp_6);
@@ -107,9 +107,13 @@ public class PasswordEditText extends EditText {
         int width = getWidth();
         int height = getHeight();
 
+        Log.i("result","result-------"+passwordLength);
+
         /// 绘制分割线
+
         borderPaint.setColor(borderColor);
         borderPaint.setStrokeWidth(defaultSplitLineWidth);
+
         for (int i = 1; i < passwordLength; i++) {
             float x = width * i / passwordLength;
             canvas.drawLine(x, 0, x, height, borderPaint);
@@ -199,5 +203,16 @@ public class PasswordEditText extends EditText {
         invalidate();
     }
 
+
+    public void changeLen(int len){
+
+        setText("");
+
+        textLength=len;
+        passwordLength=len;
+
+        invalidate();
+
+    }
 
 }

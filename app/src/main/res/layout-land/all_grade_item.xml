@@ -14,7 +14,7 @@
         android:text="测试内容"
         android:gravity="center_horizontal"
         android:textColor="@color/a767676"
-        android:textSize="@dimen/sp_10" />
+        android:textSize="@dimen/sp_8" />
 
     <TextView
         android:id="@+id/gradeTv2"
@@ -24,7 +24,7 @@
         android:gravity="center_horizontal"
         android:text="测试内容"
         android:textColor="@color/a767676"
-        android:textSize="@dimen/sp_10" />
+        android:textSize="@dimen/sp_8" />
 
     <TextView
         android:id="@+id/gradeTv3"
@@ -34,7 +34,7 @@
         android:gravity="center_horizontal"
         android:text="测试内容"
         android:textColor="@color/a767676"
-        android:textSize="@dimen/sp_10" />
+        android:textSize="@dimen/sp_8" />
 
     <TextView
         android:id="@+id/gradeTv4"
@@ -44,7 +44,7 @@
         android:gravity="center_horizontal"
         android:text="测试内容"
         android:textColor="@color/a767676"
-        android:textSize="@dimen/sp_10" />
+        android:textSize="@dimen/sp_8" />
 
     <TextView
         android:id="@+id/gradeTv5"
@@ -54,6 +54,6 @@
         android:gravity="center_horizontal"
         android:text="测试内容"
         android:textColor="@color/a767676"
-        android:textSize="@dimen/sp_10" />
+        android:textSize="@dimen/sp_8" />
 
 </LinearLayout>

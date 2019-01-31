@@ -25,6 +25,7 @@ class UserFragment : ProV4Fragment() {
     }
 
     override fun handler(msg: Message) {
+
         val str = msg.obj as String
         when (msg.what) {
 

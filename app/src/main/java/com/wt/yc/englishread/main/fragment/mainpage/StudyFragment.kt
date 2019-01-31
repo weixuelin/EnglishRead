@@ -203,11 +203,11 @@ class StudyFragment : ProV4Fragment() {
 
         val lineDataSet = arrayListOf<ILineDataSet>()
         val set1 = LineDataSet(y, "熟悉词")
-        set1.setCircleColor(resources.getColor(R.color.red))
+        set1.setCircleColor(resources.getColor(R.color.holo_green_light))
         set1.setDrawCircles(false)
-        set1.color = resources.getColor(R.color.red)
+        set1.color = resources.getColor(R.color.holo_green_light)
         set1.mode = LineDataSet.Mode.CUBIC_BEZIER
-        set1.valueTextColor = resources.getColor(R.color.red)
+        set1.valueTextColor = resources.getColor(R.color.holo_green_light)
         lineDataSet.add(set1)
 
         val y11 = arrayListOf<Entry>()
@@ -220,11 +220,11 @@ class StudyFragment : ProV4Fragment() {
 
 
         val set2 = LineDataSet(y11, "夹生词")
-        set2.setCircleColor(resources.getColor(R.color.green))
+        set2.setCircleColor(resources.getColor(R.color.holo_red_light))
         set2.setDrawCircles(false)
-        set2.color = resources.getColor(R.color.green)
+        set2.color = resources.getColor(R.color.holo_red_light)
         set2.mode = LineDataSet.Mode.CUBIC_BEZIER
-        set2.valueTextColor = resources.getColor(R.color.green)
+        set2.valueTextColor = resources.getColor(R.color.holo_red_light)
         lineDataSet.add(set2)
 
         val y113 = arrayListOf<Entry>()
@@ -283,6 +283,7 @@ class StudyFragment : ProV4Fragment() {
     val list = arrayListOf<BookInfo>()
     var studyAdapter: StudyAdapter? = null
 
+
     /**
      * 初始单元adapter
      */
@@ -310,12 +311,12 @@ class StudyFragment : ProV4Fragment() {
             }
 
             override fun onDictation(position: Int) {
-                (activity as MainPageActivity).toWhere(Constant.LISTEN_WRITE_CODE, BookInfo())
+                (activity as MainPageActivity).toWhere(Constant.LISTEN_WRITE_CODE, list[position])
 
             }
 
             override fun onDictationTraining(position: Int) {
-                (activity as MainPageActivity).toWhere(Constant.LISTEN_READ_CODE, BookInfo())
+                (activity as MainPageActivity).toWhere(Constant.LISTEN_READ_CODE, list[position])
             }
 
         }
@@ -358,7 +359,6 @@ class StudyFragment : ProV4Fragment() {
                     if (jsOrMsArr != null && jsOrMsArr.size != 0) {
                         showJsOrMs(jsOrMsArr)
                     }
-
 
                     val wordInfo = resultData.optString("pm")
                     val bookDetails = gson!!.fromJson<BookInfo>(wordInfo, BookInfo::class.java)

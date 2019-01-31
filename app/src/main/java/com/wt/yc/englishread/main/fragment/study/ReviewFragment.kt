@@ -54,21 +54,12 @@ class ReviewFragment : ProV4Fragment() {
 
                 Log.i("result", "---------")
 
-                indexTime--
+                indexTime++
 
-                if (indexTime <= 0) {
-                    timer!!.cancel()
-
-                    if (tvTextTime != null) {
-                        tvTextTime.text = "0"
-                    }
-
-                } else {
-                    if (tvTextTime != null) {
-                        tvTextTime.text = indexTime.toString()
-                    }
-
+                if (tvTextTime != null) {
+                    tvTextTime.text = indexTime.toString()
                 }
+
             }
 
             Config.REVIRE_CODE -> {
@@ -94,7 +85,7 @@ class ReviewFragment : ProV4Fragment() {
                         getOneList()
                     } else {
                         if (isVisibleCode) {
-                            showToastShort(activity!!, "暂无学习单次，请重新开始学习!!")
+                            showToastShort(activity!!, "暂无学习单词，请重新开始学习!!")
                         }
 
                     }
@@ -234,7 +225,6 @@ class ReviewFragment : ProV4Fragment() {
         oneIndexNum = 0
 
         initFirstList()
-        initTime()
 
     }
 
@@ -244,14 +234,16 @@ class ReviewFragment : ProV4Fragment() {
     /**
      * 当前定时时间
      */
-    var indexTime = 10
+    var indexTime = 0
 
 
     private fun initTime() {
-        indexTime = 10
+        indexTime = 0
 
         if (timer != null) {
             timer!!.cancel()
+            timer=null
+
         }
 
         timer = Timer()
@@ -336,7 +328,6 @@ class ReviewFragment : ProV4Fragment() {
 
                         addOneView(firstArr[oneIndexNum])
 
-                        initTime()
                         buttonNext.visibility = View.GONE
 
                     }
@@ -353,7 +344,6 @@ class ReviewFragment : ProV4Fragment() {
                         oneIndexNum++
 
                         addTwo(twoArr[oneIndexNum])
-                        initTime()
                     }
                 }
 
@@ -380,8 +370,7 @@ class ReviewFragment : ProV4Fragment() {
                                 threeArr.add(info)
                             }
 
-                            val endTime = 10 - indexTime
-                            info.time = endTime.toString()
+                            info.time = indexTime.toString()
 
                             threeHashMap.add(info)
 
@@ -429,6 +418,10 @@ class ReviewFragment : ProV4Fragment() {
         json.put("study_data", buildList())
         HttpUtils.getInstance().postJson(Config.FINISH_REVIRE_URL, json.toString(), Config.FINISH_CODE, handler!!)
         showLoadDialog(activity!!, "提交中")
+
+        if(timer!=null){
+            timer!!.cancel()
+        }
 
     }
 
@@ -507,7 +500,7 @@ class ReviewFragment : ProV4Fragment() {
     }
 
     /**
-     * 计数
+     * 计数,集合信息计数
      */
     var oneIndexNum = 0
 
@@ -527,7 +520,6 @@ class ReviewFragment : ProV4Fragment() {
     var isFirstClickError = false
 
     private fun addOneView(info: BookInfo) {
-
         reviewLinearLayout.removeAllViews()
         val vv = layoutInflater.inflate(R.layout.review_view, null)
 
@@ -555,8 +547,8 @@ class ReviewFragment : ProV4Fragment() {
             vv.reviewImageView.setImageResource(R.drawable.icon_true)
             vv.tvWordYiSi.text = info.chinese
 
-            val endTime = 10 - indexTime
-            info.time = endTime.toString()
+            info.time = indexTime.toString()
+
             info.status = 1
 
             val index = isExist(finishWordList, info)
@@ -591,8 +583,7 @@ class ReviewFragment : ProV4Fragment() {
 
             isFirstClickError = true
 
-            val endTime = 10 - indexTime
-            info.time = endTime.toString()
+            info.time = indexTime.toString()
             info.status = 0
 
             val index = isExist(finishWordList, info)
@@ -621,6 +612,8 @@ class ReviewFragment : ProV4Fragment() {
         }
 
         reviewLinearLayout.addView(vv)
+
+        initTime()
 
     }
 
@@ -707,6 +700,8 @@ class ReviewFragment : ProV4Fragment() {
         reviewLinearLayout.addView(twoView)
 
 
+        initTime()
+
     }
 
     /**
@@ -731,15 +726,11 @@ class ReviewFragment : ProV4Fragment() {
 
         inputStr = ""
 
-        initTime()
-
         reviewLinearLayout.removeAllViews()
 
         val threeView = layoutInflater.inflate(R.layout.review_three_view, null)
 
         val english=info.english
-
-        threeView.inPutEditText.textLength = english.length
 
         threeView.inPutEditText.filters = arrayOf(InputFilter.LengthFilter(english.length))
 
@@ -767,6 +758,8 @@ class ReviewFragment : ProV4Fragment() {
         }
 
         reviewLinearLayout.addView(threeView)
+
+        initTime()
 
     }
 }

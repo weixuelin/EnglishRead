@@ -10,6 +10,7 @@ import com.wt.yc.englishread.info.BookInfo
 import kotlinx.android.synthetic.main.finish_item.view.*
 
 class FinishAdapter(context: Context, list: ArrayList<BookInfo>) : ProBaseAdapter<BookInfo>(context, list) {
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val vh = holder as VH
         val info = list[position]

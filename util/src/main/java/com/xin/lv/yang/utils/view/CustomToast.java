@@ -35,7 +35,14 @@ public class CustomToast {
         mImageView = toastRoot.findViewById(R.id.imageView);
         //为控件设置属性
         mTextView.setText(message);
-        mImageView.setImageDrawable(ActivityCompat.getDrawable(context, resId));
+
+        if(resId!=0){
+            mImageView.setVisibility(View.VISIBLE);
+            mImageView.setImageDrawable(ActivityCompat.getDrawable(context, resId));
+        }else{
+            mImageView.setVisibility(View.GONE);
+        }
+
         // Toast的初始化
         Toast toastStart = new Toast(context);
 

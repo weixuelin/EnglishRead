@@ -6,10 +6,12 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Message
 import android.support.annotation.RequiresApi
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
+import android.widget.TextView
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.MarkerView
@@ -74,7 +76,7 @@ class MyGroupUpFragment : ProV4Fragment() {
 
         when (code) {
             1 -> {
-                chooseTimeLinear.visibility = View.VISIBLE
+                chooseTimeLinear.visibility = View.GONE
                 tvGroupTitle.visibility = View.GONE
             }
 
@@ -96,15 +98,20 @@ class MyGroupUpFragment : ProV4Fragment() {
         if(code==1){
 
         }else if(code==2){
-            val json = JSONObject()
-            json.put("token", token)
-            json.put("uid",uid)
-            HttpUtils.getInstance().postJson(Config.GET_WEEK_URL, json.toString(), Config.GET_WEEK_CODE, handler!!)
-            showLoadDialog(activity!!, "获取中")
-
 
         }
 
+        get()
+
+    }
+
+
+    fun get(){
+        val json = JSONObject()
+        json.put("token", token)
+        json.put("uid",uid)
+        HttpUtils.getInstance().postJson(Config.GET_WEEK_URL, json.toString(), Config.GET_WEEK_CODE, handler!!)
+        showLoadDialog(activity!!, "获取中")
     }
 
 
@@ -164,9 +171,9 @@ class MyGroupUpFragment : ProV4Fragment() {
 
         groupUpChart.setNoDataText("没有数据")
 
-//        val markerView = MarkerView(activity!!, R.layout.group_up_pop_text)
-//        markerView.chartView = groupUpChart
-//        groupUpChart.markerView = markerView
+        val markerView = MarkerView(activity!!, R.layout.group_up_pop_text)
+        markerView.chartView = groupUpChart
+        groupUpChart.markerView = markerView
 
         // 设置是否启动触摸响应
         groupUpChart.setTouchEnabled(true)
@@ -186,16 +193,18 @@ class MyGroupUpFragment : ProV4Fragment() {
         // 执行的动画,x轴（动画持续时间）
         groupUpChart.animateX(1500)
 
-//        groupUpChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
-//            override fun onNothingSelected() {
-//
-//            }
-//
-//            override fun onValueSelected(e: Entry?, h: Highlight?) {
-//                markerView.refreshContent(e, h)
-//            }
-//
-//        })
+        groupUpChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+            override fun onNothingSelected() {
+
+            }
+
+            override fun onValueSelected(e: Entry?, h: Highlight?) {
+                val textView=markerView.findViewById<TextView>(R.id.tvTextView1)
+                textView.text = "学习量: "+h!!.y.toInt().toString()
+                markerView.refreshContent(e, h)
+            }
+
+        })
 
 
 
@@ -208,7 +217,10 @@ class MyGroupUpFragment : ProV4Fragment() {
 
     private fun setDate(arr:ArrayList<String>) {
 
+        Log.i("result","-----"+arr.size)
+
         arr.add(0,"0")
+        arr.add("0")
 
         val y = arrayListOf<Entry>()
 

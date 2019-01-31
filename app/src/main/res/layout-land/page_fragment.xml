@@ -14,9 +14,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp">
+            android:paddingLeft="@dimen/dp_4"
+            android:paddingRight="@dimen/dp_4"
+            android:gravity="center_vertical">
 
             <TextView
                 android:id="@+id/tvIndexInfo"
@@ -64,7 +64,6 @@
         </LinearLayout>
 
         <LinearLayout
-            style="@style/margin4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -110,7 +109,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="当前课程:"
-                        android:textSize="@dimen/sp_10" />
+                        android:textSize="@dimen/sp_8" />
 
                     <TextView
                         android:id="@+id/tvBookName"
@@ -118,7 +117,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:textColor="@color/green"
-                        android:textSize="@dimen/sp_10" />
+                        android:textSize="@dimen/sp_8" />
 
                 </LinearLayout>
 
@@ -133,15 +132,16 @@
                         android:id="@+id/tvUnitName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/sp_10" />
+                        android:textSize="@dimen/sp_8" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="[正在学习]"
+                        android:visibility="gone"
                         android:textColor="@color/black1"
-                        android:textSize="@dimen/sp_10" />
+                        android:textSize="@dimen/sp_8" />
 
                 </LinearLayout>
 
@@ -156,22 +156,23 @@
                         android:id="@+id/tvUnitWord"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/sp_10" />
+                        android:textSize="@dimen/sp_8" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="[完成记忆]"
+                        android:visibility="gone"
                         android:textColor="@color/orange"
-                        android:textSize="@dimen/sp_10" />
+                        android:textSize="@dimen/sp_8" />
 
                 </LinearLayout>
 
                 <Button
                     android:id="@+id/buttonContinue"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_16"
                     android:layout_marginTop="@dimen/dp_8"
                     android:background="@drawable/blue_kuang_yuan"
                     android:paddingLeft="@dimen/dp_4"
@@ -213,19 +214,11 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/picChartFrame"
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/cxPieChart"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/cxPieChart"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_horizontal" />
-
-                </LinearLayout>
-
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center" />
 
             </LinearLayout>
 
@@ -273,14 +266,14 @@
                     android:layout_gravity="center">
 
                     <com.github.mikephil.charting.charts.LineChart
-                        android:layout_width="@dimen/dp_80"
-                        android:layout_height="@dimen/dp_80"
+                        android:layout_width="@dimen/dp_60"
+                        android:layout_height="@dimen/dp_60"
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/dp_4" />
 
                     <ImageView
-                        android:layout_width="@dimen/dp_40"
-                        android:layout_height="@dimen/dp_40"
+                        android:layout_width="@dimen/dp_30"
+                        android:layout_height="@dimen/dp_30"
                         android:layout_gravity="center"
                         android:src="@drawable/lock_pic" />
 
@@ -291,6 +284,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:text="欢迎来到专题魔方"
+                    android:layout_marginTop="@dimen/dp_8"
                     android:textColor="@color/write"
                     android:textSize="@dimen/sp_8" />
 
@@ -431,7 +425,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/sp_10" />
+                        android:textSize="@dimen/sp_8" />
 
                     <TextView
                         android:id="@+id/tvIndexWeek"
@@ -439,7 +433,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:textColor="@color/black1"
-                        android:textSize="@dimen/sp_10" />
+                        android:textSize="@dimen/sp_8" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -447,7 +441,7 @@
                         android:layout_alignParentBottom="true"
                         android:text="欢迎来到恋词英语学习平台"
                         android:textColor="@color/black1"
-                        android:textSize="@dimen/sp_10" />
+                        android:textSize="@dimen/sp_8" />
 
                 </RelativeLayout>
 
@@ -465,7 +459,7 @@
                         android:layout_height="wrap_content"
                         android:text="我的课本完成情况"
                         android:textColor="@color/text_color"
-                        android:textSize="@dimen/sp_10" />
+                        android:textSize="@dimen/sp_8" />
 
                     <FrameLayout
                         android:id="@+id/picFrameLayout"
@@ -473,18 +467,26 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@id/tvTi">
 
-                        <ProgressBar
+                        <android.support.v7.widget.AppCompatSeekBar
                             android:id="@+id/progressBar"
-                            style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dp_10"
+                            android:layout_marginTop="@dimen/dp_8"
                             android:max="100" />
+
+                        <TextView
+                            android:id="@+id/studyTextNum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/sp_8"
+                            android:text="12%"
+                            android:textColor="@color/red"/>
 
                         <ImageView
                             android:id="@+id/imagePic"
                             android:layout_width="@dimen/dp_14"
                             android:layout_height="@dimen/dp_14"
+                            android:visibility="gone"
                             android:src="@drawable/location_icon" />
 
                     </FrameLayout>
@@ -504,7 +506,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_4"
             android:orientation="horizontal">
 
             <!-- 转换量趋势-->
@@ -671,7 +672,6 @@
         </LinearLayout>
 
         <LinearLayout
-            style="@style/margin4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -733,7 +733,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
 
     </LinearLayout>
 

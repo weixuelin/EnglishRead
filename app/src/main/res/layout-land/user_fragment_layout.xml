@@ -51,7 +51,7 @@
             <ImageView
                 android:id="@+id/imageUserHead"
                 android:layout_width="@dimen/dp_60"
-                android:src="@drawable/head_pic"
+                android:src="@drawable/ic_img_user_default"
                 android:layout_height="@dimen/dp_60" />
 
             <TextView
@@ -164,8 +164,8 @@
 
                 <EditText
                     android:id="@+id/etOldNumber"
-                    android:layout_width="@dimen/dp_160"
-                    android:layout_height="@dimen/dp_24"
+                    android:layout_width="200dp"
+                    android:layout_height="24dp"
                     android:layout_marginLeft="@dimen/dp_10"
                     android:inputType="textPassword"
                     android:background="@drawable/edit_check_selecter"
@@ -193,8 +193,8 @@
 
                 <EditText
                     android:id="@+id/etNewNumber"
-                    android:layout_width="@dimen/dp_160"
-                    android:layout_height="@dimen/dp_24"
+                    android:layout_width="200dp"
+                    android:layout_height="24dp"
                     android:layout_marginLeft="@dimen/dp_10"
                     android:background="@drawable/edit_check_selecter"
                     android:ellipsize="end"
@@ -222,8 +222,8 @@
 
                 <EditText
                     android:id="@+id/etNewAgain"
-                    android:layout_width="@dimen/dp_160"
-                    android:layout_height="@dimen/dp_24"
+                    android:layout_width="200dp"
+                    android:layout_height="24dp"
                     android:layout_marginLeft="@dimen/dp_10"
                     android:background="@drawable/edit_check_selecter"
                     android:ellipsize="end"

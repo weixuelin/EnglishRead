@@ -10,14 +10,14 @@
         android:layout_height="match_parent"
         android:background="@drawable/write_kuang"
         android:orientation="vertical"
-        android:padding="@dimen/dp_8">
+        android:padding="@dimen/dp_4">
 
         <TextView
             android:id="@+id/tvTwoContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/a00fff0"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/sp_12" />
 
         <TextView
             android:id="@+id/tvTwoYuTi"
@@ -26,12 +26,12 @@
             android:layout_marginLeft="@dimen/dp_8"
             android:layout_toRightOf="@id/tvTwoContent"
             android:textColor="@color/aff6600"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/sp_12" />
 
         <ImageView
             android:id="@+id/imageTwoPlay"
-            android:layout_width="@dimen/dp_18"
-            android:layout_height="@dimen/dp_18"
+            android:layout_width="@dimen/dp_14"
+            android:layout_height="@dimen/dp_14"
             android:layout_marginLeft="@dimen/dp_10"
             android:layout_toRightOf="@id/tvTwoYuTi"
             android:src="@drawable/review_ting" />
@@ -41,16 +41,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvTwoContent"
-            android:layout_marginTop="@dimen/dp_12"
+            android:layout_marginTop="@dimen/dp_8"
             android:background="@drawable/gray_kuang"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="@dimen/dp_10">
+            android:padding="@dimen/dp_8">
 
             <ImageView
                 android:id="@+id/reviewTwoImageView"
-                android:layout_width="@dimen/dp_50"
-                android:layout_height="@dimen/dp_50"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
                 android:layout_gravity="center_horizontal" />
 
             <TextView
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_8"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp_14" />
+                android:textSize="@dimen/sp_12" />
 
         </LinearLayout>
 
@@ -68,7 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/linear1"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_8"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -82,8 +82,8 @@
 
                 <ImageView
                     android:id="@+id/reviewTwoTrue"
-                    android:layout_width="@dimen/dp_30"
-                    android:layout_height="@dimen/dp_30"
+                    android:layout_width="@dimen/dp_26"
+                    android:layout_height="@dimen/dp_26"
                     android:src="@drawable/icon_true" />
 
                 <TextView
@@ -108,8 +108,8 @@
 
                 <ImageView
                     android:id="@+id/reviewTwoError"
-                    android:layout_width="@dimen/dp_30"
-                    android:layout_height="@dimen/dp_30"
+                    android:layout_width="@dimen/dp_26"
+                    android:layout_height="@dimen/dp_26"
                     android:src="@drawable/icon_onremenber" />
 
                 <TextView
@@ -134,8 +134,8 @@
 
                 <ImageView
                     android:id="@+id/reviewTwoAgain"
-                    android:layout_width="@dimen/dp_30"
-                    android:layout_height="@dimen/dp_30"
+                    android:layout_width="@dimen/dp_26"
+                    android:layout_height="@dimen/dp_26"
                     android:src="@drawable/icon_listen_again" />
 
                 <TextView
@@ -164,7 +164,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="例句:"
-                android:textSize="@dimen/sp_12" />
+                android:textSize="@dimen/sp_10" />
 
             <TextView
                 android:id="@+id/tvTwoLiFanYi"

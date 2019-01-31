@@ -10,6 +10,7 @@ import com.wt.yc.englishread.base.ProActivity
 import com.wt.yc.englishread.base.ProV4Fragment
 import com.wt.yc.englishread.base.Share
 import com.wt.yc.englishread.info.UserInfo
+import com.wt.yc.englishread.main.activity.MainPageActivity
 import com.wt.yc.englishread.main.fragment.main.AboutFragment
 import com.wt.yc.englishread.main.fragment.main.MainFragment
 import com.wt.yc.englishread.main.fragment.main.MapFragment
@@ -62,7 +63,7 @@ class MainActivity : ProActivity() {
         manager = supportFragmentManager
 
         if (Share.getUid(this) != 0) {
-            tvLogin.text = "已登录"
+            tvLogin.text = "已登录,点击开始学习"
         } else {
             tvLogin.text = "登录"
         }
@@ -71,9 +72,13 @@ class MainActivity : ProActivity() {
 
         getUserInfo()
 
+
     }
 
 
+    /**
+     * 获取用户信息
+     */
     private fun getUserInfo() {
         val json = JSONObject()
         json.put("uid", uid)
@@ -89,7 +94,15 @@ class MainActivity : ProActivity() {
     private fun initClick() {
 
         tvLogin.setOnClickListener {
-            startActivityForResult(Intent(this, LoginActivity::class.java), 1234)
+
+            if(Share.getUid(this)!=0){
+
+                startActivity(Intent(this, MainPageActivity::class.java))
+
+            }else{
+                startActivityForResult(Intent(this, LoginActivity::class.java), 1234)
+            }
+
         }
 
 

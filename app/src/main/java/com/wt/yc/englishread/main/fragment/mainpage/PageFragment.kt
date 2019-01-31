@@ -1,5 +1,6 @@
 package com.wt.yc.englishread.main.fragment.mainpage
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.graphics.Color
 import android.graphics.Typeface
@@ -82,6 +83,7 @@ class PageFragment : ProV4Fragment() {
 
                     val testResult = jsonObject.optString("test")
                     val arr: ArrayList<BookInfo> = gson!!.fromJson(testResult, object : TypeToken<ArrayList<BookInfo>>() {}.type)
+
                     if (arr != null && arr.size != 0) {
                         textAdapter!!.updateData(arr)
                     }
@@ -136,11 +138,16 @@ class PageFragment : ProV4Fragment() {
      */
     private fun showZhlData(xx: String, fx: String) {
 
-        // 设置每个矩形在y轴上的值
+        Log.i("result","xxxxx-------"+xx.toFloat()+"----fxfx--------"+fx.toFloat())
+
+        initZhLChart()
+
+        /// 设置每个矩形在y轴上的值
         val set0 = BarDataSet(arrayListOf(BarEntry(0f, 0f)), "")
 
-        val set1 = BarDataSet(arrayListOf<BarEntry>(BarEntry(1f, xx.toFloat())), "学习量")
-        val set2 = BarDataSet(arrayListOf<BarEntry>(BarEntry(2f, fx.toFloat())), "需要学习")
+        val set1 = BarDataSet(arrayListOf(BarEntry(1f, xx.toFloat())), "学习量")
+
+        val set2 = BarDataSet(arrayListOf(BarEntry(2f, fx.toFloat())), "需要学习")
 
         set0.color = activity!!.resources.getColor(android.R.color.transparent)
         set1.color = activity!!.resources.getColor(R.color.red)
@@ -149,7 +156,9 @@ class PageFragment : ProV4Fragment() {
         val dataSets: ArrayList<IBarDataSet> = arrayListOf()
 
         dataSets.add(set0)
+
         dataSets.add(set1)
+
         dataSets.add(set2)
 
         // 设置柱形图的数据
@@ -159,8 +168,11 @@ class PageFragment : ProV4Fragment() {
         data.setValueTypeface(Typeface.DEFAULT)
 
         if (zhlBarChart != null) {
+
             Log.i("result", "----执行到此----")
+
             zhlBarChart.data = data
+
         }
 
     }
@@ -172,6 +184,9 @@ class PageFragment : ProV4Fragment() {
      * 显示一周学习量
      */
     private fun showWeekStr(book: BookInfo?) {
+
+        initStudyChart()
+
         val wordXs = book!!.xs
         val wordShuXi = book.sx
 
@@ -190,9 +205,11 @@ class PageFragment : ProV4Fragment() {
 
 
     /**
-     * 显示单词统计
+     * 显示单词统计,词性分布图
      */
     private fun showCountArr(countBookArr: ArrayList<BookInfo>?) {
+
+        initCXpieChart()
 
         if (cxPieChart != null) {
             if (countBookArr != null && countBookArr.size != 0) {
@@ -237,17 +254,12 @@ class PageFragment : ProV4Fragment() {
 
         initWOrH()
 
-        initCXpieChart()
-
         initGfzChart()
-
-        initZhLChart()
-
-        initStudyChart()
 
         initAdapter()
         initCzAdapter()
         initClick()
+
         setIndexTime()
 
 
@@ -276,50 +288,44 @@ class PageFragment : ProV4Fragment() {
      */
     private fun initWOrH() {
 
-        val scanW = getW(activity!!) - activity!!.resources.getDimension(R.dimen.dp_120).toInt()
-        val w = scanW / 3
-        val h = w * 4 / 5
+        val scanW = getW(activity!!)*4/5
 
-        val hh = w
+        val wwThree=(scanW-48) / 3
 
-        linear1.layoutParams = LinearLayout.LayoutParams(w, h)
+        linear1.layoutParams = LinearLayout.LayoutParams(wwThree, wwThree)
+        setMargen(linear1, 8)
 
-        linear2.layoutParams = LinearLayout.LayoutParams(w - 8, h)
+        linear2.layoutParams = LinearLayout.LayoutParams(wwThree, wwThree)
         setMargen(linear2, 8)
 
-        picChartFrame.layoutParams = LinearLayout.LayoutParams(w, h)
-        setMargen(picChartFrame, 8)
-
         val www = activity!!.resources.getDimension(R.dimen.dp_30).toInt()
-        cxPieChart.layoutParams = LinearLayout.LayoutParams(w - www, h - www)
+        cxPieChart.layoutParams = LinearLayout.LayoutParams(wwThree - www, wwThree - www)
 
-        val paddingW = resources.getDimension(R.dimen.dp_20).toInt()
-
-        linear3.layoutParams = LinearLayout.LayoutParams(w - paddingW, h)
+        linear3.layoutParams = LinearLayout.LayoutParams(wwThree, wwThree)
         setMargen(linear3, 8)
 
-        linear4.layoutParams = LinearLayout.LayoutParams(w * 2, hh)
+        linear4.layoutParams = LinearLayout.LayoutParams(wwThree * 2+16, wwThree)
         setMargen(linear4, 8)
 
-        linear5.layoutParams = LinearLayout.LayoutParams(w - paddingW, hh)
+        linear5.layoutParams = LinearLayout.LayoutParams(wwThree , wwThree)
         setMargen(linear5, 8)
 
-        linear6.layoutParams = LinearLayout.LayoutParams(w * 2, hh)
+        linear6.layoutParams = LinearLayout.LayoutParams(wwThree * 2+16, wwThree)
         setMargen(linear6, 8)
 
-        val ww40 = resources.getDimension(R.dimen.dp_40).toInt()
 
-        timeIndexLayout.layoutParams = LinearLayout.LayoutParams(w - paddingW, hh / 2)
+        timeIndexLayout.layoutParams = LinearLayout.LayoutParams(wwThree, wwThree / 2)
 
-        progressLatout.layoutParams = LinearLayout.LayoutParams(w - paddingW, hh / 2)
+        progressLatout.layoutParams = LinearLayout.LayoutParams(wwThree, wwThree / 2)
         setMargenTop(progressLatout, 8)
 
-        linear7.layoutParams = LinearLayout.LayoutParams(w - paddingW, hh)
+        linear7.layoutParams = LinearLayout.LayoutParams(wwThree, wwThree)
         setMargen(linear7, 8)
 
-        linear8.layoutParams = LinearLayout.LayoutParams(w * 2, hh)
+        linear8.layoutParams = LinearLayout.LayoutParams(wwThree * 2+16, wwThree)
+        setMargen(linear8, 8)
 
-        linear9.layoutParams = LinearLayout.LayoutParams(w - paddingW, LinearLayout.LayoutParams.WRAP_CONTENT)
+        linear9.layoutParams = LinearLayout.LayoutParams(wwThree, LinearLayout.LayoutParams.WRAP_CONTENT)
         setMargen(linear9, 8)
 
     }
@@ -412,6 +418,7 @@ class PageFragment : ProV4Fragment() {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initImagePic() {
         val date = DataUtil.longToTime(System.currentTimeMillis() / 1000, "yyyy-MM-dd")
         tvIndexTime.text = date
@@ -419,7 +426,10 @@ class PageFragment : ProV4Fragment() {
         tvIndexWeek.text = DataUtil().getWeekByDateStr(date, "-")
 
         val p = 50
+
         progressBar.progress = p
+
+        studyTextNum.text="${p}%"
 
         val vto = picFrameLayout.viewTreeObserver
 
@@ -430,9 +440,9 @@ class PageFragment : ProV4Fragment() {
 
                 val picw = p * pw / 100
 
-                val params = imagePic.layoutParams as FrameLayout.LayoutParams
-                params.setMargins(picw, 0, 0, 0)
-                imagePic.layoutParams = params
+                val params = studyTextNum.layoutParams as FrameLayout.LayoutParams
+                params.setMargins(picw-10, 0, 0, 0)
+                studyTextNum.layoutParams = params
 
             }
         })
@@ -479,6 +489,7 @@ class PageFragment : ProV4Fragment() {
 
     var textAdapter: TestListAdapter? = null
     val testList = arrayListOf<BookInfo>()
+
     private fun initAdapter() {
         testRecyclerView.isNestedScrollingEnabled = false
         testRecyclerView.layoutManager = LinearLayoutManager(activity!!)
@@ -561,7 +572,6 @@ class PageFragment : ProV4Fragment() {
      * 转换量初始化
      */
     private fun initZhLChart() {
-
         //设置矩形阴影是否显示
         zhlBarChart.setDrawBarShadow(false)
         //设置值是否在矩形的上方显示
@@ -592,7 +602,7 @@ class PageFragment : ProV4Fragment() {
         //设置比例显示形状，方形，圆形，线性
         l.form = Legend.LegendForm.CIRCLE
         //设置比例显示形状的大小
-        l.formSize = 10f
+        l.formSize = 8f
         //设置比例显示文字的大小
         l.textSize = 10f
         l.xEntrySpace = 4f
@@ -779,7 +789,7 @@ class PageFragment : ProV4Fragment() {
         //设置比例显示
         val l: Legend = gfzBarChart.legend
         //设置比例显示在柱形图哪个位置
-        l.position = Legend.LegendPosition.BELOW_CHART_LEFT
+        l.position = Legend.LegendPosition.LEFT_OF_CHART
         //设置比例显示形状，方形，圆形，线性
         l.form = Legend.LegendForm.SQUARE
         //设置比例显示形状的大小
@@ -788,12 +798,15 @@ class PageFragment : ProV4Fragment() {
         l.textSize = 10f
         l.xEntrySpace = 4f
 
-        //设置X轴方向上的属性
-        val xAxis: XAxis = gfzBarChart.xAxis
+        // 设置X轴方向上的属性
+       val xAxis: XAxis = gfzBarChart.xAxis
+
         //设置标签显示在柱形图的上方还是下方
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.typeface = Typeface.DEFAULT
-        //设置是否绘制表格
+        xAxis.setDrawLabels(false)
+
+        // 设置是否绘制表格
         xAxis.setDrawGridLines(false)
 
         xAxis.axisMinimum = 0f
@@ -919,6 +932,7 @@ class PageFragment : ProV4Fragment() {
      *  显示饼状图数据
      */
     private fun bindData(countBookArr: ArrayList<BookInfo>) {
+
         val bb1 = countBookArr[0]  // 熟悉词
         val bb2 = countBookArr[1]  // 夹生词
         val bb3 = countBookArr[2]  // 陌生词
@@ -954,7 +968,7 @@ class PageFragment : ProV4Fragment() {
         dataSet.colors = colors
 
         dataSet.valueTextColor = Color.BLACK
-        dataSet.valueTextSize = activity!!.resources.getDimension(R.dimen.sp_6)
+        dataSet.valueTextSize = 14f
         dataSet.valueTypeface = Typeface.DEFAULT_BOLD
 
         /// 是否在图上显示数值
@@ -978,7 +992,7 @@ class PageFragment : ProV4Fragment() {
         //设置以百分比显示
         data.setValueFormatter(PercentFormatter())
         //区域文字的大小
-        data.setValueTextSize(activity!!.resources.getDimension(R.dimen.sp_6))
+        data.setValueTextSize(14f)
         //设置区域文字的颜色
         data.setValueTextColor(Color.BLACK)
         //设置区域文字的字体

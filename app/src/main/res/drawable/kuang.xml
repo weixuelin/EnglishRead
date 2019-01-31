@@ -4,9 +4,9 @@
         android:width="@dimen/dp_1"
         android:color="@color/gray" />
     <corners
-        android:bottomLeftRadius="@dimen/dp_4"
-        android:bottomRightRadius="@dimen/dp_4"
-        android:topLeftRadius="@dimen/dp_4"
-        android:topRightRadius="@dimen/dp_4" />
+        android:bottomLeftRadius="@dimen/dp_2"
+        android:bottomRightRadius="@dimen/dp_2"
+        android:topLeftRadius="@dimen/dp_2"
+        android:topRightRadius="@dimen/dp_2" />
 
 </shape>

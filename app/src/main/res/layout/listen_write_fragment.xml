@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/write"
     android:orientation="vertical">
 
     <include layout="@layout/study_head" />
@@ -12,6 +13,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="4dp"
         android:layout_marginRight="10dp"
+        android:gravity="center_horizontal"
         android:layout_marginBottom="10dp"
         android:background="@drawable/write_kuang_line"
         android:orientation="vertical">
@@ -22,6 +24,7 @@
             android:layout_gravity="end"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
+            android:visibility="gone"
             android:background="@drawable/green_kuang"
             android:gravity="center_horizontal"
             android:text="8"
@@ -30,52 +33,49 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tvTextChinese"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_180"
-                android:layout_marginLeft="@dimen/dp_180"
-                android:text="黑色的"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="@dimen/sp_10" />
 
             <FrameLayout
                 android:layout_width="280dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="@dimen/dp_180"
-                android:layout_marginLeft="@dimen/dp_180"
                 android:layout_marginTop="@dimen/dp_8"
                 android:background="@drawable/gray_kuang"
                 android:padding="@dimen/dp_2">
 
-                <com.xin.lv.yang.utils.view.WritingTextView
+                <EditText
+                    android:id="@+id/writingTextView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:background="@color/write"
+                    android:layout_height="50dp" />
 
             </FrameLayout>
 
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="280dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_180"
-                android:layout_marginLeft="@dimen/dp_180"
                 android:layout_marginTop="@dimen/dp_32"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tvCiTi"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="black"
                     android:textColor="@color/green"
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/tvListenerAgain"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_16"

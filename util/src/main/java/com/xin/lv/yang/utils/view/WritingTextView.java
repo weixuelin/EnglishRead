@@ -1,7 +1,6 @@
 package com.xin.lv.yang.utils.view;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;

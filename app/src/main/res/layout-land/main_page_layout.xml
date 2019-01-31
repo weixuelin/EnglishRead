@@ -13,7 +13,7 @@
 
         <ExpandableListView
             android:id="@+id/pageLeadRecyclerView"
-            android:layout_width="@dimen/dp_120"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@color/main_recycler"
             android:divider="@color/a585858"
@@ -23,7 +23,8 @@
 
         <FrameLayout
             android:id="@+id/mainPageFrame"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:background="@color/line" />
 

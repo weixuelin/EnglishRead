@@ -109,8 +109,11 @@ class MainFragment : ProV4Fragment() {
         HttpUtils.getInstance().postJson(Config.GET_MAIN_DATA, "", Config.MAIN_DATA_CODE, handler)
     }
 
+
     private fun initClick() {
+
         linearLayout1.setOnClickListener {
+
             if (Share.getUid(activity!!) != 0) {
                 startActivity(Intent(activity!!, MainPageActivity::class.java))
             } else {
