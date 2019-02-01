@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import com.google.gson.reflect.TypeToken
 import com.wt.yc.englishread.R
 import com.wt.yc.englishread.base.Config
@@ -699,7 +700,6 @@ class ReviewFragment : ProV4Fragment() {
 
         reviewLinearLayout.addView(twoView)
 
-
         initTime()
 
     }
@@ -731,6 +731,12 @@ class ReviewFragment : ProV4Fragment() {
         val threeView = layoutInflater.inflate(R.layout.review_three_view, null)
 
         val english=info.english
+
+        Log.i("result","========"+english.length)
+
+        threeView.inPutEditText.totalCount=english.length
+
+        threeView.inPutEditText.layoutParams=LinearLayout.LayoutParams(english.length*100,LinearLayout.LayoutParams.WRAP_CONTENT)
 
         threeView.inPutEditText.filters = arrayOf(InputFilter.LengthFilter(english.length))
 

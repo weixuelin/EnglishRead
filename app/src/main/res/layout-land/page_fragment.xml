@@ -108,15 +108,14 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="当前课程:"
+                        android:text="当前课程: "
                         android:textSize="@dimen/sp_8" />
 
                     <TextView
                         android:id="@+id/tvBookName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:textColor="@color/green"
+                        android:textColor="@color/blue_login"
                         android:textSize="@dimen/sp_8" />
 
                 </LinearLayout>
@@ -129,9 +128,16 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="正在学习单元: "
+                        android:textSize="@dimen/sp_8" />
+
+                    <TextView
                         android:id="@+id/tvUnitName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/blue_login"
                         android:textSize="@dimen/sp_8" />
 
                     <TextView
@@ -153,9 +159,16 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="上次学习单词: "
+                        android:textSize="@dimen/sp_8" />
+
+                    <TextView
                         android:id="@+id/tvUnitWord"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/blue_login"
                         android:textSize="@dimen/sp_8" />
 
                     <TextView
@@ -399,7 +412,6 @@
                         android:drawablePadding="@dimen/dp_4"
                         android:text="单次学习"
                         android:textSize="@dimen/sp_9" />
-
 
                 </LinearLayout>
 

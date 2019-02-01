@@ -236,11 +236,11 @@ class PageFragment : ProV4Fragment() {
         }
 
         if (tvUnitName != null) {
-            tvUnitName.text = "正在学习单元: ${book2!!.unit_name}"
+            tvUnitName.text = "${book2!!.unit_name}"
         }
 
         if (tvUnitWord != null) {
-            tvUnitWord.text = "上次学习单词: ${book3!!.english}"
+            tvUnitWord.text = "${book3!!.english}"
         }
 
     }

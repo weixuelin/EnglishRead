@@ -6,13 +6,12 @@
     android:background="@drawable/gray_kuang"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="@dimen/dp_8">
+    android:padding="@dimen/dp_6">
 
     <ImageView
         android:id="@+id/imgPic"
-        android:layout_width="@dimen/dp_12"
-        android:layout_height="@dimen/dp_12"
-        android:src="@drawable/set" />
+        android:layout_width="@dimen/dp_10"
+        android:layout_height="@dimen/dp_10" />
 
     <TextView
         android:id="@+id/tvTitle"
@@ -22,12 +21,12 @@
         android:layout_weight="1"
         android:text="我的成长经历"
         android:textColor="@color/a686868"
-        android:textSize="@dimen/sp_10" />
+        android:textSize="@dimen/sp_8" />
 
     <ImageView
         android:id="@+id/imgRight"
-        android:layout_width="@dimen/dp_12"
-        android:layout_height="@dimen/dp_12"
+        android:layout_width="@dimen/dp_10"
+        android:layout_height="@dimen/dp_10"
         android:src="@drawable/right" />
 
 

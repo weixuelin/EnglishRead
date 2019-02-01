@@ -82,6 +82,7 @@
 
 
     <declare-styleable name="PasswordInputView">
+
         <attr name="pwdBorderWidth" format="dimension"/>
         <attr name="pwdBorderColor" format="color"/>
         <attr name="pwdBorderRadius" format="dimension"/>
@@ -89,6 +90,20 @@
         <attr name="pwdPasswordWidth" format="dimension"/>
         <attr name="pwdPasswordColor" format="color"/>
         <attr name="pwdPasswordRadius" format="dimension"/>
+
+    </declare-styleable>
+
+
+    <declare-styleable name="VerifyEditText">
+
+    <!--验证码的个数-->
+          <attr name="total_count" format="integer" />
+    <!--  每个验证码的间隔间距-->
+          <attr name="interval_length" format="integer" />
+    <!--底部的线的颜色-->
+          <attr name="line_color" format="color" />
+    <!--输入框文字的颜色-->
+         <attr name="text_color" format="color" />
 
     </declare-styleable>
 

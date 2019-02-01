@@ -35,7 +35,7 @@ class WrongWordFragment : ProV4Fragment() {
         wrongWordRecyclerView.layoutManager = LinearLayoutManager(activity)
         wrongWordRecyclerView.addItemDecoration(DividerItemDecoration(activity, DividerItemDecoration.VERTICAL))
 
-        wrongWordRecyclerView.adapter = WrongWordAdapter(activity!!, arrayListOf("", ""))
+        wrongWordRecyclerView.adapter = WrongWordAdapter(activity!!, arrayListOf())
 
     }
 }

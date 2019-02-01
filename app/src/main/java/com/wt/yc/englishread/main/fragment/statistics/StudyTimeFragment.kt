@@ -233,7 +233,7 @@ class StudyTimeFragment : ProV4Fragment() {
         // 设置以百分比显示
         data.setValueFormatter(PercentFormatter())
         // 区域文字的大小
-        data.setValueTextSize(10f)
+        data.setValueTextSize(14f)
         // 设置区域文字的颜色
         data.setValueTextColor(Color.BLACK)
         // 设置区域文字的字体

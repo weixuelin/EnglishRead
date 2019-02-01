@@ -60,6 +60,7 @@ class MainActivity : ProActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
+
         manager = supportFragmentManager
 
         if (Share.getUid(this) != 0) {
@@ -71,7 +72,6 @@ class MainActivity : ProActivity() {
         initClick()
 
         getUserInfo()
-
 
     }
 

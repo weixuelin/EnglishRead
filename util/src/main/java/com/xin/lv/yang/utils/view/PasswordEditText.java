@@ -104,6 +104,7 @@ public class PasswordEditText extends AppCompatEditText {
 
     @Override
     protected void onDraw(Canvas canvas) {
+
         int width = getWidth();
         int height = getHeight();
 
@@ -205,12 +206,9 @@ public class PasswordEditText extends AppCompatEditText {
 
 
     public void changeLen(int len){
-
         setText("");
-
         textLength=len;
         passwordLength=len;
-
         invalidate();
 
     }
