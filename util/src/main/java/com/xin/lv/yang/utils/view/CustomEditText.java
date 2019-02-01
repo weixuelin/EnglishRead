@@ -129,23 +129,6 @@ public class CustomEditText extends AppCompatEditText {
         setSingleLine(true);
 
 
-//        setOnLongClickListener(new OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                return true;
-//            }
-//        });
-//
-//        setOnTouchListener(new OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.showSoftInput(CustomEditText.this, 0);
-//                return true;
-//            }
-//        });
-
-
         setTextColor(context.getResources().getColor(android.R.color.transparent));
 
         Log.i("result","-------"+lineColor+"-------"+textColor);
