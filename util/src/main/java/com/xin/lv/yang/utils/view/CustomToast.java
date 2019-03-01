@@ -46,7 +46,7 @@ public class CustomToast {
         // Toast的初始化
         Toast toastStart = new Toast(context);
 
-        //获取屏幕高度
+        // 获取屏幕高度
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 
         if (wm != null) {

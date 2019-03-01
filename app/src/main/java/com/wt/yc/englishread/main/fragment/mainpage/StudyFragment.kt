@@ -19,9 +19,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.google.gson.reflect.TypeToken
 import com.wt.yc.englishread.R
-import com.wt.yc.englishread.base.Config
-import com.wt.yc.englishread.base.Constant
-import com.wt.yc.englishread.base.ProV4Fragment
+import com.wt.yc.englishread.base.*
 import com.wt.yc.englishread.info.BookInfo
 import com.wt.yc.englishread.info.Info
 import com.wt.yc.englishread.main.activity.MainPageActivity
@@ -68,8 +66,6 @@ class StudyFragment : ProV4Fragment() {
     private fun initClick() {
 
         testLinearLayout.setOnClickListener {
-
-            Log.i("result", "book------$bookInfo")
 
             bookInfo!!.code = 2
 
@@ -132,6 +128,7 @@ class StudyFragment : ProV4Fragment() {
         val yyy = studyLineChart.axisLeft
         yyy.setDrawZeroLine(false)
         yyy.setDrawGridLines(false)
+        yyy.setStartAtZero(true)
         val xAxis = studyLineChart.xAxis
         // 显示X轴上的刻度值
         xAxis.setDrawLabels(true)
@@ -146,7 +143,6 @@ class StudyFragment : ProV4Fragment() {
         xAxis.valueFormatter = IAxisValueFormatter { value, axis ->
 
             val num = value.toInt()
-            log("--------$num")
 
             val str = if (num < 0 || num >= textArr.size) {
                 ""
@@ -169,7 +165,7 @@ class StudyFragment : ProV4Fragment() {
             }
 
             override fun onValueSelected(e: Entry?, h: Highlight?) {
-                log("hhhhhhh---------" + h.toString())
+
                 showStudyView(markerView.rootView, h!!)
                 markerView.refreshContent(e, h)
             }
@@ -208,6 +204,8 @@ class StudyFragment : ProV4Fragment() {
         set1.color = resources.getColor(R.color.holo_green_light)
         set1.mode = LineDataSet.Mode.CUBIC_BEZIER
         set1.valueTextColor = resources.getColor(R.color.holo_green_light)
+        set1.lineWidth = 4f
+
         lineDataSet.add(set1)
 
         val y11 = arrayListOf<Entry>()
@@ -225,6 +223,8 @@ class StudyFragment : ProV4Fragment() {
         set2.color = resources.getColor(R.color.holo_red_light)
         set2.mode = LineDataSet.Mode.CUBIC_BEZIER
         set2.valueTextColor = resources.getColor(R.color.holo_red_light)
+        set2.lineWidth = 4f
+
         lineDataSet.add(set2)
 
         val y113 = arrayListOf<Entry>()
@@ -241,6 +241,8 @@ class StudyFragment : ProV4Fragment() {
         set3.color = resources.getColor(R.color.blue_login)
         set3.mode = LineDataSet.Mode.CUBIC_BEZIER
         set3.valueTextColor = resources.getColor(R.color.blue_login)
+        set3.lineWidth = 4f
+
         lineDataSet.add(set3)
 
         val data = LineData(lineDataSet)
@@ -263,12 +265,14 @@ class StudyFragment : ProV4Fragment() {
 
         jsOrMsAdapter = TextVoiceAdapter(activity!!, jsOrMsList)
         msRecyclerView.adapter = jsOrMsAdapter
-        jsOrMsAdapter!!.onVoiceListener = object : TextVoiceAdapter.OnVoiceListener {
 
-            override fun onVoice(position: Int) {
+        jsOrMsAdapter!!.itemClickListener = object : ItemClickListener {
+            override fun onItemClick(position: Int) {
                 val info = jsOrMsList[position]
                 playVoice(activity!!, Config.IP + info.video!!)
-                showLoadDialog(activity!!, "播放中")
+            }
+
+            override fun onLongClick(position: Int) {
 
             }
 
@@ -288,6 +292,7 @@ class StudyFragment : ProV4Fragment() {
      * 初始单元adapter
      */
     private fun initAdapter() {
+
         list.clear()
 
         studyRecyclerView.isNestedScrollingEnabled = false
@@ -295,9 +300,34 @@ class StudyFragment : ProV4Fragment() {
         studyAdapter = StudyAdapter(activity!!, list)
         studyRecyclerView.adapter = studyAdapter
 
+        studyAdapter!!.itemClickListener = object : ItemClickListener {
+            override fun onItemClick(position: Int) {
+
+                val startBookInfo = list[position]
+                /// 继续学习
+                startBookInfo.code = 1   /// 提示继续学习
+                startBookInfo.goOnCode = 1   // 提示继续学习
+
+                startBookInfo.id = Share.getUnitId(activity!!)
+
+                (activity as MainPageActivity).toWhere(Constant.STUDY_REVIEW, startBookInfo)
+            }
+
+            override fun onLongClick(position: Int) {
+
+            }
+
+        }
+
         studyAdapter!!.onTvListener = object : StudyAdapter.OnClickListener {
             override fun onReview(position: Int) {
+
                 val info = list[position]
+                info.code = 0
+                info.goOnCode = 1
+
+                Share.saveUnitId(activity!!, info.id)
+
                 (activity as MainPageActivity).toWhere(Constant.STUDY_REVIEW, info)
 
             }
@@ -325,13 +355,16 @@ class StudyFragment : ProV4Fragment() {
 
     override fun handler(msg: Message) {
         val str = msg.obj as String
+
         when (msg.what) {
             Config.GET_STUDY_CODE -> {
+
                 val json = JSONObject(str)
                 val code = json.optInt(Config.CODE)
                 val state = json.optBoolean(Config.STATUS)
 
                 if (code == Config.SUCCESS && state) {
+
                     val resultData = json.optJSONObject(Config.DATA)
                     val resultBook = resultData.optString("book")
                     val book = gson!!.fromJson<BookInfo>(resultBook, BookInfo::class.java)
@@ -339,14 +372,20 @@ class StudyFragment : ProV4Fragment() {
                     showBook(book)
 
                     val bookUnit = resultData.optString("unit")
-                    val unitResultArr = gson!!.fromJson<ArrayList<BookInfo>>(bookUnit, object : TypeToken<ArrayList<BookInfo>>() {}.type)
 
-                    studyAdapter!!.updateDataClear(unitResultArr)
-                    finishAdapter!!.updateDataClear(unitResultArr)
+                    if (bookUnit != null && bookUnit != "") {
 
-                    showIsAllTest(unitResultArr)
+                        val unitResultArr = gson!!.fromJson<ArrayList<BookInfo>>(bookUnit, object : TypeToken<ArrayList<BookInfo>>() {}.type)
+
+                        studyAdapter!!.updateDataClear(unitResultArr)
+                        finishAdapter!!.updateDataClear(unitResultArr)
+
+                        showIsAllTest(unitResultArr)
+
+                    }
 
                     val unitName = resultData.optString("unit_name")
+
                     val sxWord = resultData.optString("sx")
                     val jsWord = resultData.optString("js")
                     val msWord = resultData.optString("ms")
@@ -362,7 +401,10 @@ class StudyFragment : ProV4Fragment() {
 
                     val wordInfo = resultData.optString("pm")
                     val bookDetails = gson!!.fromJson<BookInfo>(wordInfo, BookInfo::class.java)
+
                     showDetails(bookDetails)
+
+                    studyLinearLayout.visibility = View.VISIBLE
 
                 }
             }
@@ -393,7 +435,12 @@ class StudyFragment : ProV4Fragment() {
 
     }
 
+
+    /**
+     * 显示名次相关
+     */
     private fun showDetails(bookDetails: BookInfo?) {
+
         if (tvMingCiNum != null) {
             tvMingCiNum.text = bookDetails!!.zpm.toString()
         }

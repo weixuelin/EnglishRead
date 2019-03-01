@@ -21,6 +21,7 @@ import com.youdao.ocr.online.OCRParameters
  * 写作练习
  */
 class WritingExerciseFragment : ProV4Fragment() {
+
     override fun handler(msg: Message) {
 
     }

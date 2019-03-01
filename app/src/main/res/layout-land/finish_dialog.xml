@@ -12,7 +12,7 @@
 
         <LinearLayout
             android:layout_width="@dimen/dp_280"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_180"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/write_kuang"
             android:orientation="vertical">
@@ -34,43 +34,43 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/dp_10"
-                    android:text="完成今日目标"
                     android:textColor="@color/a333333"
-                    android:textSize="@dimen/sp_16" />
+                    android:textSize="@dimen/sp_10" />
 
             </LinearLayout>
 
             <Button
                 android:id="@+id/buttonFinish"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/dp_100"
+                android:layout_height="@dimen/dp_30"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dp_10"
                 android:layout_marginBottom="@dimen/dp_10"
                 android:background="@drawable/blue_kuang_yuan"
                 android:text="确定"
                 android:textColor="@color/write"
-                android:textSize="@dimen/sp_12" />
+                android:textSize="@dimen/sp_10" />
 
         </LinearLayout>
 
         <RelativeLayout
             android:layout_width="@dimen/dp_360"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_70"
             android:background="@drawable/finish_bg">
 
             <ImageView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginTop="@dimen/dp_10"
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/finish_text" />
 
             <ImageView
                 android:id="@+id/imageClose"
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
+                android:layout_width="@dimen/dp_14"
+                android:layout_height="@dimen/dp_14"
                 android:layout_marginLeft="@dimen/dp_280"
-                android:layout_marginTop="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_16"
                 android:src="@drawable/finish_close" />
 
         </RelativeLayout>

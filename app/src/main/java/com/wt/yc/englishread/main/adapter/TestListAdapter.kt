@@ -17,7 +17,8 @@ class TestListAdapter(context: Context, list: ArrayList<BookInfo>) : ProBaseAdap
         vh.tvTestName.text = info.type
         vh.tvTestDate.text = info.test_time
         vh.tvTestScore.text = ""
-        vh.tvTestFen.text = info.test_cj+" 分"
+        vh.tvTestFen.text = info.test_cj + " 分"
+        vh.ivRight.visibility = View.GONE
 
     }
 

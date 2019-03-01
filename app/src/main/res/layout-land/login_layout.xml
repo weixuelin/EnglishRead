@@ -174,7 +174,7 @@
                 android:id="@+id/tvZXPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="资讯电话:"
+                android:text="咨询电话: 18883251408"
                 android:textColor="@color/write"
                 android:textSize="@dimen/sp_14" />
 

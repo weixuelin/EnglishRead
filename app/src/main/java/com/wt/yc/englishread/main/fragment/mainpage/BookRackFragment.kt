@@ -117,11 +117,12 @@ class BookRackFragment : ProV4Fragment() {
         bookContentRecyclerView.adapter = contentAdapter
         contentAdapter.itemClickListener = object : ItemClickListener {
             override fun onItemClick(position: Int) {
-                val infof = contentList[position]
-                val bookInfo = BookInfo()
-                bookInfo.id = infof.id
-                bookInfo.book_name = infof.book_name
-                (activity as MainPageActivity).toWhere(Constant.MAIN_STADUY_CODE, bookInfo)
+
+//                val infof = contentList[position]
+//                val bookInfo = BookInfo()
+//                bookInfo.id = infof.id
+//                bookInfo.book_name = infof.book_name
+//                (activity as MainPageActivity).toWhere(Constant.MAIN_STADUY_CODE, bookInfo)
 
             }
 

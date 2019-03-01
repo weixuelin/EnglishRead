@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.net.Uri
@@ -26,7 +27,6 @@ import com.wt.yc.englishread.tts.TTSForApi
 import com.xin.lv.yang.utils.utils.ImageUtil
 import com.xin.lv.yang.utils.view.CustomProgressDialog
 import com.xin.lv.yang.utils.view.CustomToast
-import org.json.JSONObject
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -66,6 +66,7 @@ abstract class ProV4Fragment : Fragment() {
 
     abstract fun handler(msg: Message)
 
+
     companion object {
 
         class ProHandler(proV4Fragment: ProV4Fragment) : Handler(Looper.getMainLooper()) {
@@ -81,6 +82,7 @@ abstract class ProV4Fragment : Fragment() {
 
             override fun handleMessage(msg: Message?) {
                 super.handleMessage(msg)
+
                 a!!.handler(msg!!)
 
             }
@@ -89,8 +91,7 @@ abstract class ProV4Fragment : Fragment() {
     }
 
 
-
-    fun reOpenApp(){
+    fun reOpenApp() {
         val i: Intent = activity!!.baseContext.packageManager.getLaunchIntentForPackage(activity!!.baseContext.packageName)
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         activity!!.startActivity(i)
@@ -173,11 +174,35 @@ abstract class ProV4Fragment : Fragment() {
     val isDebug: Boolean = true
 
     fun log(message: String) {
-        if (isDebug) {
-            Log.i("result", message)
-        }
 
+        if (isDebug) {
+
+            val len = message.length
+
+            if (len > 4000) {
+
+                for (i in 0..len step 4000) {
+
+                    // 当前截取的长度<总长度则继续截取最大的长度来打印
+                    if (i + 4000 < len) {
+
+                        Log.i("result", message.substring(i, i + 4000))
+
+                    } else {
+
+                        // 当前截取的长度已经超过了总长度，则打印出剩下的全部信息
+                        Log.i("result", message.substring(i, message.length))
+
+                    }
+                }
+            } else {
+                // 直接打印
+                Log.i("msg", message)
+            }
+
+        }
     }
+
 
     /**
      * 创建view
@@ -186,9 +211,7 @@ abstract class ProV4Fragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        val view = createView(inflater, container, savedInstanceState)
-
-        return view
+        return createView(inflater, container, savedInstanceState)
     }
 
 
@@ -202,9 +225,17 @@ abstract class ProV4Fragment : Fragment() {
 
     fun showShortToast(activity: Activity, str: String, time: Int = Toast.LENGTH_SHORT) {
 
-        CustomToast.showToast(activity,Gravity.CENTER,0,str)
+////        CustomToast.showToast(activity,Gravity.CENTER,0,str)
 
-///        Toast.makeText(activity, str, time).show()
+        Toast.makeText(activity, str, time).show()
+
+    }
+
+
+    fun getAppVersionName(context: Context): String {
+        val manager = context.packageManager
+        val info = manager.getPackageInfo(context.packageName, 0)
+        return info.versionName
 
     }
 
@@ -237,9 +268,9 @@ abstract class ProV4Fragment : Fragment() {
 
     fun showToastShort(context: Context, str: String) {
 
-        CustomToast.showToast(context,Gravity.CENTER,0,str)
+////        CustomToast.showToast(context,Gravity.CENTER,0,str)
 
-//        Toast.makeText(context, str, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, str, Toast.LENGTH_SHORT).show()
 
     }
 
@@ -294,6 +325,7 @@ abstract class ProV4Fragment : Fragment() {
 
     var viewList: ArrayList<View>? = arrayListOf()
 
+
     /**
      * 顶部轮播图  1 为正常  2 为圆角
      */
@@ -326,7 +358,6 @@ abstract class ProV4Fragment : Fragment() {
                     }
 
                 } else {
-                    log("执行到此-------")
                     imageView.setImageBitmap(BitmapFactory.decodeResource(context.resources, picUrl.toInt()))
                 }
 
@@ -360,29 +391,29 @@ abstract class ProV4Fragment : Fragment() {
     }
 
 
-    var viewpagerRunnable: Runnable? = null;
+    var viewpagerRunnable: Runnable? = null
 
 
-    private val TIME: Int = 5 * 1000;
+    private val TIME: Int = 5 * 1000
 
     /**
      * 定时轮播
      */
     private fun initRunnable(handler: Handler, viewPager: ViewPager) {
         viewpagerRunnable = Runnable {
-            val nowIndex = viewPager.currentItem;
-            val count = viewPager.adapter!!.count;
+            val nowIndex = viewPager.currentItem
+            val count = viewPager.adapter!!.count
 
             /// 如果下一张的索引大于最后一张，则切换到第一张
             if (nowIndex + 1 >= count) {
-                viewPager.currentItem = 0;
+                viewPager.currentItem = 0
 
             } else {
-                viewPager.currentItem = nowIndex + 1;
+                viewPager.currentItem = nowIndex + 1
 
             }
 
-            handler.postDelayed(viewpagerRunnable, TIME.toLong());
+            handler.postDelayed(viewpagerRunnable, TIME.toLong())
         }
 
         handler.postDelayed(viewpagerRunnable, TIME.toLong())
@@ -404,12 +435,12 @@ abstract class ProV4Fragment : Fragment() {
      * 获取虚拟按键的高度
      */
     fun getNavigationBarHeight(context: Context): Int {
-        var result = 0;
+        var result = 0
         if (hasNavBar(context)) {
             val res = context.resources
-            val resourceId = res.getIdentifier("navigation_bar_height", "dimen", "android");
+            val resourceId = res.getIdentifier("navigation_bar_height", "dimen", "android")
             if (resourceId > 0) {
-                result = res.getDimensionPixelSize(resourceId);
+                result = res.getDimensionPixelSize(resourceId)
             }
         }
         return result;
@@ -419,7 +450,7 @@ abstract class ProV4Fragment : Fragment() {
         val res = context.resources
         val resourceId = res.getIdentifier("config_showNavigationBar", "bool", "android");
         if (resourceId != 0) {
-            var hasNav = res.getBoolean(resourceId);
+            var hasNav = res.getBoolean(resourceId)
             // check override flag
             val sNavBarOverride = getNavBarOverride()
             if ("1" == sNavBarOverride) {
@@ -438,7 +469,7 @@ abstract class ProV4Fragment : Fragment() {
         var sNavBarOverride = ""
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             try {
-                val c = Class.forName("android.os.SystemProperties");
+                val c = Class.forName("android.os.SystemProperties")
                 val m = c.getDeclaredMethod("get", String::class.java)
                 m!!.isAccessible = true
                 sNavBarOverride = m.invoke(null, "qemu.hw.mainkeys") as String

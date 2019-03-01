@@ -105,7 +105,6 @@ class MainPageActivity : ProActivity() {
             tvUserName.text = user!!.username
             tvAllMoney.text = user.gold
         }
-
     }
 
 
@@ -114,7 +113,7 @@ class MainPageActivity : ProActivity() {
 
         setContentView(R.layout.main_page_layout)
 
-        val ww = getW()/5
+        val ww = getW() / 5 - 20
         pageLeadRecyclerView.layoutParams = LinearLayout.LayoutParams(ww, LinearLayout.LayoutParams.WRAP_CONTENT)
 
         initLoadAdapter()
@@ -218,7 +217,8 @@ class MainPageActivity : ProActivity() {
 
         }
 
-        imageViewSignIn.setOnClickListener {
+        /// 签到
+        signInLinear.setOnClickListener {
 
             if (isSignIn == 1) {
 
@@ -477,9 +477,7 @@ class MainPageActivity : ProActivity() {
 
                         val fragment = MyGroupUpFragment()
                         fragment.code = 1
-
                         tttt.addToBackStack("MyGroupUpFragment")
-
                         indexFragment = switchContent(indexFragment!!, fragment, R.id.mainPageFrame, tttt)
 
                     }
@@ -497,7 +495,6 @@ class MainPageActivity : ProActivity() {
 
                         tttt.addToBackStack("AllTestGradeFragment")
                         val fragment = AllTestGradeFragment()
-
                         indexFragment = switchContent(indexFragment!!, fragment, R.id.mainPageFrame, tttt)
 
                     }
@@ -506,16 +503,13 @@ class MainPageActivity : ProActivity() {
 
                         tttt.addToBackStack("StudyTimeFragment")
                         val fragment = StudyTimeFragment()
-
                         indexFragment = switchContent(indexFragment!!, fragment, R.id.mainPageFrame, tttt)
 
 
                     }
                     4 -> {
                         tttt.addToBackStack("WrongWordFragment")
-
                         val fragment = WrongWordFragment()
-
                         indexFragment = switchContent(indexFragment!!, fragment, R.id.mainPageFrame, tttt)
                     }
                 }
@@ -525,16 +519,12 @@ class MainPageActivity : ProActivity() {
 
                 isTestCode = true
 
-                val tttt = supportFragmentManager.beginTransaction()
-
                 when (p3) {
                     0 -> {
                         ///  智能测试  生词测试
                         val f1 = TestDetailsFragment()
                         tttt.addToBackStack("TestDetailsFragment")
-
                         f1.testCode = 1
-
                         indexFragment = switchContent(indexFragment!!, f1, R.id.mainPageFrame, tttt)
 
                     }
@@ -543,9 +533,7 @@ class MainPageActivity : ProActivity() {
                         ///  智能测试 熟词测试
                         val f2 = TestDetailsFragment()
                         f2.testCode = 3
-
                         tttt.addToBackStack("TestDetailsFragment")
-
                         indexFragment = switchContent(indexFragment!!, f2, R.id.mainPageFrame, tttt)
 
                     }
@@ -554,15 +542,14 @@ class MainPageActivity : ProActivity() {
                         ///  智能测试 综合测试
                         val f3 = TestDetailsFragment()
                         f3.testCode = 2
-
                         tttt.addToBackStack("TestDetailsFragment")
-
                         indexFragment = switchContent(indexFragment!!, f3, R.id.mainPageFrame, tttt)
+
                     }
 
                     3 -> {
-                        ///  智能测试 一测到底界面
 
+                        ///  智能测试 一测到底界面
                         val fff = IntelligenceTestFragment()
                         tttt.addToBackStack("IntelligenceTestFragment")
                         indexFragment = switchContent(indexFragment!!, fff, R.id.mainPageFrame, tttt)
@@ -577,15 +564,13 @@ class MainPageActivity : ProActivity() {
                         shopOpenDoor()
                     }
                     1 -> {
-
+                        startActivity(Intent(this, WordPkActivity::class.java))
                     }
                 }
             }
 
             7 -> {
 
-
-                val tttt = supportFragmentManager.beginTransaction()
 
                 when (p3) {
                     0 -> {
@@ -732,12 +717,22 @@ class MainPageActivity : ProActivity() {
 
                 /// 复习界面
                 ///  ReviewFragment
+
                 val rf = ReviewFragment()
                 rf.rfInfo = info
 
                 tttt.addToBackStack("ReviewFragment")
                 indexFragment = switchContent(indexFragment!!, rf, R.id.mainPageFrame, tttt)
 
+            }
+
+            Constant.ContinueStudyFragment -> {
+
+                val rf = ContinueStudyFragment()
+                rf.bookInfo = info
+
+                tttt.addToBackStack("ContinueStudyFragment")
+                indexFragment = switchContent(indexFragment!!, rf, R.id.mainPageFrame, tttt)
             }
 
 
@@ -778,7 +773,7 @@ class MainPageActivity : ProActivity() {
             Constant.LISTEN_READ_CODE -> {
                 // 听读训练
                 val listenRead = ListenReadFragment()
-                listenRead.info=info
+                listenRead.info = info
                 tttt.addToBackStack("ListenReadFragment")
                 indexFragment = switchContent(indexFragment!!, listenRead, R.id.mainPageFrame, tttt)
 
@@ -808,6 +803,7 @@ class MainPageActivity : ProActivity() {
 
             Constant.MAIN_TIAO_ZHAN -> {
                 // 首页挑战
+                startActivity(Intent(this, WordPkActivity::class.java))
 
             }
 

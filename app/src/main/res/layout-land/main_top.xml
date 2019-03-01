@@ -21,7 +21,7 @@
             android:layout_width="@dimen/dp_13"
             android:layout_height="@dimen/dp_13"
             android:layout_marginLeft="@dimen/dp_8"
-            android:src="@drawable/logo" />
+            android:src="@mipmap/logo512" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -46,33 +46,48 @@
             android:paddingRight="@dimen/dp_10"
             android:paddingBottom="@dimen/dp_4">
 
-            <ImageView
-                android:id="@+id/imageViewSignIn"
-                android:layout_width="@dimen/dp_14"
-                android:layout_height="@dimen/dp_14"
-                android:src="@drawable/qian_check_in" />
-
-            <TextView
+            <LinearLayout
+                android:id="@+id/signInLinear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_6"
-                android:text="签到"
-                android:textColor="@color/ab8c6d6"
-                android:textSize="@dimen/sp_10" />
+                android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="@dimen/dp_14"
-                android:layout_height="@dimen/dp_14"
-                android:layout_marginLeft="@dimen/dp_10"
-                android:src="@drawable/qian_check_in" />
+                <ImageView
+                    android:id="@+id/imageViewSignIn"
+                    android:layout_width="@dimen/dp_14"
+                    android:layout_height="@dimen/dp_14"
+                    android:src="@drawable/qian_check_in" />
 
-            <TextView
-                android:id="@+id/tvAllMoney"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_6"
+                    android:text="签到"
+                    android:textColor="@color/ab8c6d6"
+                    android:textSize="@dimen/sp_10" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_4"
-                android:textColor="@color/ab8c6d6"
-                android:textSize="@dimen/sp_10" />
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_14"
+                    android:layout_height="@dimen/dp_14"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:src="@drawable/qian_check_in" />
+
+                <TextView
+                    android:id="@+id/tvAllMoney"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_4"
+                    android:textColor="@color/ab8c6d6"
+                    android:textSize="@dimen/sp_10" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -87,8 +102,8 @@
             android:id="@+id/userPicHead"
             android:layout_width="@dimen/dp_14"
             android:layout_height="@dimen/dp_14"
-            android:src="@drawable/head_pic"
-            android:layout_marginLeft="@dimen/dp_18" />
+            android:layout_marginLeft="@dimen/dp_18"
+            android:src="@drawable/head_pic" />
 
         <TextView
             android:id="@+id/tvUserName"

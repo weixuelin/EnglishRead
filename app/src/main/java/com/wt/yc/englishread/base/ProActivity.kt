@@ -57,7 +57,6 @@ abstract class ProActivity : AppCompatActivity() {
     private val ERROR = 404
     private val ERROR_BUG = 405
 
-
     open var gson: Gson? = null
     open var handler: Handler? = null
 
@@ -69,7 +68,6 @@ abstract class ProActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 //
 //        if (Build.VERSION.SDK_INT >= 21) {
 //            StatusBarUtil.transparencyBar(this)
@@ -185,20 +183,21 @@ abstract class ProActivity : AppCompatActivity() {
     }
 
     fun showToastShort(s: String) {
-        CustomToast.showToast(this,Gravity.CENTER,0,s)
 
-//        Toast.makeText(this, s, Toast.LENGTH_SHORT).show()
+////        CustomToast.showToast(this,Gravity.CENTER,0,s)
+
+       Toast.makeText(this, s, Toast.LENGTH_LONG).show()
 
     }
 
     fun getW(): Int {
-        val att = windowManager.defaultDisplay;
-        return att.width;
+        val att = windowManager.defaultDisplay
+        return att.width
     }
 
     fun getH(): Int {
-        val att = windowManager.defaultDisplay;
-        return att.height;
+        val att = windowManager.defaultDisplay
+        return att.height
     }
 
     fun setAlpha(f: Float) {
@@ -450,10 +449,10 @@ abstract class ProActivity : AppCompatActivity() {
     }
 
 
-    var viewpagerRunnable: Runnable? = null;
+    var viewpagerRunnable: Runnable? = null
 
 
-    private val TIME: Int = 5 * 1000;
+    private val TIME: Int = 5 * 1000
 
     /**
      * 定时轮播
@@ -472,10 +471,10 @@ abstract class ProActivity : AppCompatActivity() {
 
             }
 
-            handler.postDelayed(viewpagerRunnable, TIME.toLong());
+            handler.postDelayed(viewpagerRunnable, TIME.toLong())
         }
 
-        handler.postDelayed(viewpagerRunnable, TIME.toLong());
+        handler.postDelayed(viewpagerRunnable, TIME.toLong())
     }
 
     /**

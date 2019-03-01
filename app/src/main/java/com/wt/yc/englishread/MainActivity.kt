@@ -25,9 +25,9 @@ import org.json.JSONObject
 class MainActivity : ProActivity() {
 
     override fun handler(msg: Message) {
-        val str=msg.obj as String
+        val str = msg.obj as String
 
-        when(msg.what){
+        when (msg.what) {
             Config.GET_USER_INFO_CODE -> {
 
                 removeLoadDialog()
@@ -58,9 +58,7 @@ class MainActivity : ProActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
-
         manager = supportFragmentManager
 
         if (Share.getUid(this) != 0) {
@@ -87,7 +85,7 @@ class MainActivity : ProActivity() {
     }
 
 
-    val fragmentList = arrayListOf<ProV4Fragment>(MainFragment(), AboutFragment(), MapFragment())
+    val fragmentList = arrayListOf(MainFragment(), AboutFragment(), MapFragment())
 
     var indexFragment: ProV4Fragment? = null
 
@@ -95,11 +93,11 @@ class MainActivity : ProActivity() {
 
         tvLogin.setOnClickListener {
 
-            if(Share.getUid(this)!=0){
+            if (Share.getUid(this) != 0) {
 
                 startActivity(Intent(this, MainPageActivity::class.java))
 
-            }else{
+            } else {
                 startActivityForResult(Intent(this, LoginActivity::class.java), 1234)
             }
 

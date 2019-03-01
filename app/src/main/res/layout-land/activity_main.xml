@@ -7,7 +7,6 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,7 +19,7 @@
             android:layout_height="@dimen/dp_24"
             android:layout_marginLeft="@dimen/dp_6"
             android:layout_centerVertical="true"
-            android:src="@drawable/logo" />
+            android:src="@mipmap/logo512" />
 
         <TextView
             android:layout_width="wrap_content"

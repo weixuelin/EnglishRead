@@ -16,6 +16,11 @@ class Constant {
         val STUDY_REVIEW = 1
 
         /**
+         * 继续学习
+         */
+        val ContinueStudyFragment=101
+
+        /**
          * 学习测试选择
          */
         val STUDY_TEST = 2

@@ -110,9 +110,7 @@ class StudyAdapter(context: Context, list: ArrayList<BookInfo>) : ProBaseAdapter
         return VH(view)
     }
 
-    override fun onUpdateHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {
-
-    }
+    override fun onUpdateHolder(holder: RecyclerView.ViewHolder, position: Int, payloads: MutableList<Any>) {}
 
     inner class VH(view: View) : RecyclerView.ViewHolder(view) {
         val linearBg = view.linearBg

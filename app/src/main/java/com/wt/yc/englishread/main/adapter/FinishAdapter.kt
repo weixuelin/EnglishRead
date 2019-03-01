@@ -8,16 +8,17 @@ import com.wt.yc.englishread.R
 import com.wt.yc.englishread.base.ProBaseAdapter
 import com.wt.yc.englishread.info.BookInfo
 import kotlinx.android.synthetic.main.finish_item.view.*
+import java.util.*
 
 class FinishAdapter(context: Context, list: ArrayList<BookInfo>) : ProBaseAdapter<BookInfo>(context, list) {
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val vh = holder as VH
         val info = list[position]
-        vh.tvFinishNum.text = "${info.jd}%"
-        vh.progressBar.progress = info.jd
+        val numStr = info.jd
+        vh.tvFinishNum.text = "${numStr.toFloat().toInt()}%"
+        vh.progressBar.progress = info.jd.toFloat().toInt()
         vh.tvFinish.text = info.unit_name
-
 
     }
 

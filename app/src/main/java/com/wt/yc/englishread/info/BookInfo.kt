@@ -27,15 +27,20 @@ class BookInfo() : Parcelable {
     var zpm: Int = 0
     var cj: Int = 0
     var study_word: Int = 0
-    var jd: Int = 0
+    var jd: String = ""
     var code: Int = 0
     var chinese: String = ""
     var ipa: String = ""
     var english_example: String = ""
     var chinese_example: String = ""
-    var userName=""
-    var testTime=""
-    var score=""
+    var userName = ""
+    var testTime = ""
+    var score = ""
+
+    /**
+     *  1 为新单词   2 为继续学习
+     */
+    var goOnCode = 1
 
     constructor(parcel: Parcel) : this() {
         book_id = parcel.readInt()
@@ -61,7 +66,7 @@ class BookInfo() : Parcelable {
         zpm = parcel.readInt()
         cj = parcel.readInt()
         study_word = parcel.readInt()
-        jd = parcel.readInt()
+        jd = parcel.readString()
         code = parcel.readInt()
         chinese = parcel.readString()
         ipa = parcel.readString()
@@ -70,6 +75,7 @@ class BookInfo() : Parcelable {
         userName = parcel.readString()
         testTime = parcel.readString()
         score = parcel.readString()
+        goOnCode = parcel.readInt()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -96,7 +102,7 @@ class BookInfo() : Parcelable {
         parcel.writeInt(zpm)
         parcel.writeInt(cj)
         parcel.writeInt(study_word)
-        parcel.writeInt(jd)
+        parcel.writeString(jd)
         parcel.writeInt(code)
         parcel.writeString(chinese)
         parcel.writeString(ipa)
@@ -105,6 +111,7 @@ class BookInfo() : Parcelable {
         parcel.writeString(userName)
         parcel.writeString(testTime)
         parcel.writeString(score)
+        parcel.writeInt(goOnCode)
     }
 
     override fun describeContents(): Int {

@@ -25,6 +25,7 @@ class LoginActivity : ProActivity() {
         val str = msg.obj as String
 
         when (msg.what) {
+
             Config.LOGIN_CODE -> {
                 removeLoadDialog()
                 val json = JSONObject(str)
@@ -54,6 +55,7 @@ class LoginActivity : ProActivity() {
 
 
     var code = ""
+    var phone = "18883251408"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,18 +91,25 @@ class LoginActivity : ProActivity() {
             btLogin.setOnClickListener {
                 login()
             }
+
+            tvZXPhone.setOnClickListener {
+
+            }
         }
     }
 
     private fun login() {
+
         val account = etAccount.text.toString()
         val pwd = etPwd.text.toString()
         val imageYan = etImageYan.text.toString()
+
         when {
             account == "" -> showToastShort("请输入账号")
             pwd == "" -> showToastShort("请输入密码")
             imageYan == "" -> showToastShort("请输入图片验证码")
             imageYan.toUpperCase() != code.toUpperCase() -> showToastShort("图片验证码错误")
+
             else -> {
                 val json = JSONObject()
                 json.put("user", account)

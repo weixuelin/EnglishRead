@@ -53,14 +53,19 @@ class TestDetailsFragment : ProV4Fragment() {
                 val status = json.optBoolean(Config.STATUS)
 
                 if (status) {
+
                     val data = json.optString(Config.DATA)
                     val info = gson!!.fromJson<Info>(data, Info::class.java)
 
                     questionArr = info.video!!
 
+                    log("questionArr----------" + questionArr.size)
+
                     if (questionArr.size != 0) {
+
                         initTestViewPager()
                         showTime()
+
                     } else {
                         indexTime = 0
                         (activity as MainPageActivity).isTestCode = false
@@ -70,8 +75,10 @@ class TestDetailsFragment : ProV4Fragment() {
 
                 } else {
 
-                    showShortToast(activity!!, json.optString("msg"))
+                    showShortToast(activity!!, "生成试卷失败,请继续学习!!")
+
                     tvTestTime.visibility = View.GONE
+
                     indexTime = 0
                     (activity as MainPageActivity).isTestCode = false
 
@@ -81,11 +88,20 @@ class TestDetailsFragment : ProV4Fragment() {
             1234 -> {
 
                 if (indexTime != 0) {
+
                     indexTime--
+
+                    finishTime++
                 }
 
                 if (tvTestTime != null) {
                     tvTestTime.text = "${indexTime / 60}分 ${indexTime % 60}秒"
+                }
+
+                if (finishTime == 6 * 60) {
+
+                    save(2)
+
                 }
 
             }
@@ -115,6 +131,8 @@ class TestDetailsFragment : ProV4Fragment() {
                     bookInfo.book_name = tvTitle.text.toString()
 
                     fragmentManager!!.popBackStackImmediate("TestDetailsFragment", 0)
+                    fragmentManager!!.popBackStack()
+
                     (activity as MainPageActivity).toWhere(Constant.ANSWER_RESULT, bookInfo)
 
                 }
@@ -156,11 +174,31 @@ class TestDetailsFragment : ProV4Fragment() {
     }
 
     var timeStr = "6分钟"
-    val timer = Timer()
 
+
+    var timer: Timer? = null
+
+    /**
+     * 倒计时的时间
+     */
     var indexTime = 6 * 60
 
+    /**
+     * 测试完成时间
+     */
+    var finishTime = 0
+
     private fun showTime() {
+
+        if (timer != null) {
+            timer!!.cancel()
+
+            timer = null
+        }
+
+        timer = Timer()
+
+        indexTime = 6 * 60
 
         tvTestTime.text = timeStr
 
@@ -174,7 +212,7 @@ class TestDetailsFragment : ProV4Fragment() {
             }
         }
 
-        timer.schedule(timerTask, 0, 1000)
+        timer!!.schedule(timerTask, 0, 1000)
 
     }
 
@@ -189,7 +227,7 @@ class TestDetailsFragment : ProV4Fragment() {
         indexTime = 0
 
         if (timer != null) {
-            timer.cancel()
+            timer!!.cancel()
         }
     }
 
@@ -231,6 +269,10 @@ class TestDetailsFragment : ProV4Fragment() {
 
     override fun onResume() {
         super.onResume()
+
+        if (timer != null) {
+            timer!!.purge()
+        }
     }
 
     /**
@@ -320,6 +362,9 @@ class TestDetailsFragment : ProV4Fragment() {
 
     }
 
+    /**
+     * 题目在集合中的位置
+     */
     var indexNum = 0
 
     private fun initClick() {
@@ -371,13 +416,13 @@ class TestDetailsFragment : ProV4Fragment() {
 
         btPost.setOnClickListener {
 
-            save()
+            save(1)
 
         }
 
         btNext.setOnClickListener {
             indexNum++
-            if (indexNum != questionArr.size - 1) {
+            if (indexNum != questionArr.size) {
                 testViewPager.currentItem = indexNum
             } else {
                 showTiSave()
@@ -386,22 +431,37 @@ class TestDetailsFragment : ProV4Fragment() {
         }
     }
 
-    private fun save() {
-        timer.cancel()
 
-        val str = buildArr(answerMap)
+    /**
+     * 自动交卷   code 1 为正常作答   2 为未作答,时间走完,重新计时.
+     */
+    private fun save(code: Int) {
 
-        val json = JSONObject()
-        json.put("uid", uid)
-        json.put("token", token)
-        json.put("arr", str)
+        if (answerMap.isNotEmpty()) {
 
-        json.put("time", 6 * 60 - indexTime)
+            val str = buildArr(answerMap)
 
-        HttpUtils.getInstance().postJson(Config.FINISH_TEST_URL, json.toString(), Config.FINISH_CODE, handler)
-        showLoadDialog(activity!!, "交卷中")
+            val json = JSONObject()
+            json.put("uid", uid)
+            json.put("token", token)
+            json.put("arr", str)
 
-        log("wwwwwww------$str")
+            json.put("time", finishTime)
+
+            HttpUtils.getInstance().postJson(Config.FINISH_TEST_URL, json.toString(), Config.FINISH_CODE, handler)
+            showLoadDialog(activity!!, "交卷中")
+
+            timer!!.cancel()
+
+        } else {
+
+            if (code == 2) {
+                showToastShort(activity!!, "您未答题,重新计时!!")
+                showTime()
+            }else{
+                showToastShort(activity!!, "您未答题,请答题!!")
+            }
+        }
     }
 
 
@@ -413,21 +473,23 @@ class TestDetailsFragment : ProV4Fragment() {
         builder.setMessage("已是最后一题，是否交卷?")
                 .setTitle("提示")
                 .setPositiveButton("交卷") { dialog, _ ->
-                    save()
+                    save(1)
                     dialog.dismiss()
 
                 }.setNegativeButton("取消") { _, _ ->
+
+                    indexNum--
 
                 }.show()
 
     }
 
-    private fun buildArr(answerArr: HashMap<Int, String>): String {
+    private fun buildArr(answerArr: HashMap<Int, String>): JSONObject {
         val json = JSONObject()
         for (temp in answerArr) {
             json.put(temp.key.toString(), temp.value)
         }
-        return json.toString()
+        return json
 
     }
 
@@ -437,7 +499,7 @@ class TestDetailsFragment : ProV4Fragment() {
     val viewPagerList = arrayListOf<View>()
 
     /**
-     * 答案数组
+     * 答案数组集合
      */
     val answerMap = hashMapOf<Int, String>()
 
@@ -454,6 +516,7 @@ class TestDetailsFragment : ProV4Fragment() {
 
             val view = layoutInflater.inflate(R.layout.view_pager_test, null)
 
+            /// 显示题号
             view.tvTestName.text = temp.number.toString()
             view.tvTestYinBiao.text = temp.ipa
             val answerArr = temp.answer
@@ -467,18 +530,17 @@ class TestDetailsFragment : ProV4Fragment() {
                 playVoice(activity!!, Config.IP + temp.title)
             }
 
-            view.radioGroup.setOnCheckedChangeListener { p0, p1 ->
+            view.radioGroup.setOnCheckedChangeListener { radioButton, p1 ->
+
                 val number = temp.number
+
                 when (p1) {
                     R.id.rb1 -> answerMap[number] = answerArr[0].dn
                     R.id.rb2 -> answerMap[number] = answerArr[1].dn
                     R.id.rb3 -> answerMap[number] = answerArr[2].dn
                     R.id.rb4 -> answerMap[number] = answerArr[3].dn
                 }
-
-
             }
-
 
             viewPagerList.add(view)
 

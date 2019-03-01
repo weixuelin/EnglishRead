@@ -380,7 +380,7 @@ public class HttpUtils {
 
                 String url = request.url().encodedPath();
 
-                Log.i("result", "执行数据返回--------" + url + "----" + str);
+                log("执行数据返回--------" + url + "----" + str);
 
                 if (str.startsWith("{")) {
                     Message msg = handler.obtainMessage();
@@ -396,6 +396,31 @@ public class HttpUtils {
                 }
             }
         });
+    }
+
+
+    private void log(String str) {
+        int len = str.length();
+
+        if (len > 4000) {
+
+            for (int a = 0; a < len; ) {
+
+                if (a + 4000 < len) {
+
+                    Log.i("result", str.substring(a, a + 4000));
+
+                } else {
+                    // 当前截取的长度已经超过了总长度，则打印出剩下的全部信息
+                    Log.i("result", str.substring(a, len));
+                }
+
+                a += 4000;
+            }
+
+        } else {
+            Log.i("result", str);
+        }
     }
 
 

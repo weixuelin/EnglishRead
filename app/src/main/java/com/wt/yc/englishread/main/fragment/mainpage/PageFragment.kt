@@ -20,7 +20,6 @@ import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.wt.yc.englishread.R
-import com.wt.yc.englishread.base.ProV4Fragment
 import com.wt.yc.englishread.main.adapter.GrowUpRecordAdapter
 import com.wt.yc.englishread.main.adapter.TestListAdapter
 import kotlinx.android.synthetic.main.page_fragment.*
@@ -29,10 +28,10 @@ import android.util.Log
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.google.gson.reflect.TypeToken
-import com.wt.yc.englishread.base.Config
-import com.wt.yc.englishread.base.Constant
-import com.wt.yc.englishread.base.ItemClickListener
+import com.wt.yc.englishread.base.*
 import com.wt.yc.englishread.info.BookInfo
 import com.wt.yc.englishread.info.Info
 import com.wt.yc.englishread.main.activity.MainPageActivity
@@ -138,28 +137,47 @@ class PageFragment : ProV4Fragment() {
      */
     private fun showZhlData(xx: String, fx: String) {
 
-        Log.i("result","xxxxx-------"+xx.toFloat()+"----fxfx--------"+fx.toFloat())
+        Log.i("result", "xxxxx-------" + xx.toFloat() + "----fxfx--------" + fx.toFloat())
 
         initZhLChart()
 
+        val data = setZhlData(xx, fx)
+
+        log("data---------$data")
+
+        if (zhlBarChart != null) {
+
+            zhlBarChart.data = data
+
+        }
+    }
+
+    /**
+     * 设置转换量数据
+     */
+    private fun setZhlData(xx: String, fx: String): BarData? {
+
         /// 设置每个矩形在y轴上的值
         val set0 = BarDataSet(arrayListOf(BarEntry(0f, 0f)), "")
+        set0.color = activity!!.resources.getColor(android.R.color.transparent)
 
         val set1 = BarDataSet(arrayListOf(BarEntry(1f, xx.toFloat())), "学习量")
+        set1.color = activity!!.resources.getColor(R.color.red)
 
         val set2 = BarDataSet(arrayListOf(BarEntry(2f, fx.toFloat())), "需要学习")
-
-        set0.color = activity!!.resources.getColor(android.R.color.transparent)
-        set1.color = activity!!.resources.getColor(R.color.red)
         set2.color = activity!!.resources.getColor(R.color.blue_login)
+
+        val set3 = BarDataSet(arrayListOf(BarEntry(3f, 0f)), "")
+        set3.color = activity!!.resources.getColor(android.R.color.transparent)
 
         val dataSets: ArrayList<IBarDataSet> = arrayListOf()
 
         dataSets.add(set0)
-
         dataSets.add(set1)
-
         dataSets.add(set2)
+        dataSets.add(set3)
+
+        Log.i("result", "----执行到此----" + dataSets.size)
 
         // 设置柱形图的数据
         val data = BarData(dataSets)
@@ -167,13 +185,7 @@ class PageFragment : ProV4Fragment() {
         data.setValueTextSize(10f)
         data.setValueTypeface(Typeface.DEFAULT)
 
-        if (zhlBarChart != null) {
-
-            Log.i("result", "----执行到此----")
-
-            zhlBarChart.data = data
-
-        }
+        return data
 
     }
 
@@ -196,8 +208,10 @@ class PageFragment : ProV4Fragment() {
 
         if (studyLineChart != null) {
 
-            if(studyArr1!=null&&studyArr2!=null){
+            if (studyArr1 != null && studyArr2 != null) {
+
                 setTextData(studyLineChart, 2, 2)
+
             }
 
         }
@@ -223,6 +237,9 @@ class PageFragment : ProV4Fragment() {
     }
 
 
+    /**
+     * 学习的书籍信息
+     */
     var startBookInfo: BookInfo? = null
 
     /**
@@ -258,10 +275,10 @@ class PageFragment : ProV4Fragment() {
 
         initAdapter()
         initCzAdapter()
+
         initClick()
 
         setIndexTime()
-
 
     }
 
@@ -288,9 +305,9 @@ class PageFragment : ProV4Fragment() {
      */
     private fun initWOrH() {
 
-        val scanW = getW(activity!!)*4/5
+        val scanW = getW(activity!!) * 4 / 5
 
-        val wwThree=(scanW-48) / 3
+        val wwThree = (scanW - 48) / 3
 
         linear1.layoutParams = LinearLayout.LayoutParams(wwThree, wwThree)
         setMargen(linear1, 8)
@@ -304,13 +321,13 @@ class PageFragment : ProV4Fragment() {
         linear3.layoutParams = LinearLayout.LayoutParams(wwThree, wwThree)
         setMargen(linear3, 8)
 
-        linear4.layoutParams = LinearLayout.LayoutParams(wwThree * 2+16, wwThree)
+        linear4.layoutParams = LinearLayout.LayoutParams(wwThree * 2 + 16, wwThree)
         setMargen(linear4, 8)
 
-        linear5.layoutParams = LinearLayout.LayoutParams(wwThree , wwThree)
+        linear5.layoutParams = LinearLayout.LayoutParams(wwThree, wwThree)
         setMargen(linear5, 8)
 
-        linear6.layoutParams = LinearLayout.LayoutParams(wwThree * 2+16, wwThree)
+        linear6.layoutParams = LinearLayout.LayoutParams(wwThree * 2 + 16, wwThree)
         setMargen(linear6, 8)
 
 
@@ -322,7 +339,7 @@ class PageFragment : ProV4Fragment() {
         linear7.layoutParams = LinearLayout.LayoutParams(wwThree, wwThree)
         setMargen(linear7, 8)
 
-        linear8.layoutParams = LinearLayout.LayoutParams(wwThree * 2+16, wwThree)
+        linear8.layoutParams = LinearLayout.LayoutParams(wwThree * 2 + 16, LinearLayout.LayoutParams.WRAP_CONTENT)
         setMargen(linear8, 8)
 
         linear9.layoutParams = LinearLayout.LayoutParams(wwThree, LinearLayout.LayoutParams.WRAP_CONTENT)
@@ -331,10 +348,16 @@ class PageFragment : ProV4Fragment() {
     }
 
     private fun initClick() {
+
         buttonContinue.setOnClickListener {
+
             /// 继续学习
-            startBookInfo!!.code = 1
-            (activity as MainPageActivity).toWhere(Constant.MAIN_STADUY_CODE, startBookInfo)
+            startBookInfo!!.code = 1   /// 提示继续学习
+            startBookInfo!!.goOnCode = 1   // 提示继续学习
+
+            startBookInfo!!.id = Share.getUnitId(activity!!)
+
+            (activity as MainPageActivity).toWhere(Constant.STUDY_REVIEW, startBookInfo)
 
         }
 
@@ -429,7 +452,7 @@ class PageFragment : ProV4Fragment() {
 
         progressBar.progress = p
 
-        studyTextNum.text="${p}%"
+        studyTextNum.text = "$p%"
 
         val vto = picFrameLayout.viewTreeObserver
 
@@ -441,7 +464,7 @@ class PageFragment : ProV4Fragment() {
                 val picw = p * pw / 100
 
                 val params = studyTextNum.layoutParams as FrameLayout.LayoutParams
-                params.setMargins(picw-10, 0, 0, 0)
+                params.setMargins(picw - 10, 0, 0, 0)
                 studyTextNum.layoutParams = params
 
             }
@@ -507,9 +530,16 @@ class PageFragment : ProV4Fragment() {
         studyLineChart.setDrawBorders(false)
         // 曲线描述 -标题
         val des = Description()
-        studyLineChart.setNoDataText("没有数据")
         des.text = ""
         studyLineChart.description = des
+
+        handler!!.postDelayed({
+            studyLineChart.setNoDataText("没有数据")
+            studyLineChart.setNoDataTextColor(R.color.black)
+            studyLineChart.invalidate()
+        }, 100)
+
+
         // 是否显示表格颜色
         studyLineChart.setDrawGridBackground(false)
         // 禁止绘制图表边框的线
@@ -526,7 +556,7 @@ class PageFragment : ProV4Fragment() {
 
         // 图例对象
         val mLegend: Legend = studyLineChart.legend
-        mLegend.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT)
+        mLegend.position = Legend.LegendPosition.BELOW_CHART_LEFT
         // 图例样式 (CIRCLE圆形；LINE线性；SQUARE是方块）
         mLegend.form = Legend.LegendForm.CIRCLE
 
@@ -535,6 +565,8 @@ class PageFragment : ProV4Fragment() {
         val yyy = studyLineChart.axisLeft
         yyy.setDrawZeroLine(false)
         yyy.setDrawGridLines(false)
+        yyy.setStartAtZero(true)
+
         val xAxis = studyLineChart.xAxis
         // 显示X轴上的刻度值
         xAxis.setDrawLabels(true)
@@ -581,7 +613,15 @@ class PageFragment : ProV4Fragment() {
         des.text = ""
         zhlBarChart.description = des
         //没用数据时显示
-        zhlBarChart.setNoDataText("没有数据")
+
+        handler!!.postDelayed({
+
+            zhlBarChart.setNoDataText("没有数据")
+            zhlBarChart.setNoDataTextColor(R.color.black)
+            zhlBarChart.invalidate()
+
+        }, 100)
+
 
         // 设置是否可以触摸
         zhlBarChart.setTouchEnabled(false)
@@ -623,7 +663,8 @@ class PageFragment : ProV4Fragment() {
             val str = when (num) {
                 0 -> ""
                 1 -> "学习量"
-                else -> "需要复习"
+                2 -> "需要复习"
+                else -> ""
             }
 
             axis.textSize = 10f
@@ -636,7 +677,7 @@ class PageFragment : ProV4Fragment() {
         val leftAxis: YAxis = zhlBarChart.axisLeft
         leftAxis.typeface = Typeface.DEFAULT
         //设置y轴上的标签数,boolean值为true代表必须8个
-        leftAxis.setLabelCount(8, false)
+        leftAxis.setLabelCount(4, true)
         leftAxis.setDrawZeroLine(false)
         leftAxis.setDrawGridLines(false)
 
@@ -717,6 +758,8 @@ class PageFragment : ProV4Fragment() {
         set1.mode = LineDataSet.Mode.CUBIC_BEZIER
         set1.valueTextColor = activity!!.resources.getColor(R.color.red)
 
+        set1.lineWidth = 4f
+
         if (code == 2) {
             set1.setDrawFilled(true)
             // 填充颜色
@@ -729,6 +772,7 @@ class PageFragment : ProV4Fragment() {
         set2.color = activity!!.resources.getColor(R.color.blue_login)
         set2.mode = LineDataSet.Mode.CUBIC_BEZIER
         set2.valueTextColor = activity!!.resources.getColor(R.color.blue_login)
+        set2.lineWidth = 4f
 
         lineDataSet.add(set1)
         lineDataSet.add(set2)
@@ -746,6 +790,7 @@ class PageFragment : ProV4Fragment() {
             set3.color = activity!!.resources.getColor(R.color.colorAccent)
             set3.mode = LineDataSet.Mode.CUBIC_BEZIER
             set3.valueTextColor = activity!!.resources.getColor(R.color.colorAccent)
+            set3.lineWidth = 4f
 
             if (code == 2) {
                 set3.setDrawFilled(true)
@@ -799,7 +844,7 @@ class PageFragment : ProV4Fragment() {
         l.xEntrySpace = 4f
 
         // 设置X轴方向上的属性
-       val xAxis: XAxis = gfzBarChart.xAxis
+        val xAxis: XAxis = gfzBarChart.xAxis
 
         //设置标签显示在柱形图的上方还是下方
         xAxis.position = XAxis.XAxisPosition.BOTTOM
@@ -860,8 +905,7 @@ class PageFragment : ProV4Fragment() {
     val gfzText = arrayListOf("", "攻击力", "防御力", "可挑战次数", "成就")
 
     val colorArr = arrayListOf<Int>(android.R.color.transparent, R.color.green,
-            R.color.blue_login,
-            R.color.red,
+            R.color.blue_login, R.color.red,
             R.color.green)
 
     /**
@@ -885,6 +929,7 @@ class PageFragment : ProV4Fragment() {
 
         data.setValueTextSize(10f)
         data.setValueTypeface(Typeface.DEFAULT)
+
         gfzBarChart.data = data
 
     }
@@ -925,6 +970,33 @@ class PageFragment : ProV4Fragment() {
         mLegend.position = Legend.LegendPosition.RIGHT_OF_CHART
         //设置比例图的形状，默认是方形,可为方形、圆形、线性
         mLegend.form = Legend.LegendForm.CIRCLE
+
+        cxPieChart.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
+
+            override fun onNothingSelected() {
+
+            }
+
+            override fun onValueSelected(e: Entry?, h: Highlight?) {
+
+                val bookInfo = BookInfo()
+                bookInfo.code = 1
+                bookInfo.goOnCode = 1
+
+                bookInfo.book_id = startBookInfo!!.book_id
+
+                val id = Share.getUnitId(activity!!)
+
+                if (id == 0) {
+                    bookInfo.id = startBookInfo!!.book_id
+                } else {
+                    bookInfo.id = id
+                }
+
+                (activity as MainPageActivity).toWhere(Constant.STUDY_REVIEW, bookInfo)
+            }
+
+        })
 
     }
 

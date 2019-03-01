@@ -61,7 +61,7 @@ class UserFragment : ProV4Fragment() {
         tvUserInfoName.text = user!!.username
         tvSchool.text = user.school
         tvClass.text = user.class_name
-        tvName.text = ""
+        tvName.text = user.mobile
 
 
     }

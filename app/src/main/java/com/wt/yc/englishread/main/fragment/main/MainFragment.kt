@@ -1,12 +1,15 @@
 package com.wt.yc.englishread.main.fragment.main
 
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.os.Message
 import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import com.google.gson.reflect.TypeToken
 import com.wt.yc.englishread.R
 import com.wt.yc.englishread.base.Config
@@ -41,6 +44,7 @@ class MainFragment : ProV4Fragment() {
                     val bannerResult = jsonObject.optString("banner")
 
                     if (bannerResult != "" && bannerResult != "null") {
+
                         if (bannerResult.startsWith("{")) {
                             val info = gson!!.fromJson<MainInfo>(bannerResult, MainInfo::class.java)
                             showBanner(arrayListOf(info))
@@ -76,12 +80,26 @@ class MainFragment : ProV4Fragment() {
 
     }
 
+
+    /**
+     * 显示轮播图
+     */
     private fun showBanner(bannerArr: ArrayList<MainInfo>?) {
+
+        val bitmap = BitmapFactory.decodeResource(activity!!.resources, R.drawable.banner)
+        val scanW = getW(activity!!)
+        val picW = bitmap.width
+        val picH = bitmap.height
+
+        val scanH = scanW * picH / picW
+
+        picViewPager.layoutParams = LinearLayout.LayoutParams(scanW, scanH)
+
         for (temp in bannerArr!!) {
             picList.add(Config.IP + temp.icon)
         }
 
-        if(picViewPager!=null){
+        if (picViewPager != null) {
             initViewPager(activity!!, picViewPager, picList, handler!!, 1)
         }
 
@@ -101,6 +119,8 @@ class MainFragment : ProV4Fragment() {
         initClick()
 
         getMainData()
+
+        tvTextBanBen.text = "恋上单词  ${getAppVersionName(activity!!)}"
 
 
     }

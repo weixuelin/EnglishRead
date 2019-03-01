@@ -12,10 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TextView
-import com.github.mikephil.charting.components.Description
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.components.MarkerView
-import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.*
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
@@ -41,19 +38,19 @@ class MyGroupUpFragment : ProV4Fragment() {
     override fun handler(msg: Message) {
         val str = msg.obj as String
         when (msg.what) {
-            Config.GET_WEEK_CODE->{
+            Config.GET_WEEK_CODE -> {
 
                 removeLoadDialog()
-                val json=JSONObject(str)
-                val code=json.optInt(Config.CODE)
+                val json = JSONObject(str)
+                val code = json.optInt(Config.CODE)
 
-                if(code==Config.SUCCESS){
+                if (code == Config.SUCCESS) {
 
-                    val data=json.optString(Config.DATA)
+                    val data = json.optString(Config.DATA)
 
-                    val  arr=gson!!.fromJson<ArrayList<String>>(data,object : TypeToken<ArrayList<String>>(){}.type)
+                    val arr = gson!!.fromJson<ArrayList<String>>(data, object : TypeToken<ArrayList<String>>() {}.type)
 
-                    if(arr!=null&&arr.size!=0){
+                    if (arr != null && arr.size != 0) {
 
                         setDate(arr)
 
@@ -95,9 +92,9 @@ class MyGroupUpFragment : ProV4Fragment() {
 
     private fun getStudyList() {
 
-        if(code==1){
+        if (code == 1) {
 
-        }else if(code==2){
+        } else if (code == 2) {
 
         }
 
@@ -106,10 +103,10 @@ class MyGroupUpFragment : ProV4Fragment() {
     }
 
 
-    fun get(){
+    fun get() {
         val json = JSONObject()
         json.put("token", token)
-        json.put("uid",uid)
+        json.put("uid", uid)
         HttpUtils.getInstance().postJson(Config.GET_WEEK_URL, json.toString(), Config.GET_WEEK_CODE, handler!!)
         showLoadDialog(activity!!, "获取中")
     }
@@ -155,7 +152,7 @@ class MyGroupUpFragment : ProV4Fragment() {
 
     val textArr: ArrayList<String> = arrayListOf("", "初次记忆", "第一周期", "第二周期", "第三周期", "第四周期", "第五周期", "第六周期", "第七周期")
 
-    val weekArr= arrayListOf<String>("","星期一","星期二","星期三","星期四","星期五","星期六","星期日","")
+    val weekArr = arrayListOf<String>("", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日", "")
 
     private fun initChart() {
         // 是否在折线图上添加边框
@@ -199,13 +196,12 @@ class MyGroupUpFragment : ProV4Fragment() {
             }
 
             override fun onValueSelected(e: Entry?, h: Highlight?) {
-                val textView=markerView.findViewById<TextView>(R.id.tvTextView1)
-                textView.text = "学习量: "+h!!.y.toInt().toString()
+                val textView = markerView.findViewById<TextView>(R.id.tvTextView1)
+                textView.text = ("学习量: " + h!!.y.toInt().toString())
                 markerView.refreshContent(e, h)
             }
 
         })
-
 
 
     }
@@ -215,21 +211,24 @@ class MyGroupUpFragment : ProV4Fragment() {
             R.color.a00C9B0, R.color.aF46A80)
 
 
-    private fun setDate(arr:ArrayList<String>) {
+    private fun setDate(arr: ArrayList<String>) {
 
-        Log.i("result","-----"+arr.size)
+        Log.i("result", "-----" + arr.size)
 
-        arr.add(0,"0")
+        arr.add(0, "0")
         arr.add("0")
 
-        val y = arrayListOf<Entry>()
-
+        val yList = arrayListOf<Entry>()
 
 //        val y2 = arrayListOf<Entry>()
 //        val y3 = arrayListOf<Entry>()
 //        val y4 = arrayListOf<Entry>()
 //        val y5 = arrayListOf<Entry>()
 //        val y6 = arrayListOf<Entry>()
+
+
+        val leftAxis: YAxis = groupUpChart.axisLeft
+        leftAxis.setStartAtZero(true)
 
         val xAxis = groupUpChart.xAxis
         // 显示X轴上的刻度值
@@ -266,7 +265,7 @@ class MyGroupUpFragment : ProV4Fragment() {
         for (i in arr.indices) {
 
             if (i == 0) {
-                y.add(Entry(0f, 0f))
+                yList.add(Entry(0f, 0f))
 
 //                y2.add(Entry(i.toFloat(), 0f))
 //                y3.add(Entry(i.toFloat(), 0f))
@@ -275,7 +274,7 @@ class MyGroupUpFragment : ProV4Fragment() {
 //                y6.add(Entry(i.toFloat(), 0f))
 
             } else {
-                y.add(Entry(i.toFloat(), arr[i].toFloat()))
+                yList.add(Entry(i.toFloat(), arr[i].toFloat()))
 
 //                y2.add(Entry(i.toFloat(), arr[1].toFloat()))
 //                y3.add(Entry(i.toFloat(), arr[2].toFloat()))
@@ -290,7 +289,7 @@ class MyGroupUpFragment : ProV4Fragment() {
 
         val lineDataSet = arrayListOf<ILineDataSet>()
 
-        lineDataSet.add(setDataSer(y, "学习量",R.color.red))
+        lineDataSet.add(setDataSer(yList, "学习量", R.color.red))
 
 //        lineDataSet.add(setDataSer(y2, 1))
 //        lineDataSet.add(setDataSer(y3, 2))
@@ -304,13 +303,17 @@ class MyGroupUpFragment : ProV4Fragment() {
 
     }
 
-    private fun setDataSer(y: ArrayList<Entry>,str:String,color:Int): LineDataSet {
+    /**
+     * 设置折线图显示数据
+     */
+    private fun setDataSer(y: ArrayList<Entry>, str: String, color: Int): LineDataSet {
         val set1 = LineDataSet(y, str)
         set1.setCircleColor(resources.getColor(color))
-        set1.color=resources.getColor(color)
+        set1.color = resources.getColor(color)
         set1.setDrawCircles(false)
         set1.mode = LineDataSet.Mode.CUBIC_BEZIER
         set1.valueTextColor = resources.getColor(color)
+        set1.lineWidth = 4f
         return set1
 
     }

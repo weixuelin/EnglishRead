@@ -12,6 +12,7 @@ import com.wt.yc.englishread.base.ProV4Fragment
  * 音标练习
  */
 class SoundmarkExerciseFragment:ProV4Fragment() {
+
     override fun handler(msg: Message) {
 
     }

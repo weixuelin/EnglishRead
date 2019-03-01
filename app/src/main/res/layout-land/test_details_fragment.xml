@@ -40,8 +40,8 @@
 
             <ImageView
                 android:id="@+id/imageViewMuLu"
-                android:layout_width="@dimen/dp_16"
-                android:layout_height="@dimen/dp_16"
+                android:layout_width="@dimen/dp_12"
+                android:layout_height="@dimen/dp_12"
                 android:layout_marginLeft="@dimen/dp_16"
                 android:layout_marginRight="@dimen/dp_16"
                 android:src="@drawable/main6_gray"
@@ -120,7 +120,7 @@
                 <Button
                     android:id="@+id/btUp"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_20"
                     android:background="@drawable/blue_kuang"
                     android:text="上一题"
                     android:textColor="@color/write" />
@@ -133,7 +133,7 @@
                 <Button
                     android:id="@+id/btPost"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_20"
                     android:background="@drawable/green_kuang"
                     android:text="交卷"
                     android:textColor="@color/write" />
@@ -146,7 +146,7 @@
                 <Button
                     android:id="@+id/btNext"
                     android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_20"
                     android:background="@drawable/blue_kuang"
                     android:text="下一题"
                     android:textColor="@color/write" />

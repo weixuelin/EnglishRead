@@ -29,9 +29,11 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 
+/**
+ * 学习与复习
+ */
 class ReviewFragment : ProV4Fragment() {
 
     var rfInfo: BookInfo? = null
@@ -47,7 +49,6 @@ class ReviewFragment : ProV4Fragment() {
 
 
     override fun handler(msg: Message) {
-        val str = msg.obj as String
 
         when (msg.what) {
 
@@ -64,11 +65,16 @@ class ReviewFragment : ProV4Fragment() {
             }
 
             Config.REVIRE_CODE -> {
+
+                val str = msg.obj as String
+
                 removeLoadDialog()
 
                 val json = JSONObject(str)
                 val code = json.optInt(Config.CODE)
+
                 if (code == Config.SUCCESS) {
+
                     val data = json.optJSONObject(Config.DATA)
 
                     unitId = data.optString("unit_id")
@@ -88,14 +94,17 @@ class ReviewFragment : ProV4Fragment() {
                         if (isVisibleCode) {
                             showToastShort(activity!!, "暂无学习单词，请重新开始学习!!")
                         }
-
                     }
 
+                } else {
+                    if (isVisibleCode) {
+                        showToastShort(activity!!, "暂无学习单词!!")
+                    }
                 }
             }
 
             Config.FINISH_CODE -> {
-
+                val str = msg.obj as String
                 removeLoadDialog()
                 val json = JSONObject(str)
 
@@ -114,15 +123,19 @@ class ReviewFragment : ProV4Fragment() {
 
 
     /**
-     * 今日目标完成弹出dialog
+     * 今日目标完成弹出
      */
     private fun showFinish(num: Int, gold: Int) {
 
         val view = layoutInflater.inflate(R.layout.finish_dialog, null)
         val textViewTi = view.textViewTi
-        textViewTi.text = "学习单词数${num}\n获得金币${gold}"
 
-        val dialog: Dialog = Dialog(activity, R.style.style)
+        val ss = "学习单词数$num\n获得金币$gold"
+
+        textViewTi.text = ss
+
+        val dialog = Dialog(activity, R.style.style)
+
         dialog.setContentView(view)
         dialog.setCancelable(false)
         dialog.show()
@@ -157,14 +170,21 @@ class ReviewFragment : ProV4Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         tvFinishBack.setOnClickListener {
             fragmentManager!!.popBackStack()
         }
 
-        tvTopTitle.text = "复习"
-
         if (rfInfo != null) {
-            tvTopName.text = "${rfInfo!!.unit_name} 第一阶段"
+
+            if (rfInfo!!.code == 1) {
+                tvTopTitle.text = "学习"
+                tvTopName.text = "${rfInfo!!.unit_name}"
+            } else {
+                tvTopTitle.text = "复习"
+                tvTopName.text = "${rfInfo!!.unit_name} 第一阶段"
+            }
+
             get()
 
         }
@@ -191,24 +211,14 @@ class ReviewFragment : ProV4Fragment() {
 
     fun get() {
 
+        Log.i("reuslt","-------"+rfInfo!!.id)
         firstArr.clear()
 
         val json = JSONObject()
         json.put("uid", uid)
         json.put("token", token)
-
-        json.put("id", if (rfInfo!!.code == 1) {
-            rfInfo!!.book_id
-        } else {
-            rfInfo!!.id
-        })
-
-        json.put("type", if (rfInfo!!.code == 1) {
-            "go_on"
-        } else {
-            "new_word"
-        })
-
+        json.put("id", rfInfo!!.id)
+        json.put("type", "new_word")
         HttpUtils.getInstance().postJson(Config.REVIEW_WORD_URL, json.toString(), Config.REVIRE_CODE, handler)
         showLoadDialog(activity!!, "获取中")
     }
@@ -239,11 +249,14 @@ class ReviewFragment : ProV4Fragment() {
 
 
     private fun initTime() {
+
+        tvTextTime.visibility = View.VISIBLE
+
         indexTime = 0
 
         if (timer != null) {
             timer!!.cancel()
-            timer=null
+            timer = null
 
         }
 
@@ -320,7 +333,6 @@ class ReviewFragment : ProV4Fragment() {
                     if (oneIndexNum == firstArr.size - 1) {
 
                         showTiDialog()
-
                         timer!!.cancel()
 
                     } else {
@@ -393,14 +405,31 @@ class ReviewFragment : ProV4Fragment() {
         }
     }
 
+    /**
+     * 提示学习完成
+     */
+    private fun showFinishTiDialog() {
+        val build = AlertDialog.Builder(activity)
+        build.setMessage("已学习完成!!").setTitle("提示").setPositiveButton("确定") { dialog, _ ->
+            dialog.dismiss()
+            (activity as MainPageActivity).supportFragmentManager.popBackStack()
+        }.show()
+
+    }
+
 
     /**
      * 提示是否保存
      */
     private fun showSave() {
+        val message = if (rfInfo!!.code == 1) {
+            "学习结束，是否保存？？"
+        } else {
+            "复习结束，是否保存？？"
+        }
 
         val build = AlertDialog.Builder(activity!!)
-        build.setMessage("复习结束，是否保存？？").setPositiveButton("保存") { dialog, _ ->
+        build.setMessage(message).setPositiveButton("保存") { dialog, _ ->
             save()
             dialog.dismiss()
         }.setNegativeButton("取消") { _, _ ->
@@ -420,13 +449,16 @@ class ReviewFragment : ProV4Fragment() {
         HttpUtils.getInstance().postJson(Config.FINISH_REVIRE_URL, json.toString(), Config.FINISH_CODE, handler!!)
         showLoadDialog(activity!!, "提交中")
 
-        if(timer!=null){
+        if (timer != null) {
             timer!!.cancel()
         }
 
     }
 
 
+    /**
+     * 创建保存数据
+     */
     private fun buildList(): JSONArray? {
 
         val arrList1 = JSONArray()
@@ -521,12 +553,14 @@ class ReviewFragment : ProV4Fragment() {
     var isFirstClickError = false
 
     private fun addOneView(info: BookInfo) {
+        buttonNext.visibility = View.GONE
+
         reviewLinearLayout.removeAllViews()
         val vv = layoutInflater.inflate(R.layout.review_view, null)
 
         vv.tvContent.text = info.english
         vv.tvYuTi.text = "[${info.ipa}]"
-        vv.tvWordYiSi.text = ""
+        vv.tvWordYiSi.text = "是否记得??"
 
         val eng = info.english_example
         val chn = info.chinese_example
@@ -614,6 +648,8 @@ class ReviewFragment : ProV4Fragment() {
 
         reviewLinearLayout.addView(vv)
 
+        playVoice(activity!!, Config.IP + info.video)
+
         initTime()
 
     }
@@ -679,13 +715,11 @@ class ReviewFragment : ProV4Fragment() {
 
         twoView.linearTwoSure.setOnClickListener {
 
-            Log.i("result","点击到此--------")
+            Log.i("result", "点击到此--------")
 
             twoView.reviewTwoImageView.setImageResource(R.drawable.icon_true)
 
-
         }
-
 
         twoView.linearTwoError.setOnClickListener {
 
@@ -701,6 +735,8 @@ class ReviewFragment : ProV4Fragment() {
         reviewLinearLayout.addView(twoView)
 
         initTime()
+
+        playVoice(activity!!, Config.IP + info.video)
 
     }
 
@@ -730,13 +766,13 @@ class ReviewFragment : ProV4Fragment() {
 
         val threeView = layoutInflater.inflate(R.layout.review_three_view, null)
 
-        val english=info.english
+        val english = info.english
 
-        Log.i("result","========"+english.length)
+        Log.i("result", "========" + english.length)
 
-        threeView.inPutEditText.totalCount=english.length
+        threeView.inPutEditText.totalCount = english.length
 
-        threeView.inPutEditText.layoutParams=LinearLayout.LayoutParams(english.length*100,LinearLayout.LayoutParams.WRAP_CONTENT)
+        threeView.inPutEditText.layoutParams = LinearLayout.LayoutParams(english.length * 100, LinearLayout.LayoutParams.WRAP_CONTENT)
 
         threeView.inPutEditText.filters = arrayOf(InputFilter.LengthFilter(english.length))
 
@@ -766,6 +802,8 @@ class ReviewFragment : ProV4Fragment() {
         reviewLinearLayout.addView(threeView)
 
         initTime()
+
+        playVoice(activity!!, Config.IP + info.video)
 
     }
 }

@@ -353,6 +353,7 @@
                     <ImageView
                         android:layout_width="@dimen/dp_10"
                         android:layout_height="@dimen/dp_10"
+                        android:visibility="gone"
                         android:src="@drawable/right" />
 
                 </LinearLayout>

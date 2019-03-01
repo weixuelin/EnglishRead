@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/write"
+    android:id="@+id/studyLinearLayout"
+    android:visibility="gone"
     android:orientation="vertical"
     android:padding="4dp">
 
@@ -136,8 +138,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="夹生词/陌生词:"
+                    android:layout_marginLeft="@dimen/dp_8"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/sp_8" />
+                    android:textSize="@dimen/sp_10" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/msRecyclerView"

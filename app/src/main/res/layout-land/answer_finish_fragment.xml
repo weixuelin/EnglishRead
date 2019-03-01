@@ -107,6 +107,7 @@
 
             <Button
                 android:layout_width="@dimen/dp_80"
+                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:background="@drawable/blue_kuang_12"
                 android:text="查看错误"

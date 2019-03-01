@@ -9,8 +9,8 @@
 
     <LinearLayout
         android:id="@+id/picLinear"
-        android:layout_width="@dimen/dp_40"
-        android:layout_height="@dimen/dp_40"
+        android:layout_width="@dimen/dp_38"
+        android:layout_height="@dimen/dp_36"
         android:background="@drawable/blue_bg"
         android:gravity="center">
 
@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/text_color"
-        android:textSize="@dimen/sp_10" />
+        android:textSize="@dimen/sp_9" />
 
 </LinearLayout>
 

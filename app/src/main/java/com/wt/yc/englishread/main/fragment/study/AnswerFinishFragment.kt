@@ -54,7 +54,7 @@ class AnswerFinishFragment : ProV4Fragment() {
             val startN33 = scoreTi.lastIndexOf("得")
             val startN44 = scoreTi.lastIndexOf(",")
 
-            TextUtils.getInstance().setColor(activity!!, sp, startNum, endNum, R.color.red, TextUtils.COLOR)
+            TextUtils.getInstance().setColor(activity!!, sp, startNum, endNum + 1, R.color.red, TextUtils.COLOR)
             TextUtils.getInstance().setColor(activity!!, sp, startN33 + 1, startN44 - 1, R.color.red, TextUtils.COLOR)
             TextUtils.getInstance().setColor(activity!!, sp, startN11 + 1, startN22, R.color.red, TextUtils.COLOR)
 
@@ -74,7 +74,7 @@ class AnswerFinishFragment : ProV4Fragment() {
         tvFinishBack.setOnClickListener { fragmentManager!!.popBackStack() }
 
         btTestAgain.setOnClickListener {
-
+            fragmentManager!!.popBackStack()
         }
 
     }

@@ -12,6 +12,7 @@ import com.wt.yc.englishread.base.ProV4Fragment
  * 阅读训练
  */
 class ReadExerciseFragment:ProV4Fragment() {
+
     override fun handler(msg: Message) {
 
     }

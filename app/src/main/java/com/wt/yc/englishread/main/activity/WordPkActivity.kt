@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.word_pk_layout.*
  * 单词PK
  */
 class WordPkActivity:ProActivity() {
+
     override fun handler(msg: Message) {
 
     }
