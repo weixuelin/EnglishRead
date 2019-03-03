@@ -23,7 +23,7 @@ import org.json.JSONObject
 import java.util.*
 
 /**
- * 继续学习
+ * 继续学习，只进行第一阶段
  */
 class ContinueStudyFragment : ProV4Fragment() {
 

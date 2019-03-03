@@ -313,11 +313,15 @@ class MainPageActivity : ProActivity() {
 
 
     val titleArr = arrayListOf<String>("首页", "学习", "学习统计", "智能测试", "生词本", "书架", "游戏PK榜", "拓展训练")
-    val picClick: ArrayList<Int> = arrayListOf(R.drawable.main1, R.drawable.main2, R.drawable.main3, R.drawable.main4,
-            R.drawable.main5, R.drawable.main6, R.drawable.main7, R.drawable.main8)
+    val picClick: ArrayList<Int> = arrayListOf(R.drawable.main1, R.drawable.main2,
+            R.drawable.main3, R.drawable.main4,
+            R.drawable.main5, R.drawable.main6,
+            R.drawable.main7, R.drawable.main8)
 
-    val pic: ArrayList<Int> = arrayListOf(R.drawable.main1_gray, R.drawable.main2_gray, R.drawable.main3_gray, R.drawable.main4_gray,
-            R.drawable.main5_gray, R.drawable.main6_gray, R.drawable.main7_gray, R.drawable.main8_gray)
+    val pic: ArrayList<Int> = arrayListOf(R.drawable.main1_gray, R.drawable.main2_gray,
+            R.drawable.main3_gray, R.drawable.main4_gray,
+            R.drawable.main5_gray, R.drawable.main6_gray,
+            R.drawable.main7_gray, R.drawable.main8_gray)
 
     /**
      * 学习统计二级

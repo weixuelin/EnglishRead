@@ -230,8 +230,51 @@
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/cxPieChart"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:layout_gravity="center" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:textSize="@dimen/sp_10"
+                        android:drawableLeft="@drawable/pic_point1"
+                        android:clickable="true"
+                        android:drawablePadding="@dimen/dp_4"
+                        android:text="熟悉词"
+                        android:textColor="@color/zi"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:clickable="true"
+                        android:drawablePadding="@dimen/dp_4"
+                        android:textColor="@color/a00C9B0"
+                        android:text="夹生词"
+                        android:layout_marginLeft="@dimen/dp_6"
+                        android:drawableLeft="@drawable/pic_point5"
+                        android:textSize="@dimen/sp_10"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="@dimen/dp_6"
+                        android:drawableLeft="@drawable/pic_point6"
+                        android:clickable="true"
+                        android:drawablePadding="@dimen/dp_4"
+                        android:textColor="@color/aF46A80"
+                        android:text="陌生词"
+                        android:textSize="@dimen/sp_10"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
 
             </LinearLayout>
 

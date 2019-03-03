@@ -2,16 +2,18 @@ package com.wt.yc.englishread.main.fragment.study
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Message
-import android.text.Editable
-import android.text.InputFilter
-import android.text.TextWatcher
+import android.text.*
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.google.gson.reflect.TypeToken
 import com.wt.yc.englishread.R
 import com.wt.yc.englishread.base.Config
@@ -59,7 +61,7 @@ class ReviewFragment : ProV4Fragment() {
                 indexTime++
 
                 if (tvTextTime != null) {
-                    tvTextTime.text = indexTime.toString()
+                    tvTextTime.text = msg.arg1.toString()
                 }
 
             }
@@ -211,7 +213,7 @@ class ReviewFragment : ProV4Fragment() {
 
     fun get() {
 
-        Log.i("reuslt","-------"+rfInfo!!.id)
+        Log.i("reuslt", "-------" + rfInfo!!.id)
         firstArr.clear()
 
         val json = JSONObject()
@@ -267,6 +269,7 @@ class ReviewFragment : ProV4Fragment() {
                 val message = handler!!.obtainMessage()
                 message.what = 9999
                 message.obj = ""
+                message.arg1 = 25 - indexTime
                 handler!!.sendMessage(message)
             }
         }
@@ -278,6 +281,8 @@ class ReviewFragment : ProV4Fragment() {
      * 获取第二阶段的测试信息
      */
     private fun getTwoList() {
+        remberClickNum = 1
+        forgetClickNum = 1
         oneIndexNum = 0
         indexCode = 2
 
@@ -289,6 +294,8 @@ class ReviewFragment : ProV4Fragment() {
      * 获取第三阶段的测试信息
      */
     private fun getThreeList() {
+        remberClickNum = 1
+        forgetClickNum = 1
 
         oneIndexNum = 0
 
@@ -327,74 +334,18 @@ class ReviewFragment : ProV4Fragment() {
         buttonNext.setOnClickListener {
             when (indexCode) {
                 1 -> {
+                    addFirstTi()
 
-                    isFirstClickError = false
-
-                    if (oneIndexNum == firstArr.size - 1) {
-
-                        showTiDialog()
-                        timer!!.cancel()
-
-                    } else {
-
-                        oneIndexNum++
-
-                        addOneView(firstArr[oneIndexNum])
-
-                        buttonNext.visibility = View.GONE
-
-                    }
                 }
 
                 2 -> {
+                    addTwoDataTi()
 
-                    if (oneIndexNum == twoArr.size - 1) {
-
-                        showThreeDialog()
-
-                    } else {
-
-                        oneIndexNum++
-
-                        addTwo(twoArr[oneIndexNum])
-                    }
                 }
 
                 3 -> {
 
-                    if (oneIndexNum == threeArr.size - 1) {
-                        // 提交数据
-                        showSave()
-
-                    } else {
-
-                        if (inputStr != "") {
-
-                            val info = threeArr[oneIndexNum]
-
-                            Log.i("result", "------" + info.english + "------" + inputStr)
-
-                            if (info.english.trim() == inputStr.trim()) {
-
-                                info.status = 1
-
-                            } else {
-                                info.status = 0
-                                threeArr.add(info)
-                            }
-
-                            info.time = indexTime.toString()
-
-                            threeHashMap.add(info)
-
-                            oneIndexNum++
-
-                            addThree(threeArr[oneIndexNum])
-
-                        } else {
-                            showShortToast(activity!!, "请输入单词")
-                        }
-                    }
+                    addThreeDataTi()
 
                 }
             }
@@ -402,6 +353,84 @@ class ReviewFragment : ProV4Fragment() {
 
         tvFinishBack.setOnClickListener {
             (activity!! as MainPageActivity).backTo()
+        }
+    }
+
+    /**
+     * 第三阶段数据带提示
+     */
+    private fun addThreeDataTi() {
+        if (oneIndexNum == threeArr.size - 1) {
+            // 提交数据
+            showSave()
+
+        } else {
+
+            if (inputStr != "") {
+
+                val info = threeArr[oneIndexNum]
+
+                Log.i("result", "------" + info.english + "------" + inputStr)
+
+                if (info.english.trim() == inputStr.trim()) {
+
+                    info.status = 1
+
+                } else {
+                    info.status = 0
+                    threeArr.add(info)
+                }
+
+                info.time = indexTime.toString()
+
+                threeHashMap.add(info)
+
+                oneIndexNum++
+
+                addThree(threeArr[oneIndexNum])
+
+            } else {
+                showShortToast(activity!!, "请输入单词")
+            }
+        }
+    }
+
+    /**
+     * 加载第一阶段数据
+     */
+    private fun addFirstTi() {
+
+        isFirstClickError = false
+
+        if (oneIndexNum == firstArr.size - 1) {
+
+            showTiDialog()
+            timer!!.cancel()
+
+        } else {
+
+            oneIndexNum++
+
+            addOneView(firstArr[oneIndexNum])
+
+            buttonNext.visibility = View.GONE
+
+        }
+    }
+
+    /**
+     * 第二阶段数据加载提示
+     */
+    fun addTwoDataTi() {
+        if (oneIndexNum == twoArr.size - 1) {
+
+            showThreeDialog()
+
+        } else {
+
+            oneIndexNum++
+
+            addTwo(twoArr[oneIndexNum])
         }
     }
 
@@ -552,6 +581,15 @@ class ReviewFragment : ProV4Fragment() {
      */
     var isFirstClickError = false
 
+    /**
+     * 记得点击次数
+     */
+    var remberClickNum = 1
+    /**
+     * 忘记点击次数
+     */
+    var forgetClickNum = 1
+
     private fun addOneView(info: BookInfo) {
         buttonNext.visibility = View.GONE
 
@@ -578,62 +616,81 @@ class ReviewFragment : ProV4Fragment() {
         }
 
         vv.linearSure.setOnClickListener {
+            if (remberClickNum == 1) {
 
-            vv.reviewImageView.setImageResource(R.drawable.icon_true)
-            vv.tvWordYiSi.text = info.chinese
+                vv.reviewImageView.setImageResource(R.drawable.icon_true)
+                vv.tvWordYiSi.text = info.chinese
 
-            info.time = indexTime.toString()
+                info.time = indexTime.toString()
 
-            info.status = 1
+                info.status = 1
 
-            val index = isExist(finishWordList, info)
+                val index = isExist(finishWordList, info)
 
-            if (index != -1) {
+                if (index != -1) {
 
-                ///  存在
-                finishWordList.removeAt(index)
+                    ///  存在
+                    finishWordList.removeAt(index)
 
-                finishWordList.add(index, info)
+                    finishWordList.add(index, info)
 
-                if (isFirstClickError) {
+                    if (isFirstClickError) {
 
-                    firstArr.removeAt(firstArr.size - 1)
+                        firstArr.removeAt(firstArr.size - 1)
 
-                    isFirstClickError = false
+                        isFirstClickError = false
 
+                    }
+
+                } else {
+                    /// 不存在
+                    finishWordList.add(info)
                 }
+                remberClickNum++
 
             } else {
-                /// 不存在
-                finishWordList.add(info)
+
+                remberClickNum = 1
+
+                addFirstTi()
             }
 
-            buttonNext.visibility = View.VISIBLE
+            buttonNext.visibility = View.GONE
 
         }
 
         vv.linearError.setOnClickListener {
-            vv.reviewImageView.setImageResource(R.drawable.icon_onremenber)
-            vv.tvWordYiSi.text = info.chinese
+            if (forgetClickNum == 1) {
+                vv.reviewImageView.setImageResource(R.drawable.icon_onremenber)
+                vv.tvWordYiSi.text = info.chinese
 
-            isFirstClickError = true
+                isFirstClickError = true
 
-            info.time = indexTime.toString()
-            info.status = 0
+                info.time = indexTime.toString()
+                info.status = 0
 
-            val index = isExist(finishWordList, info)
+                val index = isExist(finishWordList, info)
 
-            if (index != -1) {
-                ///  存在改变数据
-                finishWordList.removeAt(index)
-                finishWordList.add(index, info)
+                if (index != -1) {
+                    ///  存在改变数据
+                    finishWordList.removeAt(index)
+                    finishWordList.add(index, info)
+                } else {
+                    finishWordList.add(info)
+                }
+
+                firstArr.add(info)
+                forgetClickNum++
+
             } else {
-                finishWordList.add(info)
+
+                forgetClickNum = 1
+
+                addFirstTi()
+
             }
 
-            firstArr.add(info)
-
-            buttonNext.visibility = View.VISIBLE
+            buttonNext.visibility = View.GONE
 
         }
 
@@ -690,6 +747,9 @@ class ReviewFragment : ProV4Fragment() {
         twoView.tvTwoContent.text = info.english
         twoView.tvTwoYuTi.text = "[${info.ipa}]"
         twoView.tvTwoWordYiSi.text = info.chinese
+
+        twoView.tvTwoContent.visibility = View.GONE
+
         val eng = info.english_example
         val chn = info.chinese_example
 
@@ -716,14 +776,27 @@ class ReviewFragment : ProV4Fragment() {
         twoView.linearTwoSure.setOnClickListener {
 
             Log.i("result", "点击到此--------")
-
-            twoView.reviewTwoImageView.setImageResource(R.drawable.icon_true)
+            if (remberClickNum == 1) {
+                twoView.reviewTwoImageView.setImageResource(R.drawable.icon_true)
+                twoView.tvTwoContent.visibility = View.VISIBLE
+                remberClickNum++
+            } else {
+                remberClickNum = 1
+                addTwoDataTi()
+            }
 
         }
 
         twoView.linearTwoError.setOnClickListener {
+            if (forgetClickNum == 1) {
 
-            twoView.reviewTwoImageView.setImageResource(R.drawable.icon_onremenber)
+                twoView.reviewTwoImageView.setImageResource(R.drawable.icon_onremenber)
+                twoView.tvTwoContent.visibility = View.VISIBLE
+                forgetClickNum++
+            } else {
+                forgetClickNum = 1
+                addTwoDataTi()
+            }
 
         }
 
@@ -750,10 +823,29 @@ class ReviewFragment : ProV4Fragment() {
 
         oneIndexNum = 0
 
-        addThree(threeArr[0])
+        addThree(threeArr[oneIndexNum])
 
     }
 
+
+    /**
+     * 第几次做题  1 为正常做题  2 为罚题  3 为再次罚题
+     */
+    var threeAnswerNum = 1
+
+    /**
+     * 罚题次数
+     */
+    var faAnswerNum = 1
+    /**
+     * 再次罚题次数
+     */
+    var faAgainNum = 0
+
+    /**
+     * 罚题做错次数
+     */
+    var faTiTrueNum = 0
 
     /**
      * 添加第三阶段的数据
@@ -770,7 +862,7 @@ class ReviewFragment : ProV4Fragment() {
 
         Log.i("result", "========" + english.length)
 
-        threeView.inPutEditText.totalCount = english.length
+        val len = english.length
 
         threeView.inPutEditText.layoutParams = LinearLayout.LayoutParams(english.length * 100, LinearLayout.LayoutParams.WRAP_CONTENT)
 
@@ -790,6 +882,10 @@ class ReviewFragment : ProV4Fragment() {
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 inputStr = threeView.inPutEditText.text.toString()
+
+                if (inputStr.length == len) {
+                    checkTrueOrFalse(threeView.inPutEditText, english, inputStr)
+                }
             }
 
         })
@@ -804,6 +900,145 @@ class ReviewFragment : ProV4Fragment() {
         initTime()
 
         playVoice(activity!!, Config.IP + info.video)
+
+    }
+
+    /**
+     * 检查正确和错误
+     */
+    private fun checkTrueOrFalse(editText: EditText, english: String, inputStr: String) {
+        when (threeAnswerNum) {
+            1 -> {
+                if (english == inputStr) {
+
+                    buttonNext.visibility = View.VISIBLE
+
+                    showTrueTi()
+
+                } else {
+
+                    buttonNext.visibility = View.GONE
+
+                    val ll = chooseDiffIndex(english, inputStr)
+
+                    val sp = SpannableString(english)
+
+                    for (temp in ll) {
+
+                        sp.setSpan(ForegroundColorSpan(Color.RED), temp, temp + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    }
+
+                    editText.setText(sp, TextView.BufferType.SPANNABLE)
+
+                    threeAnswerNum = 2
+
+                    timeToAgain(editText)
+
+                }
+            }
+
+            2 -> {
+                if (faAnswerNum == 3) {
+                    // 判断罚题做错次数
+                    if (faTiTrueNum == 0) {
+                        buttonNext.visibility = View.VISIBLE
+                    } else {
+                        threeAnswerNum = 3
+                        faAgainNum = faTiTrueNum
+                    }
+
+                } else {
+
+                    if (english == inputStr) {
+
+                        showTrueTi()
+
+                    } else {
+
+                        faTiTrueNum++
+
+                        val ll = chooseDiffIndex(english, inputStr)
+
+                        val sp = SpannableString(english)
+
+                        for (temp in ll) {
+
+                            sp.setSpan(ForegroundColorSpan(Color.RED), temp, temp + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                        }
+
+                        editText.setText(sp, TextView.BufferType.SPANNABLE)
+                    }
+
+                    timeToAgain(editText)
+                    faAnswerNum++
+                }
+            }
+
+            3 -> {
+
+                buttonNext.visibility = View.VISIBLE
+
+                if (english == inputStr) {
+
+                    showTrueTi()
+
+                } else {
+
+                    val ll = chooseDiffIndex(english, inputStr)
+
+                    val sp = SpannableString(english)
+
+                    for (temp in ll) {
+
+                        sp.setSpan(ForegroundColorSpan(Color.RED), temp, temp + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    }
+
+                    editText.setText(sp, TextView.BufferType.SPANNABLE)
+                }
+
+            }
+        }
+
+
+    }
+
+    /**
+     * 1s后重新输入
+     */
+
+    private fun timeToAgain(editText:EditText) {
+      handler!!.postDelayed({
+          editText.setText("")
+          editText.hint = "请重新输入"
+      },1000)
+
+    }
+
+
+    /**
+     * 显示正确提示
+     */
+    private fun showTrueTi() {
+
+    }
+
+    /**
+     * 找出不同的位置
+     */
+    private fun chooseDiffIndex(english: String, inputStr: String): ArrayList<Int> {
+        val list = arrayListOf<Int>()
+        val charList1 = english.toCharArray()
+        val charList2 = inputStr.toCharArray()
+        for (i in charList1.indices) {
+            val cc = charList1[i]
+            for (j in charList2.indices) {
+                val ccc = charList2[j]
+                if (cc != ccc) {
+                    list.add(j)
+                }
+            }
+        }
+        return list
 
     }
 }

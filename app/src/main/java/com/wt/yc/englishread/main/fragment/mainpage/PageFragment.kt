@@ -234,6 +234,19 @@ class PageFragment : ProV4Fragment() {
             }
         }
 
+        textView1.setOnClickListener {
+            toStudy(1)
+
+        }
+
+        textView2.setOnClickListener {
+            toStudy(2)
+        }
+
+        textView3.setOnClickListener {
+            toStudy(3)
+        }
+
     }
 
 
@@ -966,6 +979,7 @@ class PageFragment : ProV4Fragment() {
 
         //设置比例图
         val mLegend = cxPieChart.legend
+        mLegend.isEnabled=false
         //设置比例图显示在饼图的哪个位置
         mLegend.position = Legend.LegendPosition.RIGHT_OF_CHART
         //设置比例图的形状，默认是方形,可为方形、圆形、线性
@@ -978,26 +992,33 @@ class PageFragment : ProV4Fragment() {
             }
 
             override fun onValueSelected(e: Entry?, h: Highlight?) {
-
-                val bookInfo = BookInfo()
-                bookInfo.code = 1
-                bookInfo.goOnCode = 1
-
-                bookInfo.book_id = startBookInfo!!.book_id
-
-                val id = Share.getUnitId(activity!!)
-
-                if (id == 0) {
-                    bookInfo.id = startBookInfo!!.book_id
-                } else {
-                    bookInfo.id = id
-                }
-
-                (activity as MainPageActivity).toWhere(Constant.STUDY_REVIEW, bookInfo)
+               toStudy(0)
             }
 
         })
 
+    }
+
+    /**
+     * 1 熟悉词  2 夹生词  3 陌生词  0 其他
+     */
+    private fun toStudy(code:Int) {
+
+        val bookInfo = BookInfo()
+        bookInfo.code = 1
+        bookInfo.goOnCode = 1
+
+        bookInfo.book_id = startBookInfo!!.book_id
+
+        val id = Share.getUnitId(activity!!)
+
+        if (id == 0) {
+            bookInfo.id = startBookInfo!!.book_id
+        } else {
+            bookInfo.id = id
+        }
+
+        (activity as MainPageActivity).toWhere(Constant.STUDY_REVIEW, bookInfo)
     }
 
     /**
@@ -1033,9 +1054,9 @@ class PageFragment : ProV4Fragment() {
 
         /// 设置饼图各个区域颜色
         val colors: ArrayList<Int> = ArrayList<Int>()
-        colors.add(activity!!.resources.getColor(R.color.blue_login))
-        colors.add(activity!!.resources.getColor(R.color.green))
-        colors.add(activity!!.resources.getColor(R.color.red))
+        colors.add(activity!!.resources.getColor(R.color.zi))
+        colors.add(activity!!.resources.getColor(R.color.aF46A80))
+        colors.add(activity!!.resources.getColor(R.color.a00C9B0))
 
         dataSet.colors = colors
 
