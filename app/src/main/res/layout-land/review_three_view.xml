@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <LinearLayout
         style="@style/margin4"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/write_kuang"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:padding="@dimen/dp_8">
 
         <TextView
@@ -25,7 +25,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dp_8"
-            android:layout_toRightOf="@id/tvThreeContent"
             android:textColor="@color/aff6600"
             android:textSize="@dimen/sp_14" />
 
@@ -34,64 +33,81 @@
             android:layout_width="@dimen/dp_18"
             android:layout_height="@dimen/dp_18"
             android:layout_marginLeft="@dimen/dp_10"
-            android:layout_toRightOf="@id/tvThreeYuTi"
             android:src="@drawable/review_ting" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linear1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_12"
+        android:background="@drawable/gray_kuang"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="@dimen/dp_10">
+
         <LinearLayout
-            android:id="@+id/linear1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvThreeContent"
-            android:layout_marginTop="@dimen/dp_12"
-            android:background="@drawable/gray_kuang"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:padding="@dimen/dp_10">
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageGood1"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content" />
 
             <EditText
                 android:id="@+id/inPutEditText"
-                android:layout_width="match_parent"
-                android:gravity="center_horizontal"
+                android:layout_width="@dimen/dp_200"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_32" />
+                android:layout_marginLeft="@dimen/dp_16"
+                android:gravity="center_horizontal" />
 
-            <TextView
-                android:id="@+id/tvThreeWordYiSi"
+            <ImageView
+                android:id="@+id/imageGood2"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_8"
-                android:layout_marginBottom="@dimen/dp_6"
-                android:textColor="@color/black"
-                android:textSize="@dimen/sp_10" />
+                android:visibility="gone"
+                android:layout_marginLeft="@dimen/dp_16"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/tvThreeWordYiSi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginBottom="@dimen/dp_6"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_14" />
 
-        <LinearLayout
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/linear1"
+        android:layout_marginTop="@dimen/dp_8"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvTwoLiContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="例句:"
+            android:textSize="@dimen/sp_12" />
+
+        <TextView
+            android:id="@+id/tvThreeLiFanYi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/linear1"
-            android:layout_marginTop="@dimen/dp_8"
-            android:orientation="horizontal">
+            android:layout_marginLeft="@dimen/dp_8"
+            android:textSize="@dimen/sp_10" />
 
-            <TextView
-                android:id="@+id/tvTwoLiContent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="例句:"
-                android:textSize="@dimen/sp_12" />
-
-            <TextView
-                android:id="@+id/tvThreeLiFanYi"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_8"
-                android:textSize="@dimen/sp_10" />
-
-        </LinearLayout>
-
-
-    </RelativeLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

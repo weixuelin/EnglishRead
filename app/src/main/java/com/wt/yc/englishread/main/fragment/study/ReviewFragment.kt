@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.gson.reflect.TypeToken
@@ -60,8 +61,60 @@ class ReviewFragment : ProV4Fragment() {
 
                 indexTime++
 
-                if (tvTextTime != null) {
+                if (tvTextTime != null && msg.arg1 >= 0) {
                     tvTextTime.text = msg.arg1.toString()
+                }
+
+                if (msg.arg1 == 0) {
+
+                    when (indexCode) {
+
+                        1 -> {
+                            val info = firstArr[oneIndexNum]
+                            info.time = indexTime.toString()
+                            info.status = 0
+
+                            val index = isExist(finishWordList, info)
+
+                            if (index != -1) {
+                                ///  存在改变数据
+                                finishWordList.removeAt(index)
+                                finishWordList.add(index, info)
+
+                            } else {
+                                finishWordList.add(info)
+                            }
+
+                            /// 添加数据，再次学习
+                            firstArr.add(info)
+
+
+                            addFirstTi()
+                        }
+
+                        2 -> addTwoDataTi()
+
+                        3 -> {
+
+                            val info = threeArr[oneIndexNum]
+                            Log.i("result", "------" + info.english + "------" + inputStr)
+                            info.status = 0
+                            info.time = indexTime.toString()
+                            threeHashMap.add(info)
+
+                            if (oneIndexNum == threeArr.size - 1) {
+                                // 提交数据
+                                showSave()
+
+                            } else {
+
+                                oneIndexNum++
+                                addThree(threeArr[oneIndexNum])
+                            }
+
+                        }
+
+                    }
                 }
 
             }
@@ -245,7 +298,7 @@ class ReviewFragment : ProV4Fragment() {
     var timerTask: TimerTask? = null
 
     /**
-     * 当前定时时间
+     * 当前定时时间，从0开始
      */
     var indexTime = 0
 
@@ -311,17 +364,34 @@ class ReviewFragment : ProV4Fragment() {
     val finishWordList: ArrayList<BookInfo> = arrayListOf()
 
     /**
+     * 第二阶段答案及时间
+     */
+    val twoAnswerList = arrayListOf<BookInfo>()
+
+    /**
      * 第三阶段答案
      */
     val threeHashMap: ArrayList<BookInfo> = arrayListOf()
 
+    /**
+     * 第一阶段数据集合
+     */
     var firstArr = arrayListOf<BookInfo>()
 
+    /**
+     * 第二阶段数据集合
+     */
     val twoArr = arrayListOf<BookInfo>()
 
+    /**
+     * 第三阶段数据集合
+     */
     val threeArr = arrayListOf<BookInfo>()
 
 
+    /**
+     * 第几阶段的复习
+     */
     var indexCode = 1
 
     /**
@@ -329,25 +399,16 @@ class ReviewFragment : ProV4Fragment() {
      */
     var inputStr: String = ""
 
+
     private fun initClick() {
 
         buttonNext.setOnClickListener {
             when (indexCode) {
-                1 -> {
-                    addFirstTi()
+                1 -> addFirstTi()
+                2 -> addTwoDataTi()
+                3 -> addThreeDataTi()
 
-                }
 
-                2 -> {
-                    addTwoDataTi()
-
-                }
-
-                3 -> {
-
-                    addThreeDataTi()
-
-                }
             }
         }
 
@@ -378,7 +439,6 @@ class ReviewFragment : ProV4Fragment() {
 
                 } else {
                     info.status = 0
-                    threeArr.add(info)
                 }
 
                 info.time = indexTime.toString()
@@ -386,7 +446,6 @@ class ReviewFragment : ProV4Fragment() {
                 threeHashMap.add(info)
 
                 oneIndexNum++
-
                 addThree(threeArr[oneIndexNum])
 
             } else {
@@ -396,7 +455,7 @@ class ReviewFragment : ProV4Fragment() {
     }
 
     /**
-     * 加载第一阶段数据
+     * 加载第一阶段题目新数据
      */
     private fun addFirstTi() {
 
@@ -562,7 +621,7 @@ class ReviewFragment : ProV4Fragment() {
     }
 
     /**
-     * 计数,集合信息计数
+     * 计数,集合信息计数，题目数量计数
      */
     var oneIndexNum = 0
 
@@ -616,6 +675,7 @@ class ReviewFragment : ProV4Fragment() {
         }
 
         vv.linearSure.setOnClickListener {
+
             if (remberClickNum == 1) {
 
                 vv.reviewImageView.setImageResource(R.drawable.icon_true)
@@ -646,6 +706,7 @@ class ReviewFragment : ProV4Fragment() {
                     /// 不存在
                     finishWordList.add(info)
                 }
+
                 remberClickNum++
 
             } else {
@@ -661,6 +722,7 @@ class ReviewFragment : ProV4Fragment() {
 
         vv.linearError.setOnClickListener {
             if (forgetClickNum == 1) {
+
                 vv.reviewImageView.setImageResource(R.drawable.icon_onremenber)
                 vv.tvWordYiSi.text = info.chinese
 
@@ -675,11 +737,14 @@ class ReviewFragment : ProV4Fragment() {
                     ///  存在改变数据
                     finishWordList.removeAt(index)
                     finishWordList.add(index, info)
+
                 } else {
                     finishWordList.add(info)
                 }
 
+                /// 添加数据，再次学习
                 firstArr.add(info)
+
                 forgetClickNum++
 
             } else {
@@ -792,7 +857,9 @@ class ReviewFragment : ProV4Fragment() {
 
                 twoView.reviewTwoImageView.setImageResource(R.drawable.icon_onremenber)
                 twoView.tvTwoContent.visibility = View.VISIBLE
+
                 forgetClickNum++
+
             } else {
                 forgetClickNum = 1
                 addTwoDataTi()
@@ -846,6 +913,10 @@ class ReviewFragment : ProV4Fragment() {
      * 罚题做错次数
      */
     var faTiTrueNum = 0
+    /**
+     * 第三次罚题做题次数
+     */
+    var threeZuoNum = 0
 
     /**
      * 添加第三阶段的数据
@@ -864,11 +935,14 @@ class ReviewFragment : ProV4Fragment() {
 
         val len = english.length
 
+        threeView.tvThreeContent.text = english
+        threeView.tvThreeContent.visibility = View.GONE
+
         threeView.inPutEditText.layoutParams = LinearLayout.LayoutParams(english.length * 100, LinearLayout.LayoutParams.WRAP_CONTENT)
 
         threeView.inPutEditText.filters = arrayOf(InputFilter.LengthFilter(english.length))
 
-        threeView.tvThreeYuTi.text = "[${info.ipa}]"
+        threeView.tvThreeYuTi.text = ("[${info.ipa}]")
         threeView.tvThreeWordYiSi.text = info.chinese
 
         threeView.inPutEditText.addTextChangedListener(object : TextWatcher {
@@ -878,13 +952,14 @@ class ReviewFragment : ProV4Fragment() {
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 inputStr = threeView.inPutEditText.text.toString()
 
                 if (inputStr.length == len) {
-                    checkTrueOrFalse(threeView.inPutEditText, english, inputStr)
+                    checkTrueOrFalse(threeView, english, inputStr)
                 }
             }
 
@@ -906,14 +981,16 @@ class ReviewFragment : ProV4Fragment() {
     /**
      * 检查正确和错误
      */
-    private fun checkTrueOrFalse(editText: EditText, english: String, inputStr: String) {
+    private fun checkTrueOrFalse(view: View, english: String, inputStr: String) {
         when (threeAnswerNum) {
             1 -> {
                 if (english == inputStr) {
 
                     buttonNext.visibility = View.VISIBLE
 
-                    showTrueTi()
+                    view.tvThreeContent.visibility = View.VISIBLE
+
+                    showTrueTi(view.imageGood1, view.imageGood2)
 
                 } else {
 
@@ -928,30 +1005,38 @@ class ReviewFragment : ProV4Fragment() {
                         sp.setSpan(ForegroundColorSpan(Color.RED), temp, temp + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                     }
 
-                    editText.setText(sp, TextView.BufferType.SPANNABLE)
+                    view.inPutEditText.setText(sp, TextView.BufferType.SPANNABLE)
+                    view.tvThreeContent.visibility = View.VISIBLE
 
                     threeAnswerNum = 2
 
-                    timeToAgain(editText)
+                    timeToAgain(view.tvThreeContent, view.inPutEditText)
 
                 }
             }
 
             2 -> {
+
+                faAnswerNum++
+
                 if (faAnswerNum == 3) {
+
                     // 判断罚题做错次数
                     if (faTiTrueNum == 0) {
                         buttonNext.visibility = View.VISIBLE
                     } else {
+
                         threeAnswerNum = 3
+
                         faAgainNum = faTiTrueNum
+
                     }
 
                 } else {
 
                     if (english == inputStr) {
 
-                        showTrueTi()
+                        showTrueTi(view.imageGood1, view.imageGood2)
 
                     } else {
 
@@ -966,21 +1051,23 @@ class ReviewFragment : ProV4Fragment() {
                             sp.setSpan(ForegroundColorSpan(Color.RED), temp, temp + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                         }
 
-                        editText.setText(sp, TextView.BufferType.SPANNABLE)
+                        view.inPutEditText.setText(sp, TextView.BufferType.SPANNABLE)
                     }
-
-                    timeToAgain(editText)
-                    faAnswerNum++
+                    timeToAgain(view.tvThreeContent, view.inPutEditText)
                 }
             }
 
             3 -> {
 
-                buttonNext.visibility = View.VISIBLE
+                threeZuoNum++
+
+                if (faAgainNum == threeZuoNum) {
+                    buttonNext.visibility = View.VISIBLE
+                }
 
                 if (english == inputStr) {
 
-                    showTrueTi()
+                    showTrueTi(view.imageGood1, view.imageGood2)
 
                 } else {
 
@@ -993,7 +1080,7 @@ class ReviewFragment : ProV4Fragment() {
                         sp.setSpan(ForegroundColorSpan(Color.RED), temp, temp + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                     }
 
-                    editText.setText(sp, TextView.BufferType.SPANNABLE)
+                    view.inPutEditText.setText(sp, TextView.BufferType.SPANNABLE)
                 }
 
             }
@@ -1006,11 +1093,12 @@ class ReviewFragment : ProV4Fragment() {
      * 1s后重新输入
      */
 
-    private fun timeToAgain(editText:EditText) {
-      handler!!.postDelayed({
-          editText.setText("")
-          editText.hint = "请重新输入"
-      },1000)
+    private fun timeToAgain(textView: TextView, editText: EditText) {
+        handler!!.postDelayed({
+            editText.setText("")
+            editText.hint = "请重新输入"
+            textView.visibility = View.GONE
+        }, 1000)
 
     }
 
@@ -1018,7 +1106,9 @@ class ReviewFragment : ProV4Fragment() {
     /**
      * 显示正确提示
      */
-    private fun showTrueTi() {
+    private fun showTrueTi(imageGood1: ImageView, imageGood2: ImageView) {
+        imageGood1.visibility = View.VISIBLE
+        imageGood2.visibility = View.VISIBLE
 
     }
 

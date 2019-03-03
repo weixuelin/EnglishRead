@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Description
+import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
@@ -33,16 +34,16 @@ class StudyTimeFragment : ProV4Fragment() {
     override fun handler(msg: Message) {
         val str = msg.obj as String
         when (msg.what) {
-            Config.GET_STUDY_TIME_CODE->{
+            Config.GET_STUDY_TIME_CODE -> {
                 removeLoadDialog()
-                val json=JSONObject(str)
-                val code=json.optInt(Config.CODE)
+                val json = JSONObject(str)
+                val code = json.optInt(Config.CODE)
 
-                if(code==Config.SUCCESS){
-                    val data=json.optString(Config.DATA)
-                    val arr=gson!!.fromJson<ArrayList<MainInfo>>(data,object :TypeToken<ArrayList<MainInfo>>(){}.type)
+                if (code == Config.SUCCESS) {
+                    val data = json.optString(Config.DATA)
+                    val arr = gson!!.fromJson<ArrayList<MainInfo>>(data, object : TypeToken<ArrayList<MainInfo>>() {}.type)
 
-                    bindData(studyPieChart, 1,arr)
+                    bindData(studyPieChart, 1, arr)
 
                 }
             }
@@ -58,6 +59,7 @@ class StudyTimeFragment : ProV4Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         initPieBar(studyPieChart)
+
         initPieBar(rememberPieChart)
 
         initClick()
@@ -69,7 +71,7 @@ class StudyTimeFragment : ProV4Fragment() {
     private fun getTime() {
         val json = JSONObject()
         json.put("token", token)
-        json.put("uid",uid)
+        json.put("uid", uid)
         HttpUtils.getInstance().postJson(Config.GET_STUDY_TIME_URL, json.toString(), Config.GET_STUDY_TIME_CODE, handler!!)
         showLoadDialog(activity!!, "获取中")
     }
@@ -152,6 +154,10 @@ class StudyTimeFragment : ProV4Fragment() {
         cxPieChart.isRotationEnabled = true
         //设置初始旋转角度
         cxPieChart.rotationAngle = 0f
+        val legend = cxPieChart.legend
+        legend.formSize = 16f
+        legend.form = Legend.LegendForm.CIRCLE
+        legend.position = Legend.LegendPosition.BELOW_CHART_CENTER
 
     }
 
@@ -159,18 +165,18 @@ class StudyTimeFragment : ProV4Fragment() {
     /**
      *  显示饼状图数据
      */
-    private fun bindData(cxPieChart: PieChart, code: Int,arr:ArrayList<MainInfo>) {
+    private fun bindData(cxPieChart: PieChart, code: Int, arr: ArrayList<MainInfo>) {
         val valueList: ArrayList<PieEntry> = arrayListOf()
 
         when (code) {
             1 -> {
-                val info0=arr[0]
-                val info2=arr[1]
+                val info0 = arr[0]
+                val info2 = arr[1]
 
-                val all=info0.value.toFloat()+info2.value.toFloat()
+                val all = info0.value.toFloat() + info2.value.toFloat()
 
-                valueList.add(PieEntry(info0.value.toFloat()/all, info0.name))
-                valueList.add(PieEntry(info2.value.toFloat()/all, info2.name))
+                valueList.add(PieEntry(info0.value.toFloat() / all, "${info0.name}(${info0.value})"))
+                valueList.add(PieEntry(info2.value.toFloat() / all, "${info2.name}(${info2.value})"))
             }
 
             2 -> {

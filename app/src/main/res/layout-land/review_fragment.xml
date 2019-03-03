@@ -7,6 +7,20 @@
 
     <include layout="@layout/study_head" />
 
+    <Button
+        android:id="@+id/buttonNext"
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="@dimen/dp_24"
+        android:layout_gravity="end"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginRight="@dimen/dp_16"
+        android:layout_marginBottom="@dimen/dp_6"
+        android:background="@drawable/blue_kuang_yuan"
+        android:text="下一个"
+        android:textColor="@color/write"
+        android:textSize="@dimen/sp_10"
+        android:visibility="visible" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -33,19 +47,5 @@
 
     </FrameLayout>
 
-
-    <Button
-        android:id="@+id/buttonNext"
-        android:layout_width="@dimen/dp_80"
-        android:layout_height="@dimen/dp_24"
-        android:layout_gravity="end"
-        android:layout_marginTop="@dimen/dp_8"
-        android:layout_marginRight="@dimen/dp_6"
-        android:layout_marginBottom="@dimen/dp_6"
-        android:background="@drawable/blue_kuang_yuan"
-        android:text="下一个"
-        android:textColor="@color/write"
-        android:textSize="@dimen/sp_10"
-        android:visibility="visible" />
 
 </LinearLayout>
