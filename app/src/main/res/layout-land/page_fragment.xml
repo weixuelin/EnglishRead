@@ -14,9 +14,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:paddingLeft="@dimen/dp_4"
-            android:paddingRight="@dimen/dp_4"
-            android:gravity="center_vertical">
+            android:paddingRight="@dimen/dp_4">
 
             <TextView
                 android:id="@+id/tvIndexInfo"
@@ -145,9 +145,9 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="[正在学习]"
-                        android:visibility="gone"
                         android:textColor="@color/black1"
-                        android:textSize="@dimen/sp_8" />
+                        android:textSize="@dimen/sp_8"
+                        android:visibility="gone" />
 
                 </LinearLayout>
 
@@ -176,9 +176,9 @@
                         android:layout_height="wrap_content"
                         android:gravity="end"
                         android:text="[完成记忆]"
-                        android:visibility="gone"
                         android:textColor="@color/orange"
-                        android:textSize="@dimen/sp_8" />
+                        android:textSize="@dimen/sp_8"
+                        android:visibility="gone" />
 
                 </LinearLayout>
 
@@ -231,49 +231,52 @@
                     android:id="@+id/cxPieChart"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:layout_weight="1" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
+
                     <TextView
                         android:id="@+id/textView1"
                         android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textSize="@dimen/sp_10"
-                        android:drawableLeft="@drawable/pic_point1"
                         android:clickable="true"
+                        android:drawableLeft="@drawable/pic_point1"
                         android:drawablePadding="@dimen/dp_4"
                         android:text="熟悉词"
                         android:textColor="@color/zi"
-                        android:layout_height="wrap_content" />
+                        android:textSize="@dimen/sp_8" />
 
                     <TextView
                         android:id="@+id/textView2"
                         android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_4"
                         android:layout_weight="1"
                         android:clickable="true"
-                        android:drawablePadding="@dimen/dp_4"
-                        android:textColor="@color/a00C9B0"
-                        android:text="夹生词"
-                        android:layout_marginLeft="@dimen/dp_6"
                         android:drawableLeft="@drawable/pic_point5"
-                        android:textSize="@dimen/sp_10"
-                        android:layout_height="wrap_content" />
+                        android:drawablePadding="@dimen/dp_4"
+                        android:text="夹生词"
+                        android:textColor="@color/a00C9B0"
+                        android:textSize="@dimen/sp_8" />
+
                     <TextView
                         android:id="@+id/textView3"
                         android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_4"
                         android:layout_weight="1"
-                        android:layout_marginLeft="@dimen/dp_6"
-                        android:drawableLeft="@drawable/pic_point6"
                         android:clickable="true"
+                        android:drawableLeft="@drawable/pic_point6"
                         android:drawablePadding="@dimen/dp_4"
-                        android:textColor="@color/aF46A80"
                         android:text="陌生词"
-                        android:textSize="@dimen/sp_10"
-                        android:layout_height="wrap_content" />
+                        android:textColor="@color/aF46A80"
+                        android:textSize="@dimen/sp_8" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -339,8 +342,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="欢迎来到专题魔方"
                     android:layout_marginTop="@dimen/dp_8"
+                    android:text="欢迎来到专题魔方"
                     android:textColor="@color/write"
                     android:textSize="@dimen/sp_8" />
 
@@ -396,8 +399,8 @@
                     <ImageView
                         android:layout_width="@dimen/dp_10"
                         android:layout_height="@dimen/dp_10"
-                        android:visibility="gone"
-                        android:src="@drawable/right" />
+                        android:src="@drawable/right"
+                        android:visibility="gone" />
 
                 </LinearLayout>
 
@@ -534,16 +537,16 @@
                             android:id="@+id/studyTextNum"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textSize="@dimen/sp_8"
                             android:text="12%"
-                            android:textColor="@color/red"/>
+                            android:textColor="@color/red"
+                            android:textSize="@dimen/sp_8" />
 
                         <ImageView
                             android:id="@+id/imagePic"
                             android:layout_width="@dimen/dp_14"
                             android:layout_height="@dimen/dp_14"
-                            android:visibility="gone"
-                            android:src="@drawable/location_icon" />
+                            android:src="@drawable/location_icon"
+                            android:visibility="gone" />
 
                     </FrameLayout>
 

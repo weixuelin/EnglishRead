@@ -19,7 +19,8 @@ class StudyAdapter(context: Context, list: ArrayList<BookInfo>) : ProBaseAdapter
         val vh = holder as VH
         val info = list[position]
         vh.tvStudyUnitName.text = info.unit_name
-        vh.tvWordNumber.text = "单词:" + info.unit_num.toString()
+
+        vh.tvWordNumber.text = "${info.learn_num} / ${info.unit_num}"
 
         when (info.status) {
             0 -> {

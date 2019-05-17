@@ -16,7 +16,7 @@
             android:id="@+id/tvContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/a00fff0"
+            android:textColor="@color/holo_red_light"
             android:textSize="@dimen/sp_12" />
 
         <TextView

@@ -11,6 +11,7 @@ import com.xin.lv.yang.utils.view.AdTextView
 import kotlinx.android.synthetic.main.bool_content_item.view.*
 
 class BookRackContentAdapter(context: Context, list: ArrayList<Info>) : ProBaseAdapter<Info>(context, list) {
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val vh = holder as VH
         val info = list[position]

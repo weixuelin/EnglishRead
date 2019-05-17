@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="@dimen/dp_6">
 
     <LinearLayout
         style="@style/margin4"
@@ -17,7 +18,7 @@
             android:id="@+id/tvThreeContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/a00fff0"
+            android:textColor="@color/holo_red_light"
             android:textSize="@dimen/sp_14" />
 
         <TextView
@@ -56,22 +57,30 @@
             <ImageView
                 android:id="@+id/imageGood1"
                 android:layout_width="wrap_content"
-                android:visibility="gone"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@drawable/zan_success"
+                android:visibility="invisible" />
 
             <EditText
                 android:id="@+id/inPutEditText"
-                android:layout_width="@dimen/dp_200"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_16"
-                android:gravity="center_horizontal" />
+                android:layout_marginStart="@dimen/dp_30"
+                android:layout_marginLeft="@dimen/dp_30"
+                android:gravity="center_horizontal"
+                android:imeOptions="actionDone"
+                android:lineSpacingExtra="@dimen/dp_4"
+                android:singleLine="true"
+                android:textSize="@dimen/sp_16" />
 
             <ImageView
                 android:id="@+id/imageGood2"
                 android:layout_width="wrap_content"
-                android:visibility="gone"
-                android:layout_marginLeft="@dimen/dp_16"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_30"
+                android:layout_marginLeft="@dimen/dp_30"
+                android:background="@drawable/zan_success"
+                android:visibility="invisible" />
 
         </LinearLayout>
 

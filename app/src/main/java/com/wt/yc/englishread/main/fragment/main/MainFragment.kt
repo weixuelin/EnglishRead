@@ -22,6 +22,7 @@ import com.wt.yc.englishread.main.activity.MainPageActivity
 import com.wt.yc.englishread.main.adapter.StudentAdapter
 import com.wt.yc.englishread.user.LoginActivity
 import com.xin.lv.yang.utils.utils.HttpUtils
+import com.xin.lv.yang.utils.utils.NetUtil
 import kotlinx.android.synthetic.main.main_fragment_layout.*
 import org.json.JSONObject
 
@@ -35,43 +36,50 @@ class MainFragment : ProV4Fragment() {
         when (msg.what) {
 
             Config.MAIN_DATA_CODE -> {
-                val json = JSONObject(str)
-                val code = json.optInt(Config.CODE)
+                Share.saveMainStr(activity!!, str)
+                jsonData(str)
 
-                if (code == Config.SUCCESS) {
+            }
+        }
 
-                    val jsonObject = json.optJSONObject(Config.DATA)
-                    val bannerResult = jsonObject.optString("banner")
+    }
 
-                    if (bannerResult != "" && bannerResult != "null") {
+    private fun jsonData(str: String) {
+        val json = JSONObject(str)
+        val code = json.optInt(Config.CODE)
 
-                        if (bannerResult.startsWith("{")) {
-                            val info = gson!!.fromJson<MainInfo>(bannerResult, MainInfo::class.java)
-                            showBanner(arrayListOf(info))
+        if (code == Config.SUCCESS) {
 
-                        } else {
-                            val bannerArr = gson!!.fromJson<ArrayList<MainInfo>>(bannerResult, object : TypeToken<ArrayList<MainInfo>>() {}.type)
-                            if (bannerArr != null) {
-                                showBanner(bannerArr)
-                            }
-                        }
+            val jsonObject = json.optJSONObject(Config.DATA)
+            val bannerResult = jsonObject.optString("banner")
 
+            if (bannerResult != "" && bannerResult != "null") {
+
+                if (bannerResult.startsWith("{")) {
+                    val info = gson!!.fromJson<MainInfo>(bannerResult, MainInfo::class.java)
+                    showBanner(arrayListOf(info))
+
+                } else {
+                    val bannerArr = gson!!.fromJson<ArrayList<MainInfo>>(bannerResult, object : TypeToken<ArrayList<MainInfo>>() {}.type)
+                    if (bannerArr != null) {
+                        showBanner(bannerArr)
                     }
+                }
 
-                    val studentResult = jsonObject.optString("student")
+            }
 
-                    if (studentResult != "" && studentResult != "null") {
+            val studentResult = jsonObject.optString("student")
 
-                        val studentArr = gson!!.fromJson<ArrayList<MainInfo>>(studentResult, object : TypeToken<ArrayList<MainInfo>>() {}.type)
-                        if (studentArr != null) {
-                            showStudent(studentArr)
-                        }
-                    }
+            if (studentResult != "" && studentResult != "null") {
 
+                val studentArr = gson!!.fromJson<ArrayList<MainInfo>>(studentResult, object : TypeToken<ArrayList<MainInfo>>() {}.type)
+                if (studentArr != null) {
+                    showStudent(studentArr)
                 }
             }
 
         }
+
 
     }
 
@@ -118,9 +126,22 @@ class MainFragment : ProV4Fragment() {
 
         initClick()
 
-        getMainData()
-
         tvTextBanBen.text = "恋上单词  ${getAppVersionName(activity!!)}"
+
+
+        if (NetUtil.isNetworkConnected(activity)) {
+
+            getMainData()
+
+        } else {
+
+            val ss = Share.getMainStr(activity!!)
+
+            if (ss != "") {
+                jsonData(ss)
+            }
+
+        }
 
 
     }

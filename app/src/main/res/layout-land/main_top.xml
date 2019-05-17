@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -9,7 +10,8 @@
         android:background="@color/main_top"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="@dimen/dp_8">
+        android:padding="@dimen/dp_8"
+        tools:ignore="MissingConstraints">
 
         <ImageView
             android:id="@+id/imageMainBack"
@@ -18,10 +20,10 @@
             android:src="@drawable/back_w" />
 
         <ImageView
-            android:layout_width="@dimen/dp_13"
-            android:layout_height="@dimen/dp_13"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginLeft="@dimen/dp_8"
-            android:src="@mipmap/logo512" />
+            android:background="@drawable/logo100" />
 
         <TextView
             android:layout_width="wrap_content"

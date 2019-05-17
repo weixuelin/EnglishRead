@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/write"
+    android:focusable="true"
     android:orientation="vertical">
 
     <include layout="@layout/study_head" />
@@ -10,11 +11,9 @@
     <Button
         android:id="@+id/buttonNext"
         android:layout_width="@dimen/dp_80"
-        android:layout_height="@dimen/dp_24"
+        android:layout_height="@dimen/dp_20"
         android:layout_gravity="end"
-        android:layout_marginTop="@dimen/dp_8"
         android:layout_marginRight="@dimen/dp_16"
-        android:layout_marginBottom="@dimen/dp_6"
         android:background="@drawable/blue_kuang_yuan"
         android:text="下一个"
         android:textColor="@color/write"
@@ -24,6 +23,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dp_4"
         android:layout_weight="1">
 
         <LinearLayout
@@ -34,10 +34,9 @@
 
         <TextView
             android:id="@+id/tvTextTime"
-            android:layout_width="@dimen/dp_30"
-            android:layout_height="@dimen/dp_30"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
             android:layout_gravity="end"
-            android:layout_marginTop="@dimen/dp_8"
             android:layout_marginRight="@dimen/dp_8"
             android:background="@drawable/blue_point"
             android:gravity="center"

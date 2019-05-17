@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.media.MediaPlayer
 import android.net.Uri
@@ -15,18 +14,18 @@ import android.support.v4.view.ViewPager
 import android.support.v7.widget.SearchView
 import android.util.Log
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.Toast
 import butterknife.Unbinder
 import com.google.gson.Gson
-import com.wt.yc.englishread.DbUtil
 import com.wt.yc.englishread.R
+import com.wt.yc.englishread.db.DbUtil
 import com.wt.yc.englishread.tts.TTSForApi
 import com.xin.lv.yang.utils.utils.ImageUtil
 import com.xin.lv.yang.utils.view.CustomProgressDialog
-import com.xin.lv.yang.utils.view.CustomToast
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -47,6 +46,8 @@ abstract class ProV4Fragment : Fragment() {
     var dbUtil: DbUtil? = null
     var ttsApi: TTSForApi? = null
 
+    var inputManger: InputMethodManager? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity = getActivity()
@@ -60,6 +61,7 @@ abstract class ProV4Fragment : Fragment() {
         ttsApi = TTSForApi(activity!!)
 
         dbUtil = DbUtil(activity!!)
+        inputManger = activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
 
     }
 
@@ -88,6 +90,14 @@ abstract class ProV4Fragment : Fragment() {
             }
         }
 
+    }
+
+    fun hide() {
+        inputManger!!.toggleSoftInput(InputMethodManager.HIDE_NOT_ALWAYS, 0)
+    }
+
+    fun open() {
+        inputManger!!.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
     }
 
 

@@ -186,7 +186,7 @@ abstract class ProActivity : AppCompatActivity() {
 
 ////        CustomToast.showToast(this,Gravity.CENTER,0,s)
 
-       Toast.makeText(this, s, Toast.LENGTH_LONG).show()
+        Toast.makeText(this, s, Toast.LENGTH_LONG).show()
 
     }
 
@@ -560,7 +560,7 @@ abstract class ProActivity : AppCompatActivity() {
 
             } else {
                 // 影藏当前正在显示的，显示需要显示的
-                transaction.hide(indexFragment).show(to).commit()     // 隐藏当前的fragment，显示下一个
+                transaction.hide(indexFragment).replace(resId, to, to.javaClass.name).commit()     // 隐藏当前的fragment，显示下一个
             }
         } else {
             if (to.isAdded) {

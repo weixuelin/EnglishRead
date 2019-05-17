@@ -47,15 +47,39 @@
             android:orientation="vertical"
             android:padding="@dimen/dp_10">
 
-            <EditText
-                android:id="@+id/inPutEditText"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_32"
-                android:background="@null"
-                android:gravity="center_horizontal"
-                android:hint="请输入单词"
-                android:textSize="@dimen/sp_16" />
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageGood1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/zan_success"
+                    android:visibility="gone" />
+
+                <EditText
+                    android:id="@+id/inPutEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_30"
+                    android:gravity="center_horizontal"
+                    android:imeOptions="actionDone"
+                    android:lineSpacingExtra="@dimen/dp_4"
+                    android:singleLine="true"
+                    android:textSize="@dimen/sp_16" />
+
+                <ImageView
+                    android:id="@+id/imageGood2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_30"
+                    android:background="@drawable/zan_success"
+                    android:visibility="gone" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/tvThreeWordYiSi"

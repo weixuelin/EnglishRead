@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/videolive_newlive_wblive_praise_icon_heart_orange_4"
+        android:duration="100" />
+
+    <item
+        android:drawable="@drawable/videolive_newlive_wblive_praise_icon_heart_orange_5"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/videolive_newlive_wblive_praise_icon_heart_orange_6"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/videolive_newlive_wblive_praise_icon_heart_orange_7"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/videolive_newlive_wblive_praise_icon_heart_orange_8"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/videolive_newlive_wblive_praise_icon_heart_orange_9"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/videolive_newlive_wblive_praise_icon_heart_orange_10"
+        android:duration="100" />
+    <item
+        android:drawable="@drawable/videolive_newlive_wblive_praise_icon_heart_orange_11"
+        android:duration="100" />
+
+</animation-list>

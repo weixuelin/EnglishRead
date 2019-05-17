@@ -36,6 +36,10 @@ class BookInfo() : Parcelable {
     var userName = ""
     var testTime = ""
     var score = ""
+    var wordType = ""
+
+    var learn_num: Int = 0
+    var today_pm: Int = 0
 
     /**
      *  1 为新单词   2 为继续学习
@@ -75,6 +79,8 @@ class BookInfo() : Parcelable {
         userName = parcel.readString()
         testTime = parcel.readString()
         score = parcel.readString()
+        wordType = parcel.readString()
+        learn_num = parcel.readInt()
         goOnCode = parcel.readInt()
     }
 
@@ -111,6 +117,8 @@ class BookInfo() : Parcelable {
         parcel.writeString(userName)
         parcel.writeString(testTime)
         parcel.writeString(score)
+        parcel.writeString(wordType)
+        parcel.writeInt(learn_num)
         parcel.writeInt(goOnCode)
     }
 

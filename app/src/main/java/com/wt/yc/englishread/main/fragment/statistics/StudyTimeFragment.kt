@@ -155,7 +155,7 @@ class StudyTimeFragment : ProV4Fragment() {
         //设置初始旋转角度
         cxPieChart.rotationAngle = 0f
         val legend = cxPieChart.legend
-        legend.formSize = 16f
+        legend.formSize = 24f
         legend.form = Legend.LegendForm.CIRCLE
         legend.position = Legend.LegendPosition.BELOW_CHART_CENTER
 
@@ -175,8 +175,8 @@ class StudyTimeFragment : ProV4Fragment() {
 
                 val all = info0.value.toFloat() + info2.value.toFloat()
 
-                valueList.add(PieEntry(info0.value.toFloat() / all, "${info0.name}(${info0.value})"))
-                valueList.add(PieEntry(info2.value.toFloat() / all, "${info2.name}(${info2.value})"))
+                valueList.add(PieEntry(info0.value.toFloat() / all, "${info0.name} ( ${createTime(info0.value)} )"))
+                valueList.add(PieEntry(info2.value.toFloat() / all, "${info2.name} ( ${createTime(info2.value)} )"))
             }
 
             2 -> {
@@ -247,5 +247,19 @@ class StudyTimeFragment : ProV4Fragment() {
         cxPieChart.data = data
         cxPieChart.highlightValues(null)
         cxPieChart.invalidate()
+    }
+
+    private fun createTime(value: String): String {
+        val ff = value.toFloat().toInt()
+        val mm = ff / 60
+        val ss = ff % 60
+
+        return if (mm == 0) {
+            ss.toString() + "秒"
+        } else {
+            "$mm 分 $ss 秒"
+        }
+
+
     }
 }

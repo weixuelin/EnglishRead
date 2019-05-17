@@ -1,5 +1,7 @@
 package com.wt.yc.englishread.main.fragment.mainpage
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.os.Message
 import android.support.v7.widget.GridLayoutManager
@@ -8,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.*
 import com.github.mikephil.charting.data.Entry
@@ -22,6 +25,7 @@ import com.wt.yc.englishread.R
 import com.wt.yc.englishread.base.*
 import com.wt.yc.englishread.info.BookInfo
 import com.wt.yc.englishread.info.Info
+import com.wt.yc.englishread.main.activity.ChooseBookActivity
 import com.wt.yc.englishread.main.activity.MainPageActivity
 import com.wt.yc.englishread.main.adapter.FinishAdapter
 import com.wt.yc.englishread.main.adapter.StudyAdapter
@@ -52,7 +56,13 @@ class StudyFragment : ProV4Fragment() {
 
         initClick()
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+
         get()
+
     }
 
     fun get() {
@@ -70,6 +80,29 @@ class StudyFragment : ProV4Fragment() {
             bookInfo!!.code = 2
 
             (activity as MainPageActivity).toWhere(Constant.STUDY_TEST, bookInfo)
+        }
+
+        tvStudyBookName.setOnClickListener {
+            showChooseBookList()
+        }
+    }
+
+
+    /**
+     *  选择书籍
+     */
+    private fun showChooseBookList() {
+        startActivityForResult(Intent(activity, ChooseBookActivity::class.java), 1234)
+
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1234) {
+            if (requestCode == Activity.RESULT_OK) {
+
+            }
         }
     }
 
@@ -304,13 +337,28 @@ class StudyFragment : ProV4Fragment() {
             override fun onItemClick(position: Int) {
 
                 val startBookInfo = list[position]
-                /// 继续学习
-                startBookInfo.code = 1   /// 提示继续学习
-                startBookInfo.goOnCode = 1   // 提示继续学习
 
-                startBookInfo.id = Share.getUnitId(activity!!)
+                if (startBookInfo.status == 0) {
 
-                (activity as MainPageActivity).toWhere(Constant.STUDY_REVIEW, startBookInfo)
+                    Toast.makeText(activity, "当前单元未解锁", Toast.LENGTH_LONG).show()
+
+                } else {
+
+                    /// 继续学习
+                    startBookInfo.code = 1   /// 提示继续学习
+                    startBookInfo.goOnCode = 1   // 提示继续学习
+
+                    startBookInfo.wordType = "new_word"   /// 学习类型
+
+//
+//                val umitId = Share.getUnitId(activity!!)
+//                if (umitId != 0) {
+//                    startBookInfo.id = umitId
+//                }
+//
+                    (activity as MainPageActivity).toWhere(Constant.STUDY_REVIEW, startBookInfo)
+                }
+
             }
 
             override fun onLongClick(position: Int) {
@@ -319,37 +367,39 @@ class StudyFragment : ProV4Fragment() {
 
         }
 
-        studyAdapter!!.onTvListener = object : StudyAdapter.OnClickListener {
-            override fun onReview(position: Int) {
+        studyAdapter!!.onTvListener =
+                object : StudyAdapter.OnClickListener {
+                    override fun onReview(position: Int) {
 
-                val info = list[position]
-                info.code = 0
-                info.goOnCode = 1
+                        val info = list[position]
+                        info.code = 0
+                        info.goOnCode = 1
+                        info.wordType = "sxc"
 
-                Share.saveUnitId(activity!!, info.id)
+                        Share.saveUnitId(activity!!, info.id)
 
-                (activity as MainPageActivity).toWhere(Constant.STUDY_REVIEW, info)
+                        (activity as MainPageActivity).toWhere(Constant.STUDY_REVIEW, info)
 
-            }
+                    }
 
-            override fun onTest(position: Int) {
+                    override fun onTest(position: Int) {
 
-                val info = list[position]
-                info.code = 0
-                (activity as MainPageActivity).toWhere(Constant.STUDY_TEST, info)
+                        val info = list[position]
+                        info.code = 0
+                        (activity as MainPageActivity).toWhere(Constant.STUDY_TEST, info)
 
-            }
+                    }
 
-            override fun onDictation(position: Int) {
-                (activity as MainPageActivity).toWhere(Constant.LISTEN_WRITE_CODE, list[position])
+                    override fun onDictation(position: Int) {
+                        (activity as MainPageActivity).toWhere(Constant.LISTEN_WRITE_CODE, list[position])
 
-            }
+                    }
 
-            override fun onDictationTraining(position: Int) {
-                (activity as MainPageActivity).toWhere(Constant.LISTEN_READ_CODE, list[position])
-            }
+                    override fun onDictationTraining(position: Int) {
+                        (activity as MainPageActivity).toWhere(Constant.LISTEN_READ_CODE, list[position])
+                    }
 
-        }
+                }
 
     }
 
@@ -450,7 +500,7 @@ class StudyFragment : ProV4Fragment() {
         }
 
         if (tvTodayNum != null) {
-            tvTodayNum.text = bookDetails!!.study_word.toString()
+            tvTodayNum.text = bookDetails!!.today_pm.toString()
         }
 
     }

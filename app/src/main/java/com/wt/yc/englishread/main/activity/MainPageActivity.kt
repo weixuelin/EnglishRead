@@ -23,6 +23,7 @@ import com.wt.yc.englishread.user.LoginActivity
 import com.wt.yc.englishread.user.fragment.UserFragment
 import com.xin.lv.yang.utils.utils.HttpUtils
 import com.xin.lv.yang.utils.utils.ImageUtil
+import com.xin.lv.yang.utils.utils.NetUtil
 import kotlinx.android.synthetic.main.main_page_layout.*
 import kotlinx.android.synthetic.main.main_top.*
 import kotlinx.android.synthetic.main.open_door.view.*
@@ -54,17 +55,10 @@ class MainPageActivity : ProActivity() {
             }
 
             Config.GET_USER_INFO_CODE -> {
-
+                Share.saveUserInfo(this, str)
                 removeLoadDialog()
-                val json = JSONObject(str)
-                val code = json.optInt(Config.CODE)
-                val status = json.optBoolean(Config.STATUS)
+                jsonUserInfo(str)
 
-                if (code == Config.SUCCESS && status) {
-                    val result = json.optString(Config.DATA)
-                    val user = gson!!.fromJson<UserInfo>(result, UserInfo::class.java)
-                    showUserInfo(user)
-                }
             }
 
             Config.SET_TODAY_CODE -> {
@@ -81,6 +75,19 @@ class MainPageActivity : ProActivity() {
                     showToastShort(json.optString(Config.MSG))
                 }
             }
+        }
+
+    }
+
+    private fun jsonUserInfo(str: String) {
+        val json = JSONObject(str)
+        val code = json.optInt(Config.CODE)
+        val status = json.optBoolean(Config.STATUS)
+
+        if (code == Config.SUCCESS && status) {
+            val result = json.optString(Config.DATA)
+            val user = gson!!.fromJson<UserInfo>(result, UserInfo::class.java)
+            showUserInfo(user)
         }
 
     }
@@ -110,7 +117,6 @@ class MainPageActivity : ProActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.main_page_layout)
 
         val ww = getW() / 5 - 20
@@ -122,7 +128,19 @@ class MainPageActivity : ProActivity() {
 
         initClick()
 
-        getUserInfo()
+        if (NetUtil.isNetworkConnected(this)) {
+
+            getUserInfo()
+
+        } else {
+
+            val ss = Share.getUserInfo(this)
+            if (ss != "") {
+                jsonUserInfo(ss)
+            }
+
+        }
+
 
     }
 
@@ -142,7 +160,7 @@ class MainPageActivity : ProActivity() {
 
         indexFragment = PageFragment()
 
-        ttt.addToBackStack("PageFragment")
+        ttt.addToBackStack("PageFragment-0")
 
         indexFragment = switchContent(indexFragment!!, indexFragment!!, R.id.mainPageFrame, ttt)
 
@@ -159,21 +177,20 @@ class MainPageActivity : ProActivity() {
 
         Log.i("result", "------$fragmentNum")
 
-        if (fragmentNum != 0) {
-            val backStack = supportFragmentManager.getBackStackEntryAt(fragmentNum - 1)
+        if (fragmentNum != 0 && fragmentNum > 1) {
+
+            val backStack = supportFragmentManager.getBackStackEntryAt(fragmentNum - 2)
             // 获取当前栈顶的Fragment的标记值
             val tag = backStack.name
 
             Log.i("result", "------$tag")
 
-            when (tag) {
-
-                "PageFragment", "StudyFragment", "TestDetailsFragment" -> finish()
-
-                else -> {
-                    supportFragmentManager.popBackStack()
-                }
+            if (tag.contains("-")) {
+                val arr = tag.split("-")
+                adapter!!.updateClick(arr[1].toInt())
             }
+
+            supportFragmentManager.popBackStack()
 
         } else {
 
@@ -190,8 +207,11 @@ class MainPageActivity : ProActivity() {
     var isSignIn = 1
 
     private fun initClick() {
+
         imageMainBack.setOnClickListener {
-            finish()
+
+            backTo()
+
         }
 
         tvUserName.setOnClickListener {
@@ -677,13 +697,13 @@ class MainPageActivity : ProActivity() {
         when (position) {
             0 -> {
                 val fff = PageFragment()
-                tttt.addToBackStack("PageFragment")
+                tttt.addToBackStack("PageFragment-$position")
                 indexFragment = switchContent(indexFragment!!, fff, R.id.mainPageFrame, tttt)
             }
 
             1 -> {
                 val fff = StudyFragment()
-                tttt.addToBackStack("StudyFragment")
+                tttt.addToBackStack("StudyFragment-$position")
                 indexFragment = switchContent(indexFragment!!, fff, R.id.mainPageFrame, tttt)
             }
 
@@ -693,13 +713,13 @@ class MainPageActivity : ProActivity() {
 
             4 -> {
                 val fff = NewWordFragment()
-                tttt.addToBackStack("NewWordFragment")
+                tttt.addToBackStack("NewWordFragment-$position")
                 indexFragment = switchContent(indexFragment!!, fff, R.id.mainPageFrame, tttt)
             }
 
             5 -> {
                 val fff = BookRackFragment()
-                tttt.addToBackStack("BookRackFragment")
+                tttt.addToBackStack("BookRackFragment-$position")
                 indexFragment = switchContent(indexFragment!!, fff, R.id.mainPageFrame, tttt)
             }
 

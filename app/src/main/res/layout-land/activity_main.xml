@@ -19,7 +19,7 @@
             android:layout_height="@dimen/dp_24"
             android:layout_marginLeft="@dimen/dp_6"
             android:layout_centerVertical="true"
-            android:src="@mipmap/logo512" />
+            android:src="@drawable/logo100" />
 
         <TextView
             android:layout_width="wrap_content"

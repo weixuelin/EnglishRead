@@ -18,10 +18,10 @@
             android:src="@drawable/back_w" />
 
         <ImageView
-            android:layout_width="@dimen/dp_13"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/dp_13"
             android:layout_marginLeft="@dimen/dp_8"
-            android:src="@drawable/logo" />
+            android:src="@drawable/logo300" />
 
         <TextView
             android:layout_width="wrap_content"

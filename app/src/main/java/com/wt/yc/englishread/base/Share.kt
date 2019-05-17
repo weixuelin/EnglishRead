@@ -8,7 +8,8 @@ class Share {
     companion object {
 
         val USER = "user"
-        val ACCOUNT="account"
+        val ACCOUNT = "account"
+        val DATA = "data"
 
         fun getToken(context: Context): String = context.getSharedPreferences(USER, Context.MODE_PRIVATE).getString("token", "")
 
@@ -53,7 +54,36 @@ class Share {
 
         }
 
-        fun getUnitId(context: Context) = context.getSharedPreferences(ACCOUNT,Context.MODE_PRIVATE).getInt("unitId",0)
+        fun getUnitId(context: Context) = context.getSharedPreferences(ACCOUNT, Context.MODE_PRIVATE).getInt("unitId", 0)
+
+
+
+        fun saveMainStr(context: Context, str: String) {
+            val edit = context.getSharedPreferences(DATA, Context.MODE_PRIVATE).edit()
+            edit.putString("mainStr", str)
+            edit.apply()
+        }
+
+        fun getMainStr(context: Context) = context.getSharedPreferences(DATA, Context.MODE_PRIVATE).getString("mainStr", "")
+
+
+        fun saveUserInfo(context: Context, str: String) {
+            val edit = context.getSharedPreferences(DATA, Context.MODE_PRIVATE).edit()
+            edit.putString("userInfo", str)
+            edit.apply()
+        }
+
+        fun getUserInfo(context: Context) = context.getSharedPreferences(DATA, Context.MODE_PRIVATE).getString("userInfo", "")
+
+
+        fun saveMainPageData(context: Context, str: String) {
+            val edit = context.getSharedPreferences(DATA, Context.MODE_PRIVATE).edit()
+            edit.putString("mainPageData", str)
+            edit.apply()
+        }
+
+        fun getMainPageData(context: Context) = context.getSharedPreferences(DATA, Context.MODE_PRIVATE).getString("mainPageData", "")
+
 
     }
 }

@@ -37,6 +37,7 @@ import com.wt.yc.englishread.info.Info
 import com.wt.yc.englishread.main.activity.MainPageActivity
 import com.xin.lv.yang.utils.utils.DataUtil
 import com.xin.lv.yang.utils.utils.HttpUtils
+import com.xin.lv.yang.utils.utils.NetUtil
 import com.xin.lv.yang.utils.utils.TextUtils
 import kotlinx.android.synthetic.main.finish_dialog.view.*
 import kotlinx.android.synthetic.main.pai_number_dialog.view.*
@@ -53,62 +54,66 @@ class PageFragment : ProV4Fragment() {
         when (msg.what) {
 
             Config.MAIN_PAGE_CODE -> {
-
+                Share.saveMainPageData(activity!!, str)
                 removeLoadDialog()
-
-                val json = JSONObject(str)
-                val status = json.optBoolean(Config.STATUS)
-                if (status) {
-                    val jsonObject = json.optJSONObject(Config.DATA)
-
-                    val bookResult = jsonObject.optString("book")
-                    val bookResultUnit = jsonObject.optString("unit")
-                    val bookResultWord = jsonObject.optString("word")
-
-                    val book1 = gson!!.fromJson<BookInfo>(bookResult, BookInfo::class.java)
-                    val book2 = gson!!.fromJson<BookInfo>(bookResultUnit, BookInfo::class.java)
-                    val book3 = gson!!.fromJson<BookInfo>(bookResultWord, BookInfo::class.java)
-
-                    showBook1(book1, book2, book3)
-
-                    val countBookArr = gson!!.fromJson<ArrayList<BookInfo>>(jsonObject.optString("word_tj"), object : TypeToken<ArrayList<BookInfo>>() {}.type)
-
-                    showCountArr(countBookArr)
-
-                    val weekStr = jsonObject.optString("weak")
-                    val weekInfo = gson!!.fromJson<BookInfo>(weekStr, BookInfo::class.java)
-
-                    showWeekStr(weekInfo)
-
-                    val testResult = jsonObject.optString("test")
-                    val arr: ArrayList<BookInfo> = gson!!.fromJson(testResult, object : TypeToken<ArrayList<BookInfo>>() {}.type)
-
-                    if (arr != null && arr.size != 0) {
-                        textAdapter!!.updateData(arr)
-                    }
-
-                    /**
-                     * 学习转化量
-                     */
-                    val study = jsonObject.optString("xfl")
-                    val studyBook = gson!!.fromJson<BookInfo>(study, BookInfo::class.java)
-
-                    showBook(studyBook)
-
-                    val level = jsonObject.optString("level")
-                    val target = jsonObject.optString("target")
-                    if (tvUserLevel != null) {
-                        tvUserLevel.text = level
-                    }
-
-                    if (tvLevelFen != null) {
-                        tvLevelFen.text = "[$target]"
-                    }
-
-                } else {
-                    showShortToast(activity!!, json.optString("msg"))
-                }
+                jsonMainStr(str)
             }
+        }
+
+    }
+
+    private fun jsonMainStr(str: String) {
+        val json = JSONObject(str)
+        val status = json.optBoolean(Config.STATUS)
+        if (status) {
+            val jsonObject = json.optJSONObject(Config.DATA)
+
+            val bookResult = jsonObject.optString("book")
+            val bookResultUnit = jsonObject.optString("unit")
+            val bookResultWord = jsonObject.optString("word")
+
+            val book1 = gson!!.fromJson<BookInfo>(bookResult, BookInfo::class.java)
+            val book2 = gson!!.fromJson<BookInfo>(bookResultUnit, BookInfo::class.java)
+            val book3 = gson!!.fromJson<BookInfo>(bookResultWord, BookInfo::class.java)
+
+            showBook1(book1, book2, book3)
+
+            val countBookArr = gson!!.fromJson<ArrayList<BookInfo>>(jsonObject.optString("word_tj"), object : TypeToken<ArrayList<BookInfo>>() {}.type)
+
+            showCountArr(countBookArr)
+
+            val weekStr = jsonObject.optString("weak")
+            val weekInfo = gson!!.fromJson<BookInfo>(weekStr, BookInfo::class.java)
+
+            showWeekStr(weekInfo)
+
+            val testResult = jsonObject.optString("test")
+            val arr: ArrayList<BookInfo> = gson!!.fromJson(testResult, object : TypeToken<ArrayList<BookInfo>>() {}.type)
+
+            if (arr != null && arr.size != 0) {
+                textAdapter!!.updateData(arr)
+            }
+
+            /**
+             * 学习转化量
+             */
+            val study = jsonObject.optString("xfl")
+            val studyBook = gson!!.fromJson<BookInfo>(study, BookInfo::class.java)
+
+            showBook(studyBook)
+
+            val level = jsonObject.optString("level")
+            val target = jsonObject.optString("target")
+            if (tvUserLevel != null) {
+                tvUserLevel.text = level
+            }
+
+            if (tvLevelFen != null) {
+                tvLevelFen.text = "[$target]"
+            }
+
+        } else {
+            showShortToast(activity!!, json.optString("msg"))
         }
 
     }
@@ -304,6 +309,9 @@ class PageFragment : ProV4Fragment() {
 
     }
 
+    /**
+     * 获取数据
+     */
     fun get() {
         val json = JSONObject()
         json.put("uid", uid)
@@ -328,7 +336,7 @@ class PageFragment : ProV4Fragment() {
         linear2.layoutParams = LinearLayout.LayoutParams(wwThree, wwThree)
         setMargen(linear2, 8)
 
-        val www = activity!!.resources.getDimension(R.dimen.dp_30).toInt()
+        val www = activity!!.resources.getDimension(R.dimen.dp_60).toInt()
         cxPieChart.layoutParams = LinearLayout.LayoutParams(wwThree - www, wwThree - www)
 
         linear3.layoutParams = LinearLayout.LayoutParams(wwThree, wwThree)
@@ -366,8 +374,12 @@ class PageFragment : ProV4Fragment() {
 
             /// 继续学习
             startBookInfo!!.code = 1   /// 提示继续学习
+
             startBookInfo!!.goOnCode = 1   // 提示继续学习
 
+            startBookInfo!!.wordType = "new_word"
+
+            /// 保存的单元id
             startBookInfo!!.id = Share.getUnitId(activity!!)
 
             (activity as MainPageActivity).toWhere(Constant.STUDY_REVIEW, startBookInfo)
@@ -389,7 +401,20 @@ class PageFragment : ProV4Fragment() {
 
         initImagePic()
 
-        get()
+        if (NetUtil.isNetworkConnected(activity!!)) {
+
+            get()
+
+        } else {
+            val sss = Share.getMainPageData(activity!!)
+            if (sss != "") {
+                jsonMainStr(sss)
+            }
+
+            showToastShort(activity!!, "没有网络将使用本地数据")
+
+        }
+
 
     }
 
@@ -979,7 +1004,7 @@ class PageFragment : ProV4Fragment() {
 
         //设置比例图
         val mLegend = cxPieChart.legend
-        mLegend.isEnabled=false
+        mLegend.isEnabled = false
         //设置比例图显示在饼图的哪个位置
         mLegend.position = Legend.LegendPosition.RIGHT_OF_CHART
         //设置比例图的形状，默认是方形,可为方形、圆形、线性
@@ -992,7 +1017,7 @@ class PageFragment : ProV4Fragment() {
             }
 
             override fun onValueSelected(e: Entry?, h: Highlight?) {
-               toStudy(0)
+                toStudy(1)
             }
 
         })
@@ -1002,11 +1027,16 @@ class PageFragment : ProV4Fragment() {
     /**
      * 1 熟悉词  2 夹生词  3 陌生词  0 其他
      */
-    private fun toStudy(code:Int) {
+    private fun toStudy(code: Int) {
 
         val bookInfo = BookInfo()
         bookInfo.code = 1
         bookInfo.goOnCode = 1
+        when (code) {
+            1 -> bookInfo.wordType = "sxc"
+            2 -> bookInfo.wordType = "jsc"
+            3 -> bookInfo.wordType = "msc"
+        }
 
         bookInfo.book_id = startBookInfo!!.book_id
 
@@ -1039,8 +1069,9 @@ class PageFragment : ProV4Fragment() {
         Log.i("result", "-----" + bb1.sxc + "-----" + bb3.msc + "-----" + bb2.jsc + "------" + all)
 
         val valueList: ArrayList<PieEntry> = arrayListOf()
-        valueList.add(PieEntry(num1, "熟悉词"))
+
         valueList.add(PieEntry(num2, "陌生词"))
+        valueList.add(PieEntry(num1, "熟悉词"))
         valueList.add(PieEntry(num3, "夹生词"))
 
         // 显示在比例图上
@@ -1054,8 +1085,8 @@ class PageFragment : ProV4Fragment() {
 
         /// 设置饼图各个区域颜色
         val colors: ArrayList<Int> = ArrayList<Int>()
-        colors.add(activity!!.resources.getColor(R.color.zi))
         colors.add(activity!!.resources.getColor(R.color.aF46A80))
+        colors.add(activity!!.resources.getColor(R.color.zi))
         colors.add(activity!!.resources.getColor(R.color.a00C9B0))
 
         dataSet.colors = colors

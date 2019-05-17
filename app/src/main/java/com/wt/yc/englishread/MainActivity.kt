@@ -104,6 +104,13 @@ class MainActivity : ProActivity() {
         }
 
 
+        image1.setOnClickListener {
+
+            ////            startActivity(Intent(this, TestActivity::class.java))
+
+        }
+
+
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
 
             override fun onTabReselected(tab: TabLayout.Tab?) {

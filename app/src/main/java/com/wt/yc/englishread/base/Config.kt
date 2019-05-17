@@ -70,6 +70,14 @@ class Config {
         val REVIEW_WORD_URL = "$IP/app/student/word"
         val REVIRE_CODE = 9
 
+
+        /**
+         * 获取熟悉 陌生 夹生词
+         */
+        val GET_SHUXI_OR_MOSHENG_WORD_URL = "$IP/app/student/wordone"
+        val GET_SHUXI_CODE = 91
+
+
         /**
          * 完成复习
          */
@@ -103,20 +111,20 @@ class Config {
         /**
          * 获取测试数据
          */
-        val GET_SCORE_LIST="$IP/App/Student/all_test"
-        val GET_SCORE_LIST_CODE=14
+        val GET_SCORE_LIST = "$IP/App/Student/all_test"
+        val GET_SCORE_LIST_CODE = 14
 
         /**
          * 一周学习图片
          */
-        val GET_WEEK_URL="$IP/App/Student/tk_weak"
-        val GET_WEEK_CODE=15
+        val GET_WEEK_URL = "$IP/App/Student/tk_weak"
+        val GET_WEEK_CODE = 15
 
         /**
          * 学习时间统计
          */
-        val GET_STUDY_TIME_URL="$IP/App/Student/study_time"
-        val GET_STUDY_TIME_CODE=16
+        val GET_STUDY_TIME_URL = "$IP/App/Student/study_time"
+        val GET_STUDY_TIME_CODE = 16
 
 
     }

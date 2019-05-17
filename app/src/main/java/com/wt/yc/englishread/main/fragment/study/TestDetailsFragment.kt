@@ -368,6 +368,10 @@ class TestDetailsFragment : ProV4Fragment() {
     var indexNum = 0
 
     private fun initClick() {
+        imageCancel.setOnClickListener {
+            (activity as MainPageActivity).isTestCode = false
+            (activity as MainPageActivity).backTo()
+        }
 
         imageViewMuLu.setOnClickListener {
             if (drawerLayout.isDrawerOpen(Gravity.END)) {
@@ -458,7 +462,7 @@ class TestDetailsFragment : ProV4Fragment() {
             if (code == 2) {
                 showToastShort(activity!!, "您未答题,重新计时!!")
                 showTime()
-            }else{
+            } else {
                 showToastShort(activity!!, "您未答题,请答题!!")
             }
         }

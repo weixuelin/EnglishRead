@@ -16,7 +16,7 @@
             android:id="@+id/tvTwoContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/a00fff0"
+            android:textColor="@color/holo_red_light"
             android:textSize="@dimen/sp_12" />
 
         <TextView
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_8"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp_12" />
+                android:textSize="@dimen/sp_14" />
 
         </LinearLayout>
 
@@ -76,8 +76,8 @@
                 android:id="@+id/linearTwoSure"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
                 android:clickable="true"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -128,8 +128,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_40"
-                android:gravity="center_vertical"
                 android:clickable="true"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <ImageView
